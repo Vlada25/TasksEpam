@@ -2,7 +2,7 @@
 
 namespace ClassLibraryChess
 {
-    public class Class1
+    public abstract class ChessFigure
     {
     }
 }
