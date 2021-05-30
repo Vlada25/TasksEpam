@@ -6,10 +6,6 @@ namespace ClassLibraryChess.FigureTypes
 {
     public class Bishop : ChessFigure
     {
-        public Bishop(string combination) : base(combination)
-        {
-
-        }
         public Bishop(string combination, string shortFigureName, Colors color) : base(combination, shortFigureName, color)
         {
 
@@ -17,14 +13,30 @@ namespace ClassLibraryChess.FigureTypes
         public override void Move(string combination)
         {
             IsCombinationValid(combination);
-
             int newXPos = (int)combination[0] - 97;
             int newYPos = Convert.ToInt32(Convert.ToString(combination[1])) - 1;
             if (Math.Abs(HorizontalPosition - newXPos) == Math.Abs(VerticalPosition - newYPos))
             {
-                HorizontalPosition = newXPos;
-                VerticalPosition = newYPos;
-                ChessBoard = combination;
+                int xIndex, yIndex;
+                for (int i = 1; i < Math.Abs(HorizontalPosition - newXPos); i++)
+                {
+                    xIndex = i;
+                    yIndex = i;
+                    if (HorizontalPosition - newXPos > 0)
+                    {
+                        xIndex = -i;
+                    }
+                    if (VerticalPosition - newYPos > 0)
+                    {
+                        yIndex = -i;
+                    }
+                    string jumpOverCell = Convert.ToChar(xIndex + HorizontalPosition + 97) + Convert.ToString(yIndex + VerticalPosition + 1);
+                    if (OccupiedPositionsList.Contains(jumpOverCell))
+                    {
+                        throw new Exception("Impossiable to make a move");
+                    }
+                }
+                SetNewPos(newXPos, newYPos, combination, color);
             }
             else
             {

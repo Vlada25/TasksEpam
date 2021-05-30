@@ -6,10 +6,6 @@ namespace ClassLibraryChess.FigureTypes
 {
     public class Knight : ChessFigure
     {
-        public Knight(string combination) : base(combination)
-        {
-
-        }
         public Knight(string combination, string shortFigureName, Colors color) : base(combination, shortFigureName, color)
         {
            
@@ -23,9 +19,7 @@ namespace ClassLibraryChess.FigureTypes
             if ((Math.Abs(HorizontalPosition - newXPos) == 2 && Math.Abs(VerticalPosition - newYPos) == 1) ||
                 (Math.Abs(HorizontalPosition - newXPos) == 1 && Math.Abs(VerticalPosition - newYPos) == 2))
             {
-                HorizontalPosition = newXPos;
-                VerticalPosition = newYPos;
-                ChessBoard = combination;
+                SetNewPos(newXPos, newYPos, combination, color);
             }
             else
             {

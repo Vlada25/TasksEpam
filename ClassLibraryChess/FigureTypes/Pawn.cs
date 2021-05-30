@@ -6,13 +6,10 @@ namespace ClassLibraryChess.FigureTypes
 {
     public class Pawn : ChessFigure
     {
-        public Pawn(string combination) : base(combination)
-        {
-
-        }
+        private bool isFirstStep;
         public Pawn(string combination, string shortFigureName, Colors color) : base(combination, shortFigureName, color)
         {
-
+            isFirstStep = true;
         }
         public override void Move(string combination)
         {
@@ -24,6 +21,10 @@ namespace ClassLibraryChess.FigureTypes
                 if (HorizontalPosition - newXPos == 0 && (VerticalPosition - newYPos == 1
                     || VerticalPosition - newYPos == 2) && !OccupiedPositionsList.Contains(combination))
                 {
+                    if (VerticalPosition - newYPos == 2 && !isFirstStep)
+                    {
+                        throw new Exception("Impossiable to make a move");
+                    }
                     string jumpOverCell = ChessBoard[0] + Convert.ToString(ChessBoard[1] - 49);
                     if (VerticalPosition - newYPos == 2 && OccupiedPositionsList.Contains(jumpOverCell))
                     {
@@ -31,13 +32,13 @@ namespace ClassLibraryChess.FigureTypes
                     }
                     else
                     {
-                        SetNewFigurePosition(newXPos, newYPos, combination);
+                        SetNewPos(newXPos, newYPos, combination, color);
                     }
                 }
                 else if(Math.Abs(HorizontalPosition - newXPos) == 1 && VerticalPosition - newYPos == 1 
-                    && OccupiedPositionsList.Contains(combination))
+                    && WhiteOccupiedPositions.Contains(combination))
                 {
-                    SetNewFigurePosition(newXPos, newYPos, combination);
+                    SetNewPos(newXPos, newYPos, combination, color);
                 }
                 else
                 {
@@ -49,6 +50,10 @@ namespace ClassLibraryChess.FigureTypes
                 if (HorizontalPosition - newXPos == 0 && (VerticalPosition - newYPos == -1
                     || VerticalPosition - newYPos == -2) && !OccupiedPositionsList.Contains(combination))
                 {
+                    if (VerticalPosition - newYPos == -2 && !isFirstStep)
+                    {
+                        throw new Exception("Impossiable to make a move");
+                    }
                     string jumpOverCell = ChessBoard[0] + Convert.ToString(ChessBoard[1] - 47);
                     if (VerticalPosition - newYPos == -2 && OccupiedPositionsList.Contains(jumpOverCell))
                     {
@@ -56,13 +61,13 @@ namespace ClassLibraryChess.FigureTypes
                     }
                     else
                     {
-                        SetNewFigurePosition(newXPos, newYPos, combination);
+                        SetNewPos(newXPos, newYPos, combination, color);
                     }
                 }
                 else if (Math.Abs(HorizontalPosition - newXPos) == 1 && VerticalPosition - newYPos == -1
-                    && OccupiedPositionsList.Contains(combination))
+                    && BlackOccupiedPositions.Contains(combination))
                 {
-                    SetNewFigurePosition(newXPos, newYPos, combination);
+                    SetNewPos(newXPos, newYPos, combination, color);
                 }
                 else
                 {
@@ -73,6 +78,7 @@ namespace ClassLibraryChess.FigureTypes
             {
                 throw new Exception("Impossiable to make a move");
             }
+            isFirstStep = false;
         }
     }
 }

@@ -61,6 +61,8 @@ namespace ConsoleApp1
                 white_Pawn_5, white_Pawn_6, white_Pawn_7, white_Pawn_8 };
 
             string[,] chessField = new string[8, 8];
+            ChessFigure.IsWhiteShouldMove = true;
+
             try
             {
                 for (int i = 0; i < 16; i++)
@@ -110,7 +112,7 @@ namespace ConsoleApp1
                 }
             }
             Console.WriteLine("\n└────┴────┴────┴────┴────┴────┴────┴────┘");
-            Console.WriteLine("  a    b    c    d    e    f    h    g");
+            Console.WriteLine("  a    b    c    d    e    f    g    h");
         }
         static void MoveFigure(string[,] chessField, ChessFigure[] blackFigures, ChessFigure[] whiteFigures)
         {
@@ -122,14 +124,36 @@ namespace ConsoleApp1
             {
                 if (blackFigures[i].ShortFigureName == shortName)
                 {
-                    ChangePosition(chessField, blackFigures, chessBoard, shortName, i);
+                    if (!ChessFigure.IsWhiteShouldMove)
+                    {
+                        ChangePosition(chessField, blackFigures, chessBoard, shortName, i);
+                    }
+                    else
+                    {
+                        throw new Exception("White figures should move now");
+                    }
                     break;
                 }
                 else if (whiteFigures[i].ShortFigureName == shortName)
                 {
-                    ChangePosition(chessField, whiteFigures, chessBoard, shortName, i);
+                    if (ChessFigure.IsWhiteShouldMove)
+                    {
+                        ChangePosition(chessField, whiteFigures, chessBoard, shortName, i);
+                    }
+                    else
+                    {
+                        throw new Exception("Black figures should move now");
+                    }
                     break;
                 }
+            }
+            if (ChessFigure.IsWhiteShouldMove)
+            {
+                ChessFigure.IsWhiteShouldMove = false;
+            }
+            else
+            {
+                ChessFigure.IsWhiteShouldMove = true;
             }
         }
         static void ChangePosition(string[,] chessField, ChessFigure[] figures, string chessBoard, string shortName, int index)
