@@ -11,6 +11,7 @@ namespace ClassLibraryChess
             White
         }
         protected Colors color;
+        public static string errorMessage;
         public static bool IsWhiteShouldMove { get; set; }
         public string ShortFigureName { get; set; }
         protected string KindOfFigure { get; set; }

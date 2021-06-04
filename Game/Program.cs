@@ -10,7 +10,7 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             King black_King = new King("e8", "bk_", ChessFigure.Colors.Black, "king"),
-                 white_King = new King("e6", "wk_", ChessFigure.Colors.White, "king");
+                 white_King = new King("e1", "wk_", ChessFigure.Colors.White, "king");
 
             Queen black_Queen = new Queen("d8", "bq_", ChessFigure.Colors.Black, "queen"),
                   white_Queen = new Queen("d1", "wq_", ChessFigure.Colors.White, "queen");
@@ -79,18 +79,22 @@ namespace ConsoleApp1
                     chessField[yPos, xPos] = whiteFigures[i].ShortFigureName;
                 }
 
-                while (true)
+                int selector = -1;
+                while (selector != 0)
                 {
                     PrintChessField(chessField);
-                    Console.WriteLine("Выберите операцию:\n0 - Ходить, 1 - Бить");
+                    Console.WriteLine("\nВыберите операцию:\n1 - Ходить\n2 - Бить\n0 - Выход");
                     int selecter = Convert.ToInt32(Console.ReadLine());
                     switch (selecter)
                     {
-                        case 0:
+                        case 1:
                             MoveFigure(chessField, blackFigures, whiteFigures);
                             break;
-                        case 1:
+                        case 2:
                             BeatFigure(chessField, blackFigures, whiteFigures);
+                            break;
+                        case 0:
+                            Console.WriteLine("...");
                             break;
                     }
                 }
@@ -102,7 +106,7 @@ namespace ConsoleApp1
         }
         static void PrintChessField(string[,] chessField)
         {
-            Console.WriteLine("┌────┬────┬────┬────┬────┬────┬────┬────┐");
+            Console.WriteLine("\n┌────┬────┬────┬────┬────┬────┬────┬────┐");
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -141,7 +145,7 @@ namespace ConsoleApp1
                     }
                     else
                     {
-                        throw new Exception("White figures should move now");
+                        Console.WriteLine("White figures should move now");
                     }
                     break;
                 }
@@ -153,18 +157,10 @@ namespace ConsoleApp1
                     }
                     else
                     {
-                        throw new Exception("Black figures should move now");
+                        Console.WriteLine("Black figures should move now");
                     }
                     break;
                 }
-            }
-            if (ChessFigure.IsWhiteShouldMove)
-            {
-                ChessFigure.IsWhiteShouldMove = false;
-            }
-            else
-            {
-                ChessFigure.IsWhiteShouldMove = true;
             }
         }
         static void BeatFigure(string[,] chessField, ChessFigure[] blackFigures, ChessFigure[] whiteFigures)
@@ -174,6 +170,7 @@ namespace ConsoleApp1
         }
         static void ChangePosition(string[,] chessField, ChessFigure[] figures, string chessBoard, string shortName, int index)
         {
+            ChessFigure.errorMessage = null;
             int xPos = figures[index].HorizontalPosition;
             int yPos = figures[index].VerticalPosition;
             chessField[yPos, xPos] = null;
@@ -188,6 +185,21 @@ namespace ConsoleApp1
             int newXPos = figures[index].HorizontalPosition;
             int newYPos = figures[index].VerticalPosition;
             chessField[newYPos, newXPos] = shortName;
+            if(ChessFigure.errorMessage != null)
+            {
+                Console.WriteLine(ChessFigure.errorMessage);
+            }
+            else
+            {
+                if (ChessFigure.IsWhiteShouldMove)
+                {
+                    ChessFigure.IsWhiteShouldMove = false;
+                }
+                else
+                {
+                    ChessFigure.IsWhiteShouldMove = true;
+                }
+            }
         }
     }
 }

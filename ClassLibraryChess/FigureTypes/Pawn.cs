@@ -24,12 +24,14 @@ namespace ClassLibraryChess.FigureTypes
                 {
                     if (VerticalPosition - newYPos == 2 && !isFirstStep)
                     {
-                        throw new Exception("Impossiable to make a move");
+                        errorMessage = "Impossiable to make a move";
+                        return;
                     }
                     string jumpOverCell = ChessBoard[0] + Convert.ToString(ChessBoard[1] - 49);
                     if (VerticalPosition - newYPos == 2 && OccupiedPositionsList.Contains(jumpOverCell))
                     {
-                        throw new Exception("Impossiable to make a move");
+                        errorMessage = "Impossiable to make a move";
+                        return;
                     }
                     else
                     {
@@ -43,7 +45,8 @@ namespace ClassLibraryChess.FigureTypes
                 }
                 else
                 {
-                    throw new Exception("Impossiable to make a move");
+                    errorMessage = "Impossiable to make a move";
+                    return;
                 }
             }
             else
@@ -53,12 +56,14 @@ namespace ClassLibraryChess.FigureTypes
                 {
                     if (VerticalPosition - newYPos == -2 && !isFirstStep)
                     {
-                        throw new Exception("Impossiable to make a move");
+                        errorMessage = "Impossiable to make a move";
+                        return;
                     }
                     string jumpOverCell = ChessBoard[0] + Convert.ToString(ChessBoard[1] - 47);
                     if (VerticalPosition - newYPos == -2 && OccupiedPositionsList.Contains(jumpOverCell))
                     {
-                        throw new Exception("Impossiable to make a move");
+                        errorMessage = "Impossiable to make a move";
+                        return;
                     }
                     else
                     {
@@ -72,7 +77,8 @@ namespace ClassLibraryChess.FigureTypes
                 }
                 else
                 {
-                    throw new Exception("Impossiable to make a move");
+                    errorMessage = "Impossiable to make a move";
+                    return;
                 }
             }
             isFirstStep = false;
@@ -81,7 +87,8 @@ namespace ClassLibraryChess.FigureTypes
         {
             if (!OccupiedPositionsList.Contains(combination))
             {
-                throw new Exception("Chosed field is empty");
+                errorMessage = "Chosed field is empty";
+                return;
             }
             IsCombinationValid(combination);
             int newXPos = combination[0] - 97;
@@ -94,7 +101,8 @@ namespace ClassLibraryChess.FigureTypes
             }
             else
             {
-                throw new Exception("Impossiable to make a move");
+                errorMessage = "Impossiable to make a move";
+                return;
             }
             isFirstStep = false;
         }

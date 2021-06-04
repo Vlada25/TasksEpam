@@ -24,14 +24,16 @@ namespace ClassLibraryChess.FigureTypes
             }
             else
             {
-                throw new Exception("Impossiable to make a move");
+                errorMessage = "Impossiable to make a move";
+                return;
             }
         }
         public override void Beat(string combination)
         {
             if (!OccupiedPositionsList.Contains(combination))
             {
-                throw new Exception("Chosed field is empty");
+                errorMessage = "Chosed field is empty";
+                return;
             }
             Move(combination);
         }

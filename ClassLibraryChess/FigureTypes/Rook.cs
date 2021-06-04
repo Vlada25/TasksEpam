@@ -30,7 +30,8 @@ namespace ClassLibraryChess.FigureTypes
                     Console.WriteLine(jumpOverCell);
                     if (OccupiedPositionsList.Contains(jumpOverCell))
                     {
-                        throw new Exception("Impossiable to make a move");
+                        errorMessage = "Impossiable to make a move";
+                        return;
                     }
                 }
                 SetNewPos(newXPos, newYPos, combination, color, KindOfFigure);
@@ -49,21 +50,24 @@ namespace ClassLibraryChess.FigureTypes
                     Console.WriteLine(jumpOverCell);
                     if (OccupiedPositionsList.Contains(jumpOverCell))
                     {
-                        throw new Exception("Impossiable to make a move");
+                        errorMessage = "Impossiable to make a move";
+                        return;
                     }
                 }
                 SetNewPos(newXPos, newYPos, combination, color, KindOfFigure);
             }
             else
             {
-                throw new Exception("Impossiable to make a move");
+                errorMessage = "Impossiable to make a move";
+                return;
             }
         }
         public override void Beat(string combination)
         {
             if (!OccupiedPositionsList.Contains(combination))
             {
-                throw new Exception("Chosed field is empty");
+                errorMessage = "Chosed field is empty";
+                return;
             }
             Move(combination);
         }
