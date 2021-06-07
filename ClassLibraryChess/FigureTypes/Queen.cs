@@ -34,7 +34,7 @@ namespace ClassLibraryChess.FigureTypes
                     string jumpOverCell = Convert.ToChar(xIndex + HorizontalPosition + 97) + Convert.ToString(yIndex + VerticalPosition + 1);
                     if (OccupiedPositionsList.Contains(jumpOverCell))
                     {
-                        errorMessage = "Impossiable to make a move";
+                        ErrorMessage = "Impossiable to make a move";
                         return;
                     }
                 }
@@ -51,10 +51,9 @@ namespace ClassLibraryChess.FigureTypes
                         xIndex = -i;
                     }
                     string jumpOverCell = Convert.ToChar(xIndex + HorizontalPosition + 97) + Convert.ToString(VerticalPosition + 1);
-                    Console.WriteLine(jumpOverCell);
                     if (OccupiedPositionsList.Contains(jumpOverCell))
                     {
-                        errorMessage = "Impossiable to make a move";
+                        ErrorMessage = "Impossiable to make a move";
                         return;
                     }
                 }
@@ -63,7 +62,7 @@ namespace ClassLibraryChess.FigureTypes
             else if (Math.Abs(HorizontalPosition - newXPos) == 0 && Math.Abs(VerticalPosition - newYPos) > 0)
             {
                 int yIndex;
-                for (int i = 1; i < Math.Abs(VerticalPosition - newXPos); i++)
+                for (int i = 1; i < Math.Abs(VerticalPosition - newYPos); i++)
                 {
                     yIndex = i;
                     if (VerticalPosition - newYPos > 0)
@@ -71,10 +70,9 @@ namespace ClassLibraryChess.FigureTypes
                         yIndex = -i;
                     }
                     string jumpOverCell = Convert.ToChar(HorizontalPosition + 97) + Convert.ToString(yIndex + VerticalPosition + 1);
-                    Console.WriteLine(jumpOverCell);
                     if (OccupiedPositionsList.Contains(jumpOverCell))
                     {
-                        errorMessage = "Impossiable to make a move";
+                        ErrorMessage = "Impossiable to make a move";
                         return;
                     }
                 }
@@ -82,7 +80,7 @@ namespace ClassLibraryChess.FigureTypes
             }
             else
             {
-                errorMessage = "Impossiable to make a move";
+                ErrorMessage = "Impossiable to make a move";
                 return;
             }
         }
@@ -90,7 +88,7 @@ namespace ClassLibraryChess.FigureTypes
         {
             if (!OccupiedPositionsList.Contains(combination))
             {
-                errorMessage = "Chosed field is empty";
+                ErrorMessage = "Chosed field is empty";
                 return;
             }
             Move(combination);

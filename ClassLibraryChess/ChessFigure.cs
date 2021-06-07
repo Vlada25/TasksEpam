@@ -1,9 +1,10 @@
-﻿using System;
+﻿using ClassLibraryChess.FigureTypes;
+using System;
 using System.Collections.Generic;
 
 namespace ClassLibraryChess
 {
-    public abstract class ChessFigure
+    public abstract class ChessFigure : ICloneable
     {
         public enum Colors
         {
@@ -11,11 +12,11 @@ namespace ClassLibraryChess
             White
         }
         protected Colors color;
-        public static string errorMessage;
+        public static string ErrorMessage;
         public static bool IsWhiteShouldMove { get; set; }
         public string ShortFigureName { get; set; }
-        protected string KindOfFigure { get; set; }
-        public string ChessBoard { get; set; }
+        public string KindOfFigure { get; set; }
+        protected string ChessBoard { get; set; }
         public int HorizontalPosition { get; set; }
         public int VerticalPosition { get;  set; }
 
@@ -72,8 +73,16 @@ namespace ClassLibraryChess
             }
             BlackOccupiedPositions.Remove(ChessBoard);
             WhiteOccupiedPositions.Remove(ChessBoard);
+            int indexOfChessBoard = OccupiedPositionsList.IndexOf(ChessBoard);
             OccupiedPositionsList.Remove(ChessBoard);
-            KindOfFiguresList.Remove(kindOfFigure);
+            if (KindOfFiguresList.Count > 0)
+            {
+                try
+                {
+                    KindOfFiguresList.RemoveAt(indexOfChessBoard);
+                }
+                catch { }
+            }
 
             HorizontalPosition = xPos;
             VerticalPosition = yPos;
@@ -90,11 +99,23 @@ namespace ClassLibraryChess
                 WhiteOccupiedPositions.Add(ChessBoard);
             }
         }
-        protected static bool IsTheFieldUnderAttack(int newXPos, int newYPos, string combination, Colors color)
+        protected static bool IsTheFieldUnderAttack(string combination, string nowChessBoard, Colors color)
         {
-            bool isAnyFigureOnTheWay;
+            bool isAnyFigureOnTheWay, isCaseWork;
+            int newXPos = combination[0] - 97;
+            int newYPos = Convert.ToInt32(Convert.ToString(combination[1])) - 1;
+
             for (int j = 0; j < KindOfFiguresList.Count; j++)
             {
+                if (OccupiedPositionsList[j] == nowChessBoard)
+                {
+                    continue;
+                }
+                if (WhiteOccupiedPositions.Contains(OccupiedPositionsList[j]) && color == Colors.White ||
+                    BlackOccupiedPositions.Contains(OccupiedPositionsList[j]) && color == Colors.Black)
+                {
+                    continue;
+                }
                 int horizontalPos = OccupiedPositionsList[j][0] - 97;
                 int verticalPos = Convert.ToInt32(Convert.ToString(OccupiedPositionsList[j][1])) - 1;
 
@@ -104,14 +125,18 @@ namespace ClassLibraryChess
                     && (WhiteOccupiedPositions.Contains(combination) && color == Colors.Black ||
                     BlackOccupiedPositions.Contains(combination) && color == Colors.White))
                     {
+                        //Console.WriteLine(OccupiedPositionsList[j] + " " + KindOfFiguresList[j]);
                         return true;
                     }
                 }
                 else if (KindOfFiguresList[j] == "rook") // ROOK
                 {
                     isAnyFigureOnTheWay = false;
+                    isCaseWork = false;
+
                     if (Math.Abs(horizontalPos - newXPos) > 0 && Math.Abs(verticalPos - newYPos) == 0)
                     {
+                        isCaseWork = true;
                         int xIndex;
                         for (int i = 1; i < Math.Abs(horizontalPos - newXPos); i++)
                         {
@@ -121,7 +146,6 @@ namespace ClassLibraryChess
                                 xIndex = -i;
                             }
                             string jumpOverCell = Convert.ToChar(xIndex + horizontalPos + 97) + Convert.ToString(verticalPos + 1);
-                            Console.WriteLine(jumpOverCell);
                             if (OccupiedPositionsList.Contains(jumpOverCell))
                             {
                                 isAnyFigureOnTheWay = true;
@@ -131,8 +155,9 @@ namespace ClassLibraryChess
                     }
                     else if (Math.Abs(horizontalPos - newXPos) == 0 && Math.Abs(verticalPos - newYPos) > 0)
                     {
+                        isCaseWork = true;
                         int yIndex;
-                        for (int i = 1; i < Math.Abs(verticalPos - newXPos); i++)
+                        for (int i = 1; i < Math.Abs(verticalPos - newYPos); i++)
                         {
                             yIndex = i;
                             if (verticalPos - newYPos > 0)
@@ -140,23 +165,26 @@ namespace ClassLibraryChess
                                 yIndex = -i;
                             }
                             string jumpOverCell = Convert.ToChar(horizontalPos + 97) + Convert.ToString(yIndex + verticalPos + 1);
-                            Console.WriteLine(jumpOverCell);
                             if (OccupiedPositionsList.Contains(jumpOverCell))
                             {
                                 isAnyFigureOnTheWay = true;
                             }
                         }
                     }
-                    if (!isAnyFigureOnTheWay)
+                    if (!isAnyFigureOnTheWay && isCaseWork)
                     {
+                        //Console.WriteLine(OccupiedPositionsList[j] + " " + KindOfFiguresList[j]);
                         return true;
                     }
                 }
                 else if (KindOfFiguresList[j] == "queen") // QUEEN
                 {
                     isAnyFigureOnTheWay = false;
+                    isCaseWork = false;
+
                     if (Math.Abs(horizontalPos - newXPos) == Math.Abs(verticalPos - newYPos))
                     {
+                        isCaseWork = true;
                         int xIndex, yIndex;
                         for (int i = 1; i < Math.Abs(horizontalPos - newXPos); i++)
                         {
@@ -174,11 +202,13 @@ namespace ClassLibraryChess
                             if (OccupiedPositionsList.Contains(jumpOverCell))
                             {
                                 isAnyFigureOnTheWay = true;
+                                break;
                             }
                         }
                     }
                     else if (Math.Abs(horizontalPos - newXPos) > 0 && Math.Abs(verticalPos - newYPos) == 0)
                     {
+                        isCaseWork = true;
                         int xIndex;
                         for (int i = 1; i < Math.Abs(horizontalPos - newXPos); i++)
                         {
@@ -188,17 +218,18 @@ namespace ClassLibraryChess
                                 xIndex = -i;
                             }
                             string jumpOverCell = Convert.ToChar(xIndex + horizontalPos + 97) + Convert.ToString(verticalPos + 1);
-                            Console.WriteLine(jumpOverCell);
                             if (OccupiedPositionsList.Contains(jumpOverCell))
                             {
                                 isAnyFigureOnTheWay = true;
+                                break;
                             }
                         }
                     }
                     else if (Math.Abs(horizontalPos - newXPos) == 0 && Math.Abs(verticalPos - newYPos) > 0)
                     {
+                        isCaseWork = true;
                         int yIndex;
-                        for (int i = 1; i < Math.Abs(verticalPos - newXPos); i++)
+                        for (int i = 1; i < Math.Abs(verticalPos - newYPos); i++)
                         {
                             yIndex = i;
                             if (verticalPos - newYPos > 0)
@@ -206,15 +237,16 @@ namespace ClassLibraryChess
                                 yIndex = -i;
                             }
                             string jumpOverCell = Convert.ToChar(horizontalPos + 97) + Convert.ToString(yIndex + verticalPos + 1);
-                            Console.WriteLine(jumpOverCell);
                             if (OccupiedPositionsList.Contains(jumpOverCell))
                             {
                                 isAnyFigureOnTheWay = true;
+                                break;
                             }
                         }
                     }
-                    if (!isAnyFigureOnTheWay)
+                    if (!isAnyFigureOnTheWay && isCaseWork)
                     {
+                        //Console.WriteLine(OccupiedPositionsList[j] + " " + KindOfFiguresList[j]);
                         return true;
                     }
                 }
@@ -223,6 +255,7 @@ namespace ClassLibraryChess
                     if ((Math.Abs(horizontalPos - newXPos) == 2 && Math.Abs(verticalPos - newYPos) == 1) &&
                         (Math.Abs(horizontalPos - newXPos) == 1 && Math.Abs(verticalPos - newYPos) == 2))
                     {
+                        //Console.WriteLine(OccupiedPositionsList[j] + " " + KindOfFiguresList[j]);
                         return true;
                     }
                 }
@@ -230,14 +263,18 @@ namespace ClassLibraryChess
                 {
                     if (Math.Abs(horizontalPos - newXPos) <= 1 && Math.Abs(verticalPos - newYPos) <= 1)
                     {
+                        //Console.WriteLine(OccupiedPositionsList[j] + " " + KindOfFiguresList[j]);
                         return true;
                     }
                 }
                 else if (KindOfFiguresList[j] == "bishop") // BISHOP
                 {
                     isAnyFigureOnTheWay = false;
+                    isCaseWork = false;
+
                     if (Math.Abs(horizontalPos - newXPos) == Math.Abs(verticalPos - newYPos))
                     {
+                        isCaseWork = true;
                         int xIndex, yIndex;
                         for (int i = 1; i < Math.Abs(horizontalPos - newXPos); i++)
                         {
@@ -255,12 +292,14 @@ namespace ClassLibraryChess
                             if (OccupiedPositionsList.Contains(jumpOverCell))
                             {
                                 isAnyFigureOnTheWay = true;
+                                break;
                             }
                         }
-                        if (!isAnyFigureOnTheWay)
-                        {
-                            return true;
-                        }
+                    }
+                    if (!isAnyFigureOnTheWay && isCaseWork)
+                    {
+                        //Console.WriteLine(OccupiedPositionsList[j] + " " + KindOfFiguresList[j]);
+                        return true;
                     }
                 }
             }
@@ -269,6 +308,84 @@ namespace ClassLibraryChess
         public override string ToString()
         {
             return base.ToString();
+        }
+
+        public object Clone()
+        {
+            Console.WriteLine("Input new type of figure that the pawn should turn into: ");
+            string figureType = InputFigureType();
+
+            if (color == Colors.Black)
+            {
+                BlackOccupiedPositions.Remove(ChessBoard);
+            }
+            else
+            {
+                WhiteOccupiedPositions.Remove(ChessBoard);
+            }
+
+            if (figureType.Equals("rook"))
+            {
+                return new Rook(ChessBoard, ShortFigureName, color, figureType);
+            }
+            else if (figureType.Equals("queen"))
+            {
+                return new Queen(ChessBoard, ShortFigureName, color, figureType);
+            }
+            else if (figureType.Equals("knight"))
+            {
+                return new Knight(ChessBoard, ShortFigureName, color, figureType);
+            }
+            else if (figureType.Equals("bishop"))
+            {
+                return new Bishop(ChessBoard, ShortFigureName, color, figureType);
+            }
+            return this;
+        }
+        private string InputFigureType()
+        {
+            string figureType = Console.ReadLine();
+            string[] possibleTypes = { "rook", "queen", "knight", "bishop" };
+            bool isFigureTypeValid = false;
+
+            foreach (string value in possibleTypes)
+            {
+                if (figureType.Equals(value))
+                {
+                    isFigureTypeValid = true;
+                    break;
+                }
+            }
+
+            while (!isFigureTypeValid)
+            {
+                Console.WriteLine("Invalid type! Re-enter, please: ");
+                figureType = Console.ReadLine();
+                foreach (string value in possibleTypes)
+                {
+                    if (figureType.Equals(value))
+                    {
+                        isFigureTypeValid = true;
+                        break;
+                    }
+                }
+            }
+            return figureType;
+        }
+        public static void DoShortCastling(string cell_F, string cell_G, ChessFigure king, ChessFigure rook)
+        {
+            const int newXPosKing = 5, newXPosRook = 6;
+            if (!OccupiedPositionsList.Contains(cell_F) && !OccupiedPositionsList.Contains(cell_G) && !IsTheFieldUnderAttack(cell_F, king.ChessBoard, king.color))
+            {
+                king.ChessBoard = cell_F;
+                king.HorizontalPosition = newXPosKing;
+                rook.ChessBoard = cell_G;
+                rook.HorizontalPosition = newXPosRook;
+            }
+            else
+            {
+                ErrorMessage = "Impossible to do the short castling";
+            }
         }
     }
 }

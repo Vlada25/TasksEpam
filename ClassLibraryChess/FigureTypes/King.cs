@@ -18,13 +18,13 @@ namespace ClassLibraryChess.FigureTypes
             int newXPos = combination[0] - 97;
             int newYPos = Convert.ToInt32(Convert.ToString(combination[1])) - 1;
             if (Math.Abs(HorizontalPosition - newXPos) <= 1 && Math.Abs(VerticalPosition - newYPos) <= 1
-                && !IsTheFieldUnderAttack(newXPos, newYPos, combination, color))
+                && !IsTheFieldUnderAttack(combination, ChessBoard, color))
             {
                 SetNewPos(newXPos, newYPos, combination, color, KindOfFigure);
             }
             else
             {
-                errorMessage = "Impossiable to make a move";
+                ErrorMessage = "Impossiable to make a move";
                 return;
             }
         }
@@ -32,7 +32,7 @@ namespace ClassLibraryChess.FigureTypes
         {
             if (!OccupiedPositionsList.Contains(combination))
             {
-                errorMessage = "Chosed field is empty";
+                ErrorMessage = "Chosed field is empty";
                 return;
             }
             Move(combination);

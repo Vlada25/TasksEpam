@@ -7,6 +7,7 @@ namespace ClassLibraryChess.FigureTypes
     public class Pawn : ChessFigure
     {
         private bool isFirstStep;
+
         public Pawn(string combination, string shortFigureName, Colors color, string kindOfFigure)
             : base(combination, shortFigureName, color, kindOfFigure)
         {
@@ -24,13 +25,13 @@ namespace ClassLibraryChess.FigureTypes
                 {
                     if (VerticalPosition - newYPos == 2 && !isFirstStep)
                     {
-                        errorMessage = "Impossiable to make a move";
+                        ErrorMessage = "Impossiable to make a move";
                         return;
                     }
                     string jumpOverCell = ChessBoard[0] + Convert.ToString(ChessBoard[1] - 49);
                     if (VerticalPosition - newYPos == 2 && OccupiedPositionsList.Contains(jumpOverCell))
                     {
-                        errorMessage = "Impossiable to make a move";
+                        ErrorMessage = "Impossiable to make a move";
                         return;
                     }
                     else
@@ -45,7 +46,7 @@ namespace ClassLibraryChess.FigureTypes
                 }
                 else
                 {
-                    errorMessage = "Impossiable to make a move";
+                    ErrorMessage = "Impossiable to make a move";
                     return;
                 }
             }
@@ -56,13 +57,13 @@ namespace ClassLibraryChess.FigureTypes
                 {
                     if (VerticalPosition - newYPos == -2 && !isFirstStep)
                     {
-                        errorMessage = "Impossiable to make a move";
+                        ErrorMessage = "Impossiable to make a move";
                         return;
                     }
                     string jumpOverCell = ChessBoard[0] + Convert.ToString(ChessBoard[1] - 47);
                     if (VerticalPosition - newYPos == -2 && OccupiedPositionsList.Contains(jumpOverCell))
                     {
-                        errorMessage = "Impossiable to make a move";
+                        ErrorMessage = "Impossiable to make a move";
                         return;
                     }
                     else
@@ -77,7 +78,7 @@ namespace ClassLibraryChess.FigureTypes
                 }
                 else
                 {
-                    errorMessage = "Impossiable to make a move";
+                    ErrorMessage = "Impossiable to make a move";
                     return;
                 }
             }
@@ -87,7 +88,7 @@ namespace ClassLibraryChess.FigureTypes
         {
             if (!OccupiedPositionsList.Contains(combination))
             {
-                errorMessage = "Chosed field is empty";
+                ErrorMessage = "Chosed field is empty";
                 return;
             }
             IsCombinationValid(combination);
@@ -101,7 +102,7 @@ namespace ClassLibraryChess.FigureTypes
             }
             else
             {
-                errorMessage = "Impossiable to make a move";
+                ErrorMessage = "Impossiable to make a move";
                 return;
             }
             isFirstStep = false;
