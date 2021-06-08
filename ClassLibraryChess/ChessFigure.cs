@@ -46,7 +46,21 @@ namespace ClassLibraryChess
         public void SetFigurePosition(string combination, Colors color)
         {
             IsCombinationValid(combination);
-            SetNewPos((int)combination[0] - 97, Convert.ToInt32(Convert.ToString(combination[1])) - 1, combination, color, KindOfFigure);
+            HorizontalPosition = (int)combination[0] - 97;
+            VerticalPosition = Convert.ToInt32(Convert.ToString(combination[1])) - 1;
+            ChessBoard = combination;
+
+            OccupiedPositionsList.Add(combination);
+            KindOfFiguresList.Add(KindOfFigure);
+            if (color == Colors.Black)
+            {
+                BlackOccupiedPositions.Add(combination);
+            }
+            else
+            {
+                WhiteOccupiedPositions.Add(combination);
+            }
+            //SetNewPos((int)combination[0] - 97, Convert.ToInt32(Convert.ToString(combination[1])) - 1, combination, color, KindOfFigure);
         }
         protected void IsCombinationValid(string combination)
         {
@@ -372,19 +386,35 @@ namespace ClassLibraryChess
             }
             return figureType;
         }
-        public static void DoShortCastling(string cell_F, string cell_G, ChessFigure king, ChessFigure rook)
+        public static void DoShortCastling(string newKingCell, string newRookCell, ChessFigure king, ChessFigure rook)
         {
             const int newXPosKing = 5, newXPosRook = 6;
-            if (!OccupiedPositionsList.Contains(cell_F) && !OccupiedPositionsList.Contains(cell_G) && !IsTheFieldUnderAttack(cell_F, king.ChessBoard, king.color))
+            if (!OccupiedPositionsList.Contains(newKingCell) && !OccupiedPositionsList.Contains(newRookCell) && !IsTheFieldUnderAttack(newKingCell, king.ChessBoard, king.color))
             {
-                king.ChessBoard = cell_F;
+                king.ChessBoard = newKingCell;
                 king.HorizontalPosition = newXPosKing;
-                rook.ChessBoard = cell_G;
+                rook.ChessBoard = newRookCell;
                 rook.HorizontalPosition = newXPosRook;
             }
             else
             {
                 ErrorMessage = "Impossible to do the short castling";
+            }
+        }
+        public static void DoLongCastling(string newKingCell, string newRookCell, string leftOfTheRookCell, ChessFigure king, ChessFigure rook)
+        {
+            const int newXPosKing = 2, newXPosRook = 3;
+            if (!OccupiedPositionsList.Contains(newKingCell) && !OccupiedPositionsList.Contains(newRookCell) 
+                && !IsTheFieldUnderAttack(newKingCell, king.ChessBoard, king.color) && !OccupiedPositionsList.Contains(leftOfTheRookCell))
+            {
+                king.ChessBoard = newKingCell;
+                king.HorizontalPosition = newXPosKing;
+                rook.ChessBoard = newRookCell;
+                rook.HorizontalPosition = newXPosRook;
+            }
+            else
+            {
+                ErrorMessage = "Impossible to do the long castling";
             }
         }
     }
