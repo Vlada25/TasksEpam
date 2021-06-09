@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using ClassLibraryChess;
 using ClassLibraryChess.FigureTypes;
 
-namespace ConsoleApp1
+namespace Game
 {
     class Program
     {
-        static bool isBeat = false;
-        static string pawnTransformationInfo = "";
-        static bool wasTheCastling = false;
-        static bool thePartyIsOver = false;
         static void Main(string[] args)
         {
             try
@@ -86,25 +82,25 @@ namespace ConsoleApp1
                 }
 
                 int selector = -1;
-                while (selector != 0 && !thePartyIsOver)
+                while (selector != 0 && !Service.thePartyIsOver)
                 {
-                    PrintChessField(chessField);
+                    Service.PrintChessField(chessField);
                     Console.WriteLine("\nВыберите операцию:\n1 - Ходить\n2 - Бить\n3 - Короткая рокировка" +
-                        "\n4 - Длинная рокировка\n5 - Шах\n0 - Выход");
+                        "\n4 - Длинная рокировка\n0 - Выход");
                     int selecter = Convert.ToInt32(Console.ReadLine());
                     switch (selecter)
                     {
                         case 1:
-                            MoveFigure(chessField, blackFigures, whiteFigures);
+                            Service.MoveFigure(chessField, blackFigures, whiteFigures);
                             break;
                         case 2:
-                            BeatFigure(chessField, blackFigures, whiteFigures);
+                            Service.BeatFigure(chessField, blackFigures, whiteFigures);
                             break;
                         case 3:
-                            Castling(chessField, blackFigures, whiteFigures, "short");
+                            Service.Castling(chessField, blackFigures, whiteFigures, "short");
                             break;
                         case 4:
-                            Castling(chessField, blackFigures, whiteFigures, "long");
+                            Service.Castling(chessField, blackFigures, whiteFigures, "long");
                             break;
                         case 0:
                             Console.WriteLine("...");
@@ -117,215 +113,5 @@ namespace ConsoleApp1
                 Console.WriteLine(error.Message);
             }
        }
-        static void PrintChessField(string[,] chessField)
-        {
-            Console.WriteLine(pawnTransformationInfo);
-            Console.WriteLine("┌────┬────┬────┬────┬────┬────┬────┬────┐");
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    if (chessField[i, j] == null)
-                    {
-                        Console.Write("│    ");
-                    }
-                    else
-                    {
-                        Console.Write($"│{chessField[i, j]} ");
-                    }
-                }
-                Console.Write("│ " + (i+1));
-                if (i != 7)
-                {
-                    Console.WriteLine("\n├────┼────┼────┼────┼────┼────┼────┼────┤");
-                }
-            }
-            Console.WriteLine("\n└────┴────┴────┴────┴────┴────┴────┴────┘");
-            Console.WriteLine("  a    b    c    d    e    f    g    h");
-        }
-        static void MoveFigure(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures)
-        {
-            Console.WriteLine("\nВведите краткое название фигуры:");
-            string shortName = Console.ReadLine();
-            Console.WriteLine("Введите клетку шахматного поля:");
-            string chessBoard = Console.ReadLine();
-            for (int i = 0; i < 16; i++)
-            {
-                if (blackFigures[i].ShortFigureName == shortName)
-                {
-                    if (!ChessFigure.IsWhiteShouldMove)
-                    {
-                        ChangePosition(chessField, blackFigures, chessBoard, shortName, i, whiteFigures);
-                    }
-                    else
-                    {
-                        Console.WriteLine("White figures should move now");
-                    }
-                    break;
-                }
-                else if (whiteFigures[i].ShortFigureName == shortName)
-                {
-                    if (ChessFigure.IsWhiteShouldMove)
-                    {
-                        ChangePosition(chessField, whiteFigures, chessBoard, shortName, i, blackFigures);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Black figures should move now");
-                    }
-                    break;
-                }
-            }
-        }
-        static void BeatFigure(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures)
-        {
-            isBeat = true;
-            MoveFigure(chessField, blackFigures, whiteFigures);
-        }
-        static void ChangePosition(string[,] chessField, List<ChessFigure> figures, string chessBoard, string shortName, int index, List<ChessFigure> otherFigures)
-        {
-            ChessFigure.ErrorMessage = null;
-            int xPos = figures[index].HorizontalPosition;
-            int yPos = figures[index].VerticalPosition;
-            chessField[yPos, xPos] = null;
-            const int indexOfKing = 0;
-
-            if (isBeat)
-            {
-                figures[index].Beat(chessBoard);
-                isBeat = false;
-            }
-            else
-            {
-                figures[index].Move(chessBoard);
-            }
-
-            if (otherFigures[indexOfKing].ChessBoard.Equals(chessBoard) && ChessFigure.ErrorMessage == null)
-            {
-                thePartyIsOver = true;
-                if (ChessFigure.IsWhiteShouldMove)
-                {
-                    Console.WriteLine("\nWHITE WON!!!");
-                }
-                else
-                {
-                    Console.WriteLine("\nBLACK WON!!!");
-                }
-                return;
-            }
-
-            if (figures[index].KindOfFigure.Equals("pawn") &&
-               ((ChessFigure.IsWhiteShouldMove && figures[index].VerticalPosition == 7) ||
-               (!ChessFigure.IsWhiteShouldMove && figures[index].VerticalPosition == 0)))
-            {
-                figures[index] = (ChessFigure)figures[index].Clone();
-                pawnTransformationInfo += "\n" + figures[index].ShortFigureName + " - " + figures[index].KindOfFigure;
-            }
-
-            int newXPos = figures[index].HorizontalPosition;
-            int newYPos = figures[index].VerticalPosition;
-            chessField[newYPos, newXPos] = shortName;
-
-            if (ChessFigure.ErrorMessage != null)
-            {
-                Console.WriteLine(ChessFigure.ErrorMessage);
-            }
-            else
-            {
-                if (ChessFigure.IsWhiteShouldMove)
-                {
-                    ChessFigure.IsWhiteShouldMove = false;
-                }
-                else
-                {
-                    ChessFigure.IsWhiteShouldMove = true;
-                }
-            }
-
-            if (figures[index].CanDeclareCheck(otherFigures[indexOfKing]))
-            {
-                Console.WriteLine("\nШах!");
-            }
-        }
-        static void Castling(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures, string castlingType)
-        {
-            if (!castlingType.Equals("short") && !castlingType.Equals("long"))
-            {
-                throw new Exception("Invalid value of type of castling");
-            }
-
-            if (!wasTheCastling)
-            {
-                int indexOfKing = 0;
-                int indexOfRook = castlingType.Equals("short") ? 3 : 2;
-
-                ChessFigure.ErrorMessage = null;
-                if (ChessFigure.IsWhiteShouldMove)
-                {
-                    if (castlingType.Equals("short"))
-                    {
-                        ChessFigure.DoShortCastling("f1", "g1", whiteFigures[indexOfKing], whiteFigures[indexOfRook]);
-                    }
-                    else
-                    {
-                        ChessFigure.DoLongCastling("c1", "d1", "b1", whiteFigures[indexOfKing], whiteFigures[indexOfRook]);
-                    }
-                }
-                else
-                {
-                    if (castlingType.Equals("short"))
-                    {
-                        ChessFigure.DoShortCastling("f8", "g8", whiteFigures[indexOfKing], whiteFigures[indexOfRook]);
-                    }
-                    else
-                    {
-                        ChessFigure.DoLongCastling("c8", "d8", "b8", whiteFigures[indexOfKing], whiteFigures[indexOfRook]);
-                    }
-                }
-                if (ChessFigure.ErrorMessage != null)
-                {
-                    Console.WriteLine(ChessFigure.ErrorMessage);
-                }
-                else
-                {
-                    int oldKingXpos = 4, oldRookXpos, newKingXpos, newRookXpos;
-
-                    if (castlingType.Equals("shoret"))
-                    {
-                        oldRookXpos = 7;
-                        newKingXpos = 5;
-                        newRookXpos = 6;
-                    }
-                    else
-                    {
-                        oldRookXpos = 0;
-                        newKingXpos = 2;
-                        newRookXpos = 3;
-                    }
-
-                    if (ChessFigure.IsWhiteShouldMove)
-                    {
-                        ChessFigure.IsWhiteShouldMove = false;
-                        chessField[0, oldKingXpos] = null;
-                        chessField[0, oldRookXpos] = null;
-                        chessField[0, newKingXpos] = whiteFigures[indexOfKing].ShortFigureName;
-                        chessField[0, newRookXpos] = whiteFigures[indexOfRook].ShortFigureName;
-                    }
-                    else
-                    {
-                        ChessFigure.IsWhiteShouldMove = true;
-                        chessField[7, oldKingXpos] = null;
-                        chessField[7, oldRookXpos] = null;
-                        chessField[7, newKingXpos] = blackFigures[indexOfKing].ShortFigureName;
-                        chessField[7, newRookXpos] = blackFigures[indexOfRook].ShortFigureName;
-                    }
-                }
-                wasTheCastling = true;
-            }
-            else
-            {
-                Console.WriteLine("Castling can be done only once");
-            }
-        }
     }
 }
