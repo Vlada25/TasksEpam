@@ -13,7 +13,7 @@ namespace ClassLibraryChess.FigureTypes
         {
             isFirstStep = true;
         }
-        public override void Move(string combination)
+        protected override bool CanMove(string combination)
         {
             IsCombinationValid(combination);
             int newXPos = (int)combination[0] - 97;
@@ -26,28 +26,28 @@ namespace ClassLibraryChess.FigureTypes
                     if (VerticalPosition - newYPos == 2 && !isFirstStep)
                     {
                         ErrorMessage = "Impossiable to make a move";
-                        return;
+                        return false;
                     }
                     string jumpOverCell = ChessBoard[0] + Convert.ToString(ChessBoard[1] - 49);
                     if (VerticalPosition - newYPos == 2 && OccupiedPositionsList.Contains(jumpOverCell))
                     {
                         ErrorMessage = "Impossiable to make a move";
-                        return;
+                        return false;
                     }
                     else
                     {
-                        SetNewPos(newXPos, newYPos, combination, color, "pawn");
+                        return true;
                     }
                 }
-                else if(Math.Abs(HorizontalPosition - newXPos) == 1 && VerticalPosition - newYPos == 1 
+                else if (Math.Abs(HorizontalPosition - newXPos) == 1 && VerticalPosition - newYPos == 1
                     && WhiteOccupiedPositions.Contains(combination))
                 {
-                    SetNewPos(newXPos, newYPos, combination, color, KindOfFigure);
+                    return true;
                 }
                 else
                 {
                     ErrorMessage = "Impossiable to make a move";
-                    return;
+                    return false;
                 }
             }
             else
@@ -58,54 +58,68 @@ namespace ClassLibraryChess.FigureTypes
                     if (VerticalPosition - newYPos == -2 && !isFirstStep)
                     {
                         ErrorMessage = "Impossiable to make a move";
-                        return;
+                        return false;
                     }
                     string jumpOverCell = ChessBoard[0] + Convert.ToString(ChessBoard[1] - 47);
                     if (VerticalPosition - newYPos == -2 && OccupiedPositionsList.Contains(jumpOverCell))
                     {
                         ErrorMessage = "Impossiable to make a move";
-                        return;
+                        return false;
                     }
                     else
                     {
-                        SetNewPos(newXPos, newYPos, combination, color, KindOfFigure);
+                        return true;
                     }
                 }
                 else if (Math.Abs(HorizontalPosition - newXPos) == 1 && VerticalPosition - newYPos == -1
                     && BlackOccupiedPositions.Contains(combination))
                 {
-                    SetNewPos(newXPos, newYPos, combination, color, KindOfFigure);
+                    return true;
                 }
                 else
                 {
                     ErrorMessage = "Impossiable to make a move";
-                    return;
+                    return false;
                 }
             }
-            isFirstStep = false;
         }
-        public override void Beat(string combination)
+        public override void Move(string combination)
+        {
+            if (CanMove(combination))
+            {
+                SetNewPos(combination, color, KindOfFigure);
+                isFirstStep = false;
+            }
+        }
+        protected override bool CanBeat(string combination)
         {
             if (!OccupiedPositionsList.Contains(combination))
             {
                 ErrorMessage = "Chosed field is empty";
-                return;
+                return false;
             }
             IsCombinationValid(combination);
             int newXPos = combination[0] - 97;
             int newYPos = Convert.ToInt32(Convert.ToString(combination[1])) - 1;
             if (Math.Abs(HorizontalPosition - newXPos) == 1 && Math.Abs(VerticalPosition - newYPos) == 1
-                    && (WhiteOccupiedPositions.Contains(combination) && color == Colors.Black || 
+                    && (WhiteOccupiedPositions.Contains(combination) && color == Colors.Black ||
                     BlackOccupiedPositions.Contains(combination) && color == Colors.White))
             {
-                SetNewPos(newXPos, newYPos, combination, color, KindOfFigure);
+                return true;
             }
             else
             {
                 ErrorMessage = "Impossiable to make a move";
-                return;
+                return false;
             }
-            isFirstStep = false;
+        }
+        public override void Beat(string combination)
+        {
+            if (CanBeat(combination))
+            {
+                SetNewPos(combination, color, KindOfFigure);
+                isFirstStep = false;
+            }
         }
     }
 }
