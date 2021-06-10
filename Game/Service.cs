@@ -38,12 +38,8 @@ namespace Game
             Console.WriteLine("\n└────┴────┴────┴────┴────┴────┴────┴────┘");
             Console.WriteLine("  a    b    c    d    e    f    g    h");
         }
-        public static void MoveFigure(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures)
+        public static void MoveFigure(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures, string shortName, string chessBoard)
         {
-            Console.WriteLine("\nВведите краткое название фигуры:");
-            string shortName = Console.ReadLine();
-            Console.WriteLine("Введите клетку шахматного поля:");
-            string chessBoard = Console.ReadLine();
             for (int i = 0; i < 16; i++)
             {
                 if (blackFigures[i].ShortFigureName == shortName)
@@ -72,10 +68,10 @@ namespace Game
                 }
             }
         }
-        public static void BeatFigure(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures)
+        public static void BeatFigure(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures, string shortName, string chessBoard)
         {
             isBeat = true;
-            MoveFigure(chessField, blackFigures, whiteFigures);
+            MoveFigure(chessField, blackFigures, whiteFigures, shortName, chessBoard);
         }
         static void ChangePosition(string[,] chessField, List<ChessFigure> figures, string chessBoard, string shortName, int index, List<ChessFigure> otherFigures)
         {
@@ -159,7 +155,7 @@ namespace Game
                 {
                     if (castlingType.Equals("short"))
                     {
-                        ChessFigure.DoShortCastling("f1", "g1", whiteFigures[indexOfKing], whiteFigures[indexOfRook]);
+                        ChessFigure.DoShortCastling("g1", "f1", whiteFigures[indexOfKing], whiteFigures[indexOfRook]);
                     }
                     else
                     {
@@ -170,11 +166,11 @@ namespace Game
                 {
                     if (castlingType.Equals("short"))
                     {
-                        ChessFigure.DoShortCastling("f8", "g8", whiteFigures[indexOfKing], whiteFigures[indexOfRook]);
+                        ChessFigure.DoShortCastling("g8", "f8", blackFigures[indexOfKing], blackFigures[indexOfRook]);
                     }
                     else
                     {
-                        ChessFigure.DoLongCastling("c8", "d8", "b8", whiteFigures[indexOfKing], whiteFigures[indexOfRook]);
+                        ChessFigure.DoLongCastling("c8", "d8", "b8", blackFigures[indexOfKing], blackFigures[indexOfRook]);
                     }
                 }
                 if (ChessFigure.ErrorMessage != null)
@@ -185,11 +181,11 @@ namespace Game
                 {
                     int oldKingXpos = 4, oldRookXpos, newKingXpos, newRookXpos;
 
-                    if (castlingType.Equals("shoret"))
+                    if (castlingType.Equals("short"))
                     {
                         oldRookXpos = 7;
-                        newKingXpos = 5;
-                        newRookXpos = 6;
+                        newKingXpos = 6;
+                        newRookXpos = 5;
                     }
                     else
                     {

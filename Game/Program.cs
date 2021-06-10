@@ -66,7 +66,37 @@ namespace Game
                 white_Pawn_5, white_Pawn_6, white_Pawn_7, white_Pawn_8 });
 
                 string[,] chessField = new string[8, 8];
+
                 ChessFigure.IsWhiteShouldMove = true;
+
+                string[,] gameProcess = { { "1", "wp4", "d4"},
+                    { "1", "bp5", "e6"},
+                    { "1", "wp5", "e4"},
+                    { "1", "bp4", "d5"},
+                    { "1", "wk1", "d2"},
+                    { "1", "bp3", "c5"},
+                    { "1", "wk2", "f3"},
+                    { "2", "bp3", "d4"},
+                    { "2", "wk2", "d4"},
+                    { "1", "bk2", "f6"},
+                    { "2", "wp5", "d5"},
+                    { "2", "bq_", "d5"},
+                    { "1", "wk2", "b5"},
+                    { "1", "bk1", "a6"},
+                    { "1", "wk2", "c3"},
+                    { "1", "bq_", "d8"},
+                    { "1", "wp1", "a3"},
+                    { "1", "bb2", "e7"},
+                    { "1", "wq_", "f3"},
+                    { "3", "-", "-"},
+                    { "2", "wb2", "a6"},
+                    { "5", "-", "-"} };
+
+                const int indexOfMenuItem = 0;
+                const int indexOfFigureName = 1;
+                const int indexOfCell = 2;
+
+                int countOfMoves = gameProcess.Length / 3;
 
                 for (int i = 0; i < 16; i++)
                 {
@@ -81,31 +111,34 @@ namespace Game
                     chessField[yPos, xPos] = whiteFigures[i].ShortFigureName;
                 }
 
-                int selector = -1;
-                while (selector != 0 && !Service.thePartyIsOver)
+                Console.WriteLine(" Start the game");
+                Service.PrintChessField(chessField); 
+
+                for (int i = 0; i < countOfMoves; i++)
                 {
-                    Service.PrintChessField(chessField);
-                    Console.WriteLine("\nВыберите операцию:\n1 - Ходить\n2 - Бить\n3 - Короткая рокировка" +
-                        "\n4 - Длинная рокировка\n0 - Выход");
-                    int selecter = Convert.ToInt32(Console.ReadLine());
-                    switch (selecter)
+                    switch (Convert.ToInt32(gameProcess[i, indexOfMenuItem]))
                     {
                         case 1:
-                            Service.MoveFigure(chessField, blackFigures, whiteFigures);
+                            Console.WriteLine("\n\n " + gameProcess[i, indexOfFigureName] + " ходит на " + gameProcess[i, indexOfCell]);
+                            Service.MoveFigure(chessField, blackFigures, whiteFigures, gameProcess[i, indexOfFigureName], gameProcess[i, indexOfCell]);
                             break;
                         case 2:
-                            Service.BeatFigure(chessField, blackFigures, whiteFigures);
+                            Console.WriteLine("\n\n " + gameProcess[i, indexOfFigureName] + " бьёт " + gameProcess[i, indexOfCell]);
+                            Service.BeatFigure(chessField, blackFigures, whiteFigures, gameProcess[i, indexOfFigureName], gameProcess[i, indexOfCell]);
                             break;
                         case 3:
+                            Console.WriteLine("\n\n Короткая рокировка");
                             Service.Castling(chessField, blackFigures, whiteFigures, "short");
                             break;
                         case 4:
+                            Console.WriteLine("\n\n Длинная рокировка");
                             Service.Castling(chessField, blackFigures, whiteFigures, "long");
                             break;
                         case 0:
-                            Console.WriteLine("...");
+                            Console.WriteLine("Exit");
                             break;
                     }
+                    Service.PrintChessField(chessField);
                 }
             }
             catch(Exception error)

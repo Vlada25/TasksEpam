@@ -40,14 +40,14 @@ namespace ClassLibraryChess.FigureTypes
         {
             if (CanMove(combination))
             {
-                SetNewPos(combination, color, KindOfFigure);
+                SetNewPos(combination, color, KindOfFigure, false);
             }
         }
         public override void Beat(string combination)
         {
             if (CanBeat(combination))
             {
-                SetNewPos(combination, color, KindOfFigure);
+                SetNewPos(combination, color, KindOfFigure, true);
             }
         }
     }

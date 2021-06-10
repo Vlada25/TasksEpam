@@ -62,7 +62,6 @@ namespace ClassLibraryChess
             {
                 WhiteOccupiedPositions.Add(combination);
             }
-            //SetNewPos((int)combination[0] - 97, Convert.ToInt32(Convert.ToString(combination[1])) - 1, combination, color, KindOfFigure);
         }
         protected void IsCombinationValid(string combination)
         {
@@ -80,10 +79,31 @@ namespace ClassLibraryChess
                 }
             }
         }
-        protected void SetNewPos(string combination, Colors color, string kindOfFigure)
+        protected void SetNewPos(string combination, Colors color, string kindOfFigure, bool isBeat)
         {
+            int indexOfChessBoard;
             int xPos = combination[0] - 97;
             int yPos = Convert.ToInt32(Convert.ToString(combination[1])) - 1;
+
+            if (isBeat)
+            {
+                indexOfChessBoard = OccupiedPositionsList.IndexOf(combination);
+                OccupiedPositionsList.Remove(combination);
+                if (color == Colors.Black)
+                {
+                    WhiteOccupiedPositions.Remove(combination);
+                }
+                else
+                {
+                    BlackOccupiedPositions.Remove(combination);
+                }
+
+                try
+                {
+                    KindOfFiguresList.RemoveAt(indexOfChessBoard);
+                }
+                catch { }
+            }
             if ((BlackOccupiedPositions.Contains(combination) && color == Colors.Black) ||
                     (WhiteOccupiedPositions.Contains(combination) && color == Colors.White))
             {
@@ -91,7 +111,7 @@ namespace ClassLibraryChess
             }
             BlackOccupiedPositions.Remove(ChessBoard);
             WhiteOccupiedPositions.Remove(ChessBoard);
-            int indexOfChessBoard = OccupiedPositionsList.IndexOf(ChessBoard);
+            indexOfChessBoard = OccupiedPositionsList.IndexOf(ChessBoard);
             OccupiedPositionsList.Remove(ChessBoard);
             if (KindOfFiguresList.Count > 0)
             {
@@ -143,7 +163,7 @@ namespace ClassLibraryChess
                     && (WhiteOccupiedPositions.Contains(combination) && color == Colors.Black ||
                     BlackOccupiedPositions.Contains(combination) && color == Colors.White))
                     {
-                        //Console.WriteLine(OccupiedPositionsList[j] + " " + KindOfFiguresList[j]);
+                        Console.WriteLine(OccupiedPositionsList[j]);
                         return true;
                     }
                 }
@@ -191,7 +211,7 @@ namespace ClassLibraryChess
                     }
                     if (!isAnyFigureOnTheWay && isCaseWork)
                     {
-                        //Console.WriteLine(OccupiedPositionsList[j] + " " + KindOfFiguresList[j]);
+                        Console.WriteLine(OccupiedPositionsList[j]);
                         return true;
                     }
                 }
@@ -264,7 +284,7 @@ namespace ClassLibraryChess
                     }
                     if (!isAnyFigureOnTheWay && isCaseWork)
                     {
-                        //Console.WriteLine(OccupiedPositionsList[j] + " " + KindOfFiguresList[j]);
+                        Console.WriteLine(OccupiedPositionsList[j]);
                         return true;
                     }
                 }
@@ -273,7 +293,7 @@ namespace ClassLibraryChess
                     if ((Math.Abs(horizontalPos - newXPos) == 2 && Math.Abs(verticalPos - newYPos) == 1) &&
                         (Math.Abs(horizontalPos - newXPos) == 1 && Math.Abs(verticalPos - newYPos) == 2))
                     {
-                        //Console.WriteLine(OccupiedPositionsList[j] + " " + KindOfFiguresList[j]);
+                        Console.WriteLine(OccupiedPositionsList[j]);
                         return true;
                     }
                 }
@@ -281,7 +301,7 @@ namespace ClassLibraryChess
                 {
                     if (Math.Abs(horizontalPos - newXPos) <= 1 && Math.Abs(verticalPos - newYPos) <= 1)
                     {
-                        //Console.WriteLine(OccupiedPositionsList[j] + " " + KindOfFiguresList[j]);
+                        Console.WriteLine(OccupiedPositionsList[j]);
                         return true;
                     }
                 }
@@ -316,7 +336,7 @@ namespace ClassLibraryChess
                     }
                     if (!isAnyFigureOnTheWay && isCaseWork)
                     {
-                        //Console.WriteLine(OccupiedPositionsList[j] + " " + KindOfFiguresList[j]);
+                        Console.WriteLine(OccupiedPositionsList[j]);
                         return true;
                     }
                 }
@@ -393,6 +413,7 @@ namespace ClassLibraryChess
         public static void DoShortCastling(string newKingCell, string newRookCell, ChessFigure king, ChessFigure rook)
         {
             const int newXPosKing = 5, newXPosRook = 6;
+
             if (!OccupiedPositionsList.Contains(newKingCell) && !OccupiedPositionsList.Contains(newRookCell) && 
                 !IsTheFieldUnderAttack(newKingCell, king.ChessBoard, king.color) && !IsTheFieldUnderAttack(king.ChessBoard, king.ChessBoard, king.color))
             {
@@ -409,6 +430,7 @@ namespace ClassLibraryChess
         public static void DoLongCastling(string newKingCell, string newRookCell, string leftOfTheRookCell, ChessFigure king, ChessFigure rook)
         {
             const int newXPosKing = 2, newXPosRook = 3;
+
             if (!OccupiedPositionsList.Contains(newKingCell) && !OccupiedPositionsList.Contains(newRookCell) && 
                 !IsTheFieldUnderAttack(newKingCell, king.ChessBoard, king.color) && !OccupiedPositionsList.Contains(leftOfTheRookCell)
                 && !IsTheFieldUnderAttack(king.ChessBoard, king.ChessBoard, king.color))
