@@ -90,7 +90,7 @@ namespace Game
                     { "1", "wq_", "f3"},
                     { "3", "-", "-"},
                     { "2", "wb2", "a6"},
-                    { "5", "-", "-"} };
+                    { "0", "-", "-"} };
 
                 const int indexOfMenuItem = 0;
                 const int indexOfFigureName = 1;
@@ -135,10 +135,16 @@ namespace Game
                             Service.Castling(chessField, blackFigures, whiteFigures, "long");
                             break;
                         case 0:
-                            Console.WriteLine("Exit");
+                            Console.WriteLine("\n\nExit");
+                            break;
+                        default:
+                            Console.WriteLine("\n\nТакого пункта нет в меню");
                             break;
                     }
-                    Service.PrintChessField(chessField);
+                    if (Convert.ToInt32(gameProcess[i, indexOfMenuItem]) != 0)
+                    {
+                        Service.PrintChessField(chessField);
+                    }
                 }
             }
             catch(Exception error)
