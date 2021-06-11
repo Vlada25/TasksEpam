@@ -68,7 +68,7 @@ namespace Game
                 string[,] chessField = new string[8, 8];
 
                 ChessFigure.IsWhiteShouldMove = true;
-
+                
                 string[,] gameProcess = { { "1", "wp4", "d4"},
                     { "1", "bp5", "e6"},
                     { "1", "wp5", "e4"},
@@ -90,7 +90,9 @@ namespace Game
                     { "1", "wq_", "f3"},
                     { "3", "-", "-"},
                     { "2", "wb2", "a6"},
-                    { "0", "-", "-"} };
+                    { "2", "bq_", "d2"},
+                    { "1", "wq_", "d1"},
+                    { "2", "bq_", "e1"}};
 
                 const int indexOfMenuItem = 0;
                 const int indexOfFigureName = 1;
@@ -135,7 +137,7 @@ namespace Game
                             Service.Castling(chessField, blackFigures, whiteFigures, "long");
                             break;
                         case 0:
-                            Console.WriteLine("\n\nExit");
+                            Console.WriteLine("\n\n Выход");
                             break;
                         default:
                             Console.WriteLine("\n\nТакого пункта нет в меню");

@@ -91,6 +91,18 @@ namespace Game
                 figures[index].Move(chessBoard);
             }
 
+            if (figures[index].KindOfFigure.Equals("pawn") &&
+               ((ChessFigure.IsWhiteShouldMove && figures[index].VerticalPosition == 7) ||
+               (!ChessFigure.IsWhiteShouldMove && figures[index].VerticalPosition == 0)))
+            {
+                figures[index] = (ChessFigure)figures[index].Clone();
+                pawnTransformationInfo += "\n" + figures[index].ShortFigureName + " - " + figures[index].KindOfFigure;
+            }
+
+            int newXPos = figures[index].HorizontalPosition;
+            int newYPos = figures[index].VerticalPosition;
+            chessField[newYPos, newXPos] = shortName;
+
             if (otherFigures[indexOfKing].ChessBoard.Equals(chessBoard) && ChessFigure.ErrorMessage == null)
             {
                 thePartyIsOver = true;
@@ -104,18 +116,6 @@ namespace Game
                 }
                 return;
             }
-
-            if (figures[index].KindOfFigure.Equals("pawn") &&
-               ((ChessFigure.IsWhiteShouldMove && figures[index].VerticalPosition == 7) ||
-               (!ChessFigure.IsWhiteShouldMove && figures[index].VerticalPosition == 0)))
-            {
-                figures[index] = (ChessFigure)figures[index].Clone();
-                pawnTransformationInfo += "\n" + figures[index].ShortFigureName + " - " + figures[index].KindOfFigure;
-            }
-
-            int newXPos = figures[index].HorizontalPosition;
-            int newYPos = figures[index].VerticalPosition;
-            chessField[newYPos, newXPos] = shortName;
 
             if (ChessFigure.ErrorMessage != null)
             {
@@ -135,7 +135,7 @@ namespace Game
 
             if (figures[index].CanDeclareCheck(otherFigures[indexOfKing]))
             {
-                Console.WriteLine("\nШах!");
+                Console.WriteLine("\n Шах!");
             }
         }
         public static void Castling(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures, string castlingType)
