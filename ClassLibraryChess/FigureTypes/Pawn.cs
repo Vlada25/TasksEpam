@@ -110,7 +110,7 @@ namespace ClassLibraryChess.FigureTypes
         {
             if (CanMove(combination))
             {
-                SetNewPos(combination, color, KindOfFigure, false);
+                SetFigurePosition(combination, color, KindOfFigure, false);
                 isFirstStep = false;
             }
         }
@@ -118,9 +118,36 @@ namespace ClassLibraryChess.FigureTypes
         {
             if (CanBeat(combination))
             {
-                SetNewPos(combination, color, KindOfFigure, true);
+                SetFigurePosition(combination, color, KindOfFigure, true);
                 isFirstStep = false;
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Pawn pawn &&
+                   base.Equals(obj) &&
+                   color == pawn.color &&
+                   ShortFigureName == pawn.ShortFigureName &&
+                   KindOfFigure == pawn.KindOfFigure &&
+                   ChessBoard == pawn.ChessBoard &&
+                   HorizontalPosition == pawn.HorizontalPosition &&
+                   VerticalPosition == pawn.VerticalPosition &&
+                   isFirstStep == pawn.isFirstStep;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -19983944;
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + color.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ShortFigureName);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(KindOfFigure);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ChessBoard);
+            hashCode = hashCode * -1521134295 + HorizontalPosition.GetHashCode();
+            hashCode = hashCode * -1521134295 + VerticalPosition.GetHashCode();
+            hashCode = hashCode * -1521134295 + isFirstStep.GetHashCode();
+            return hashCode;
         }
     }
 }

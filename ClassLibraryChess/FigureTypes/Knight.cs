@@ -40,15 +40,40 @@ namespace ClassLibraryChess.FigureTypes
         {
             if (CanMove(combination))
             {
-                SetNewPos(combination, color, KindOfFigure, false);
+                SetFigurePosition(combination, color, KindOfFigure, false);
             }
         }
         public override void Beat(string combination)
         {
             if (CanBeat(combination))
             {
-                SetNewPos(combination, color, KindOfFigure, true);
+                SetFigurePosition(combination, color, KindOfFigure, true);
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Knight knight &&
+                   base.Equals(obj) &&
+                   color == knight.color &&
+                   ShortFigureName == knight.ShortFigureName &&
+                   KindOfFigure == knight.KindOfFigure &&
+                   ChessBoard == knight.ChessBoard &&
+                   HorizontalPosition == knight.HorizontalPosition &&
+                   VerticalPosition == knight.VerticalPosition;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -970351339;
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + color.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ShortFigureName);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(KindOfFigure);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ChessBoard);
+            hashCode = hashCode * -1521134295 + HorizontalPosition.GetHashCode();
+            hashCode = hashCode * -1521134295 + VerticalPosition.GetHashCode();
+            return hashCode;
         }
     }
 }
