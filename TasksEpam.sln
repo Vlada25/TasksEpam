@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibraryChess", "ClassL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestTask1", "UnitTestTask1\UnitTestTask1.csproj", "{ED2E5F70-A665-41C0-9C90-6230376CDF57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", "{E473611A-EE82-4F88-81FD-7BC0E5C38FDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game", "Game\Game.csproj", "{E473611A-EE82-4F88-81FD-7BC0E5C38FDA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

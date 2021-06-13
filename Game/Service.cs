@@ -9,37 +9,110 @@ namespace Game
     class Service
     {
         static bool isBeat = false;
-        static string pawnTransformationInfo = "";
+        static string pawnTransformationInfo = null;
         static bool wasTheCastling = false;
-        public static bool thePartyIsOver = false;
-        public static void PrintChessField(string[,] chessField)
+        static string winnerMessage;
+        static string shahMessage = null;
+        public static void StartFillOfChessField(List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures, string[,] chessField)
         {
-            Console.WriteLine(pawnTransformationInfo);
-            Console.WriteLine("┌────┬────┬────┬────┬────┬────┬────┬────┐");
+            for (int i = 0; i < 16; i++)
+            {
+                int xPos, yPos;
+
+                xPos = blackFigures[i].HorizontalPosition;
+                yPos = blackFigures[i].VerticalPosition;
+                chessField[yPos, xPos] = blackFigures[i].ShortFigureName;
+
+                xPos = whiteFigures[i].HorizontalPosition;
+                yPos = whiteFigures[i].VerticalPosition;
+                chessField[yPos, xPos] = whiteFigures[i].ShortFigureName;
+            }
+        }
+        public static string Menu(string[,] gameProcess, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures, string[,] chessField)
+        {
+            string str = "";
+            const int indexOfMenuItem = 0;
+            const int indexOfFigureName = 1;
+            const int indexOfCell = 2;
+            int countOfMoves = gameProcess.Length / 3;
+
+            for (int i = 0; i < countOfMoves; i++)
+            {
+                switch (Convert.ToInt32(gameProcess[i, indexOfMenuItem]))
+                {
+                    case 1:
+                        str += "\n\n" + gameProcess[i, indexOfFigureName] + " moves to " + gameProcess[i, indexOfCell] + "\n";
+                        MoveFigure(chessField, blackFigures, whiteFigures, gameProcess[i, indexOfFigureName], gameProcess[i, indexOfCell]);
+                        break;
+                    case 2:
+                        str += "\n\n" + gameProcess[i, indexOfFigureName] + " beats " + gameProcess[i, indexOfCell] + "\n";
+                        BeatFigure(chessField, blackFigures, whiteFigures, gameProcess[i, indexOfFigureName], gameProcess[i, indexOfCell]);
+                        break;
+                    case 3:
+                        str += "\n\nShort castling\n";
+                        Castling(chessField, blackFigures, whiteFigures, "short");
+                        break;
+                    case 4:
+                        str += "\n\nLong castling\n";
+                        Castling(chessField, blackFigures, whiteFigures, "long");
+                        break;
+                    case 0:
+                        str += "\n\nExit\n";
+                        break;
+                    default:
+                        str += "\n\nThere is no such item in the menu\n";
+                        break;
+                }
+                if (winnerMessage != "")
+                {
+                    str += winnerMessage + "\n";
+                }
+                if (Convert.ToInt32(gameProcess[i, indexOfMenuItem]) != 0)
+                {
+                    str += PrintChessField(chessField) + "\n";
+                }
+            }
+            return str;
+        }
+        public static string PrintChessField(string[,] chessField)
+        {
+            string str = "";
+            if (ChessFigure.ErrorMessage != null)
+            {
+                str += $"{ChessFigure.ErrorMessage}\n";
+            }
+            str += $"{shahMessage}";
+            str += $"{pawnTransformationInfo}";
+            str += "┌────┬────┬────┬────┬────┬────┬────┬────┐\n";
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
                 {
                     if (chessField[i, j] == null)
                     {
-                        Console.Write("│    ");
+                        str += "│    ";
                     }
                     else
                     {
-                        Console.Write($"│{chessField[i, j]} ");
+                        str += $"│{chessField[i, j]} ";
                     }
                 }
-                Console.Write("│ " + (i + 1));
+                str += "│ " + (i + 1);
                 if (i != 7)
                 {
-                    Console.WriteLine("\n├────┼────┼────┼────┼────┼────┼────┼────┤");
+                    str += "\n├────┼────┼────┼────┼────┼────┼────┼────┤\n";
                 }
             }
-            Console.WriteLine("\n└────┴────┴────┴────┴────┴────┴────┴────┘");
-            Console.WriteLine("  a    b    c    d    e    f    g    h");
+            str += "\n└────┴────┴────┴────┴────┴────┴────┴────┘\n";
+            str += "  a    b    c    d    e    f    g    h\n";
+
+            shahMessage = null;
+
+            return str;
         }
-        public static void MoveFigure(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures, string shortName, string chessBoard)
+        static void MoveFigure(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures, string shortName, string chessBoard)
         {
+            ChessFigure.ErrorMessage = null;
             for (int i = 0; i < 16; i++)
             {
                 if (blackFigures[i].ShortFigureName == shortName)
@@ -50,7 +123,7 @@ namespace Game
                     }
                     else
                     {
-                        Console.WriteLine("White figures should move now");
+                        ChessFigure.ErrorMessage = "White figures should move now";
                     }
                     break;
                 }
@@ -62,13 +135,13 @@ namespace Game
                     }
                     else
                     {
-                        Console.WriteLine("Black figures should move now");
+                        ChessFigure.ErrorMessage = "Black figures should move now";
                     }
                     break;
                 }
             }
         }
-        public static void BeatFigure(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures, string shortName, string chessBoard)
+        static void BeatFigure(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures, string shortName, string chessBoard)
         {
             isBeat = true;
             MoveFigure(chessField, blackFigures, whiteFigures, shortName, chessBoard);
@@ -105,21 +178,22 @@ namespace Game
 
             if (otherFigures[indexOfKing].ChessBoard.Equals(chessBoard) && ChessFigure.ErrorMessage == null)
             {
-                thePartyIsOver = true;
                 if (ChessFigure.IsWhiteShouldMove)
                 {
-                    Console.WriteLine("\nWHITE WON!!!");
+                    winnerMessage = "\nWHITE WON!!!\n";
                 }
                 else
                 {
-                    Console.WriteLine("\nBLACK WON!!!");
+                    winnerMessage = "\nBLACK WON!!!\n";
                 }
                 return;
             }
 
+            bool wasTheErrorMessage = false; 
+
             if (ChessFigure.ErrorMessage != null)
             {
-                Console.WriteLine(ChessFigure.ErrorMessage);
+                wasTheErrorMessage = true;
             }
             else
             {
@@ -133,12 +207,20 @@ namespace Game
                 }
             }
 
+            bool catchErrorMessage = true;
+
             if (figures[index].CanDeclareCheck(otherFigures[indexOfKing]))
             {
-                Console.WriteLine("\n Шах!");
+                shahMessage = "Shah!\n";
+                catchErrorMessage = false;
+            }
+
+            if (catchErrorMessage && !wasTheErrorMessage)
+            {
+                ChessFigure.ErrorMessage = null;
             }
         }
-        public static void Castling(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures, string castlingType)
+        static void Castling(string[,] chessField, List<ChessFigure> blackFigures, List<ChessFigure> whiteFigures, string castlingType)
         {
             if (!castlingType.Equals("short") && !castlingType.Equals("long"))
             {
@@ -173,11 +255,7 @@ namespace Game
                         ChessFigure.DoLongCastling("c8", "d8", "b8", blackFigures[indexOfKing], blackFigures[indexOfRook]);
                     }
                 }
-                if (ChessFigure.ErrorMessage != null)
-                {
-                    Console.WriteLine(ChessFigure.ErrorMessage);
-                }
-                else
+                if (ChessFigure.ErrorMessage == null)
                 {
                     int oldKingXpos = 4, oldRookXpos, newKingXpos, newRookXpos;
 
@@ -210,12 +288,12 @@ namespace Game
                         chessField[7, newKingXpos] = blackFigures[indexOfKing].ShortFigureName;
                         chessField[7, newRookXpos] = blackFigures[indexOfRook].ShortFigureName;
                     }
+                    wasTheCastling = true;
                 }
-                wasTheCastling = true;
             }
             else
             {
-                Console.WriteLine("Castling can be done only once");
+                ChessFigure.ErrorMessage = "Castling can be done only once";
             }
         }
     }

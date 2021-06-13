@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using ClassLibraryChess;
 using ClassLibraryChess.FigureTypes;
 
@@ -9,6 +10,9 @@ namespace Game
     {
         static void Main(string[] args)
         {
+            FileStream loggingFile = null;
+            StreamWriter streamWriter;
+
             try
             {
                 King black_King = new King("e8", "bk_", ChessFigure.Colors.Black, "king"),
@@ -72,9 +76,11 @@ namespace Game
                 string[,] gameProcess = { { "1", "wp4", "d4"},
                     { "1", "bp5", "e6"},
                     { "1", "wp5", "e4"},
+                    { "1", "wp5", "e5"},
                     { "1", "bp4", "d5"},
                     { "1", "wk1", "d2"},
                     { "1", "bp3", "c5"},
+                    { "1", "wk2", "f2"},
                     { "1", "wk2", "f3"},
                     { "2", "bp3", "d4"},
                     { "2", "wk2", "d4"},
@@ -82,76 +88,43 @@ namespace Game
                     { "2", "wp5", "d5"},
                     { "2", "bq_", "d5"},
                     { "1", "wk2", "b5"},
+                    { "7", "-", "-" },
                     { "1", "bk1", "a6"},
                     { "1", "wk2", "c3"},
                     { "1", "bq_", "d8"},
+                    { "4", "-", "-"},
                     { "1", "wp1", "a3"},
                     { "1", "bb2", "e7"},
                     { "1", "wq_", "f3"},
                     { "3", "-", "-"},
                     { "2", "wb2", "a6"},
                     { "2", "bq_", "d2"},
+                    { "4", "-", "-"},
                     { "1", "wq_", "d1"},
                     { "2", "bq_", "e1"}};
 
-                const int indexOfMenuItem = 0;
-                const int indexOfFigureName = 1;
-                const int indexOfCell = 2;
+                Service.StartFillOfChessField(blackFigures, whiteFigures, chessField);
 
-                int countOfMoves = gameProcess.Length / 3;
+                loggingFile = new FileStream(@"E:\Epam May 2021\TasksEpam\Game\Logging.txt", FileMode.Create);
 
-                for (int i = 0; i < 16; i++)
-                {
-                    int xPos, yPos;
+                streamWriter = new StreamWriter(loggingFile);
 
-                    xPos = blackFigures[i].HorizontalPosition;
-                    yPos = blackFigures[i].VerticalPosition;
-                    chessField[yPos, xPos] = blackFigures[i].ShortFigureName;
+                streamWriter.WriteLine("\nStart the game\n");
+                streamWriter.WriteLine(Service.PrintChessField(chessField));
+                streamWriter.WriteLine(Service.Menu(gameProcess, blackFigures, whiteFigures, chessField));
 
-                    xPos = whiteFigures[i].HorizontalPosition;
-                    yPos = whiteFigures[i].VerticalPosition;
-                    chessField[yPos, xPos] = whiteFigures[i].ShortFigureName;
-                }
-
-                Console.WriteLine(" Start the game");
-                Service.PrintChessField(chessField); 
-
-                for (int i = 0; i < countOfMoves; i++)
-                {
-                    switch (Convert.ToInt32(gameProcess[i, indexOfMenuItem]))
-                    {
-                        case 1:
-                            Console.WriteLine("\n\n " + gameProcess[i, indexOfFigureName] + " ходит на " + gameProcess[i, indexOfCell]);
-                            Service.MoveFigure(chessField, blackFigures, whiteFigures, gameProcess[i, indexOfFigureName], gameProcess[i, indexOfCell]);
-                            break;
-                        case 2:
-                            Console.WriteLine("\n\n " + gameProcess[i, indexOfFigureName] + " бьёт " + gameProcess[i, indexOfCell]);
-                            Service.BeatFigure(chessField, blackFigures, whiteFigures, gameProcess[i, indexOfFigureName], gameProcess[i, indexOfCell]);
-                            break;
-                        case 3:
-                            Console.WriteLine("\n\n Короткая рокировка");
-                            Service.Castling(chessField, blackFigures, whiteFigures, "short");
-                            break;
-                        case 4:
-                            Console.WriteLine("\n\n Длинная рокировка");
-                            Service.Castling(chessField, blackFigures, whiteFigures, "long");
-                            break;
-                        case 0:
-                            Console.WriteLine("\n\n Выход");
-                            break;
-                        default:
-                            Console.WriteLine("\n\nТакого пункта нет в меню");
-                            break;
-                    }
-                    if (Convert.ToInt32(gameProcess[i, indexOfMenuItem]) != 0)
-                    {
-                        Service.PrintChessField(chessField);
-                    }
-                }
+                streamWriter.Close();
             }
             catch(Exception error)
             {
                 Console.WriteLine(error.Message);
+            }
+            finally
+            {
+                if (loggingFile != null)
+                {
+                    loggingFile.Close();
+                }
             }
        }
     }

@@ -154,6 +154,7 @@ namespace ClassLibraryChess
                 {
                     continue;
                 }
+
                 int horizontalPos = OccupiedPositionsList[j][0] - 97;
                 int verticalPos = Convert.ToInt32(Convert.ToString(OccupiedPositionsList[j][1])) - 1;
 
@@ -163,7 +164,6 @@ namespace ClassLibraryChess
                     && (WhiteOccupiedPositions.Contains(combination) && color == Colors.Black ||
                     BlackOccupiedPositions.Contains(combination) && color == Colors.White))
                     {
-                        Console.WriteLine(OccupiedPositionsList[j]);
                         return true;
                     }
                 }
@@ -211,7 +211,6 @@ namespace ClassLibraryChess
                     }
                     if (!isAnyFigureOnTheWay && isCaseWork)
                     {
-                        Console.WriteLine(OccupiedPositionsList[j]);
                         return true;
                     }
                 }
@@ -284,7 +283,6 @@ namespace ClassLibraryChess
                     }
                     if (!isAnyFigureOnTheWay && isCaseWork)
                     {
-                        Console.WriteLine(OccupiedPositionsList[j]);
                         return true;
                     }
                 }
@@ -293,7 +291,6 @@ namespace ClassLibraryChess
                     if ((Math.Abs(horizontalPos - newXPos) == 2 && Math.Abs(verticalPos - newYPos) == 1) &&
                         (Math.Abs(horizontalPos - newXPos) == 1 && Math.Abs(verticalPos - newYPos) == 2))
                     {
-                        Console.WriteLine(OccupiedPositionsList[j]);
                         return true;
                     }
                 }
@@ -301,7 +298,6 @@ namespace ClassLibraryChess
                 {
                     if (Math.Abs(horizontalPos - newXPos) <= 1 && Math.Abs(verticalPos - newYPos) <= 1)
                     {
-                        Console.WriteLine(OccupiedPositionsList[j]);
                         return true;
                     }
                 }
@@ -336,7 +332,6 @@ namespace ClassLibraryChess
                     }
                     if (!isAnyFigureOnTheWay && isCaseWork)
                     {
-                        Console.WriteLine(OccupiedPositionsList[j]);
                         return true;
                     }
                 }
