@@ -8,6 +8,8 @@ namespace ClassLibraryCarPark
         public int trailerNumber;
         public double maxWeight;
         public double maxVolume;
+        public double FreeMass { get; set; }
+        public double FreeVolume { get; set; }
         protected string typeOfTrailer;
         protected static List<int> existNumbers = new List<int>();
         protected List<Cargo> listOfCargo = new List<Cargo>();
@@ -16,10 +18,18 @@ namespace ClassLibraryCarPark
             trailerNumber = SetNumber(number);
             this.maxVolume = maxVolume;
             this.maxWeight = maxWeight;
+            FreeMass = maxWeight;
+            FreeVolume = maxVolume;
         }
-        public void LoadTrailer(Cargo cargo)
+        public abstract void LoadTrailer(Cargo cargo);
+        public void ChangeWeightAndVolume(double weight, double volume)
         {
-            listOfCargo.Add(cargo);
+            if (FreeMass < weight || FreeVolume < volume)
+            {
+                throw new Exception("Not enough space");
+            }
+            FreeMass -= weight;
+            FreeVolume -= volume;
         }
         public int SetNumber(int number)
         {
@@ -53,6 +63,8 @@ namespace ClassLibraryCarPark
                     result += listOfCargo[i].ToString();
                 }
             }
+            result += $"\nFree space:\n\tweight: {Math.Round(FreeMass / maxWeight * 100, 2)}%" 
+                + $"\n\tvolume: {Math.Round(FreeVolume / maxVolume * 100, 2)}%";
             result += "\n";
             return result;
         }

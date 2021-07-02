@@ -4,12 +4,36 @@ using System.Text;
 
 namespace ClassLibraryCarPark.Types_of_trailers
 {
-    class TiltSemitrailer : Semitrailer
+    public class TiltSemitrailer : Semitrailer
     {
         public TiltSemitrailer(int number, double maxWeight, double maxVolume)
             : base(number, maxWeight, maxVolume)
         {
             typeOfTrailer = "TiltSemitrailer";
+        }
+
+        public override void LoadTrailer(Cargo cargo)
+        {
+            if (cargo.isLiquid)
+            {
+                throw new Exception("Tilt semitrailers can't carry liquid");
+            }
+            if (cargo.wasTemperatureSet)
+            {
+                throw new Exception("Special temperature conditions are required");
+            }
+            if (listOfCargo.Count > 0)
+            {
+                for (int i = 0; i < listOfCargo.Count; i++)
+                {
+                    if (listOfCargo[i].TypeOfCargo != cargo.TypeOfCargo)
+                    {
+                        throw new Exception("Different types of cargo");
+                    }
+                }
+            }
+            ChangeWeightAndVolume(cargo.weight, cargo.volume);
+            listOfCargo.Add(cargo);
         }
     }
 }
