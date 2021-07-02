@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace ClassLibraryCarPark
 {
-    public abstract class Semitrailer
+    public abstract class Semitrailer 
     {
         public int trailerNumber;
         public double maxWeight;
         public double maxVolume;
-        public double FreeMass { get; set; }
-        public double FreeVolume { get; set; }
+        private double freeMass;
+        private double freeVolume;
         protected string typeOfTrailer;
         protected static List<int> existNumbers = new List<int>();
         protected List<Cargo> listOfCargo = new List<Cargo>();
@@ -18,18 +18,50 @@ namespace ClassLibraryCarPark
             trailerNumber = SetNumber(number);
             this.maxVolume = maxVolume;
             this.maxWeight = maxWeight;
-            FreeMass = maxWeight;
-            FreeVolume = maxVolume;
+            freeMass = maxWeight;
+            freeVolume = maxVolume;
         }
-        public abstract void LoadTrailer(Cargo cargo);
+        public void UnloadAll()
+        {
+            freeMass = maxWeight;
+            freeVolume = maxVolume;
+            listOfCargo = new List<Cargo>();
+        }
+        public void UnloadTrailer(Cargo cargo)
+        {
+            if (!listOfCargo.Contains(cargo))
+            {
+                throw new Exception("There is no such load in this trailer");
+            }
+            listOfCargo.Remove(cargo);
+            freeMass += cargo.weight;
+            freeVolume += cargo.volume;
+        }
+        public void UnloadTrailer(Cargo cargo, int percentOfCargo)
+        {
+            if (!listOfCargo.Contains(cargo))
+            {
+                throw new Exception("There is no such load in this trailer");
+            }
+            if (percentOfCargo > 100)
+            {
+                throw new Exception("Percentage can't be > 100");
+            }
+            else if (percentOfCargo == 100)
+            {
+                listOfCargo.Remove(cargo);
+            }
+            freeMass += cargo.weight * percentOfCargo / 100;
+            freeVolume += cargo.volume * percentOfCargo / 100;
+        }
         public void ChangeWeightAndVolume(double weight, double volume)
         {
-            if (FreeMass < weight || FreeVolume < volume)
+            if (freeMass < weight || freeVolume < volume)
             {
                 throw new Exception("Not enough space");
             }
-            FreeMass -= weight;
-            FreeVolume -= volume;
+            freeMass -= weight;
+            freeVolume -= volume;
         }
         public int SetNumber(int number)
         {
@@ -63,8 +95,8 @@ namespace ClassLibraryCarPark
                     result += listOfCargo[i].ToString();
                 }
             }
-            result += $"\nFree space:\n\tweight: {Math.Round(FreeMass / maxWeight * 100, 2)}%" 
-                + $"\n\tvolume: {Math.Round(FreeVolume / maxVolume * 100, 2)}%";
+            result += $"\nFree space:\n\tweight: {Math.Round(freeMass / maxWeight * 100, 2)}%" 
+                + $"\n\tvolume: {Math.Round(freeVolume / maxVolume * 100, 2)}%";
             result += "\n";
             return result;
         }

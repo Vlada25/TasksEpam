@@ -4,14 +4,14 @@ using System.Text;
 
 namespace ClassLibraryCarPark.Types_of_trailers
 {
-    public class Refrigerator : Semitrailer
+    public class Refrigerator : Semitrailer, ITrailer
     {
         public Refrigerator(int number, double maxWeight, double maxVolume)
             : base(number, maxWeight, maxVolume)
         {
             typeOfTrailer = "Refrigerator";
         }
-        public override void LoadTrailer(Cargo cargo)
+        public void LoadTrailer(Cargo cargo)
         {
             if (cargo.isLiquid)
             {

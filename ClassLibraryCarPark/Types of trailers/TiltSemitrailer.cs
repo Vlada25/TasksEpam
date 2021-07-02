@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ClassLibraryCarPark.Types_of_trailers
 {
-    public class TiltSemitrailer : Semitrailer
+    public class TiltSemitrailer : Semitrailer, ITrailer
     {
         public TiltSemitrailer(int number, double maxWeight, double maxVolume)
             : base(number, maxWeight, maxVolume)
@@ -12,7 +12,7 @@ namespace ClassLibraryCarPark.Types_of_trailers
             typeOfTrailer = "TiltSemitrailer";
         }
 
-        public override void LoadTrailer(Cargo cargo)
+        public void LoadTrailer(Cargo cargo)
         {
             if (cargo.isLiquid)
             {
