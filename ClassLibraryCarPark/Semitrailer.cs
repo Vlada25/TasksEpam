@@ -5,17 +5,19 @@ namespace ClassLibraryCarPark
 {
     public abstract class Semitrailer 
     {
-        public int trailerNumber;
-        public double maxWeight;
-        public double maxVolume;
+        public string number;
+        public TruckTractor joinedTractor;
+        private readonly double maxWeight;
+        private readonly double maxVolume;
         private double freeMass;
         private double freeVolume;
         protected string typeOfTrailer;
-        protected static List<int> existNumbers = new List<int>();
+        protected static List<string> existNumbers = new List<string>();
         protected List<Cargo> listOfCargo = new List<Cargo>();
-        public Semitrailer(int number, double maxWeight, double maxVolume)
+        public Semitrailer(double maxWeight, double maxVolume)
         {
-            trailerNumber = SetNumber(number);
+            number = GenerateNumber();
+            existNumbers.Add(number);
             this.maxVolume = maxVolume;
             this.maxWeight = maxWeight;
             freeMass = maxWeight;
@@ -25,7 +27,7 @@ namespace ClassLibraryCarPark
         {
             freeMass = maxWeight;
             freeVolume = maxVolume;
-            listOfCargo = new List<Cargo>();
+            listOfCargo.Clear();
         }
         public void UnloadTrailer(Cargo cargo)
         {
@@ -54,7 +56,29 @@ namespace ClassLibraryCarPark
             freeMass += cargo.weight * percentOfCargo / 100;
             freeVolume += cargo.volume * percentOfCargo / 100;
         }
-        public void ChangeWeightAndVolume(double weight, double volume)
+        public void JoingWithTractor(TruckTractor tractor)
+        {
+            if (!tractor.isFree)
+            {
+                throw new Exception("This tractor is already taken");
+            }
+            if (tractor.carryingCapacity < maxWeight)
+            {
+                throw new Exception("Carrying capacity of the tractor must be no less than that of the trailer");
+            }
+            joinedTractor = tractor;
+            tractor.isFree = false;
+        }
+        public void UnhookFromTractor()
+        {
+            if (joinedTractor == null)
+            {
+                throw new Exception("The trailer is already free");
+            }
+            joinedTractor.isFree = true;
+            joinedTractor = null;
+        }
+        protected void ChangeWeightAndVolume(double weight, double volume)
         {
             if (freeMass < weight || freeVolume < volume)
             {
@@ -63,26 +87,37 @@ namespace ClassLibraryCarPark
             freeMass -= weight;
             freeVolume -= volume;
         }
-        public int SetNumber(int number)
+        public string GenerateNumber()
         {
-            if (number < 1000 || number > 9999)
+            string res;
+            Random rand = new Random();
+            int x = rand.Next(0, 10000);
+            if (x < 10)
             {
-                throw new Exception("Invalid number of trailer");
+                res = "000" + x;
             }
-            if (existNumbers.Contains(number))
+            else if (x < 100)
             {
-                throw new Exception("Trailer with the same number already exists");
+                res = "00" + x;
+            }
+            else if (x < 1000)
+            {
+                res = "0" + x;
             }
             else
             {
-                existNumbers.Add(number);
+                res = x + "";
             }
-            return number;
+            if (existNumbers.Contains(res))
+            {
+                throw new Exception("This number is already exist");
+            }
+            return res;
         }
         public override string ToString()
         {
             string result = "";
-            result += $"Trailer #{trailerNumber}\nType of trailer: {typeOfTrailer}\n" +
+            result += $"Trailer #{number}\nType of trailer: {typeOfTrailer}\n" +
                 $"Carrying capacity: {maxWeight}\nMaximum volume: {maxVolume}\nCargo: ";
             if (listOfCargo.Count == 0)
             {
@@ -97,6 +132,10 @@ namespace ClassLibraryCarPark
             }
             result += $"\nFree space:\n\tweight: {Math.Round(freeMass / maxWeight * 100, 2)}%" 
                 + $"\n\tvolume: {Math.Round(freeVolume / maxVolume * 100, 2)}%";
+            if (joinedTractor != null)
+            {
+                result += $"\nJoined with tractor #{joinedTractor.number}";
+            }
             result += "\n";
             return result;
         }

@@ -12,11 +12,11 @@ namespace Execution
             // p = m*V
             try
             {
-                Refrigerator tr1 = new Refrigerator(1223, 40, 50);
-                TankTruck tr2 = new TankTruck(4285, 1000, 1200);
-                TiltSemitrailer tr3 = new TiltSemitrailer(8123, 100, 200);
+                Refrigerator trailer1 = new Refrigerator(40, 50);
+                TankTruck trailer2 = new TankTruck(1000, 1200);
+                TiltSemitrailer trailer3 = new TiltSemitrailer(100, 200);
 
-                //Console.WriteLine(tr1.ToString());
+                //Console.WriteLine(trailer1.ToString());
 
                 Cargo c1 = new Cargo("milk", 12, 12.93, false, 0, 5);
                 Cargo c2 = new Cargo("fish", 10, 9.3, false, -12, 0);
@@ -29,27 +29,42 @@ namespace Execution
                 c5.TypeOfCargo = Cargo.CargoTypes.Chemicals;
                 c6.TypeOfCargo = Cargo.CargoTypes.Chemicals;
 
-                tr1.LoadTrailer(c1);
-                tr1.LoadTrailer(c2);
-                tr2.LoadTrailer(c3);
-                tr3.LoadTrailer(c6);
-                tr3.LoadTrailer(c5);
+                trailer1.LoadTrailer(c1);
+                trailer1.LoadTrailer(c2);
+                trailer2.LoadTrailer(c3);
+                trailer3.LoadTrailer(c6);
+                trailer3.LoadTrailer(c5);
 
-                Console.WriteLine(tr1.ToString());
-                Console.WriteLine(tr2.ToString());
-                Console.WriteLine(tr3.ToString());
+                Console.WriteLine(trailer1.ToString());
+                Console.WriteLine(trailer2.ToString());
+                Console.WriteLine(trailer3.ToString());
 
-                tr1.UnloadAll();
-                tr2.UnloadTrailer(c3, 50);
-                tr3.UnloadTrailer(c5);
+                trailer1.UnloadAll();
+                trailer2.UnloadTrailer(c3, 50);
+                trailer3.UnloadTrailer(c5);
 
-                Console.WriteLine(tr1.ToString());
-                Console.WriteLine(tr2.ToString());
-                Console.WriteLine(tr3.ToString());
+                Console.WriteLine("\nAFTER UPLOADING:\n");
+                Console.WriteLine(trailer1.ToString());
+                Console.WriteLine(trailer2.ToString());
+                Console.WriteLine(trailer3.ToString());
+
+
+                Console.WriteLine("\nAFTER JOING:\n");
+                TruckTractor tractor1 = new TruckTractor("MAN 40.604 DFAT", 41.3, 50000);
+                trailer1.JoingWithTractor(tractor1);
+
+                Console.WriteLine(tractor1.ToString());
+                Console.WriteLine(trailer1.ToString());
+
+                trailer1.UnhookFromTractor();
+                trailer2.JoingWithTractor(tractor1);
+
+                Console.WriteLine(trailer1.ToString());
+                Console.WriteLine(trailer2.ToString());
             }
             catch(Exception error)
             {
-                Console.WriteLine(error.Message);
+                Console.WriteLine("Error: " + error.Message);
             }
         }
     }

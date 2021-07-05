@@ -6,8 +6,8 @@ namespace ClassLibraryCarPark.Types_of_trailers
 {
     public class TankTruck : Semitrailer, ITrailer
     {
-        public TankTruck(int number, double maxWeight, double maxVolume)
-            : base(number, maxWeight, maxVolume)
+        public TankTruck(double maxWeight, double maxVolume)
+            : base(maxWeight, maxVolume)
         {
             typeOfTrailer = "TankTruck";
         }

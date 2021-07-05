@@ -6,8 +6,8 @@ namespace ClassLibraryCarPark.Types_of_trailers
 {
     public class Refrigerator : Semitrailer, ITrailer
     {
-        public Refrigerator(int number, double maxWeight, double maxVolume)
-            : base(number, maxWeight, maxVolume)
+        public Refrigerator(double maxWeight, double maxVolume)
+            : base(maxWeight, maxVolume)
         {
             typeOfTrailer = "Refrigerator";
         }

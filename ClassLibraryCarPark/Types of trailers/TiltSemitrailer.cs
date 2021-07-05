@@ -6,8 +6,8 @@ namespace ClassLibraryCarPark.Types_of_trailers
 {
     public class TiltSemitrailer : Semitrailer, ITrailer
     {
-        public TiltSemitrailer(int number, double maxWeight, double maxVolume)
-            : base(number, maxWeight, maxVolume)
+        public TiltSemitrailer(double maxWeight, double maxVolume)
+            : base(maxWeight, maxVolume)
         {
             typeOfTrailer = "TiltSemitrailer";
         }
