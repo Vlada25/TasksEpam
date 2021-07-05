@@ -17,7 +17,7 @@ namespace ClassLibraryCarPark
         private double freeVolume;
         protected TypesOfTrailers typeOfTrailer;
         protected static List<string> existNumbers = new List<string>();
-        protected List<Cargo> listOfCargo = new List<Cargo>();
+        public List<Cargo> listOfCargo = new List<Cargo>();
         public double MaxWeight { get; }
         public double MaxVolume { get; }
         public Semitrailer(double maxWeight, double maxVolume)
@@ -32,6 +32,10 @@ namespace ClassLibraryCarPark
         public TypesOfTrailers GetTypeOfTrailer()
         {
             return typeOfTrailer;
+        }
+        public double GetWeihgtOfAllCargo()
+        {
+            return MaxWeight - freeMass;
         }
         public void UnloadAll()
         {
@@ -72,9 +76,9 @@ namespace ClassLibraryCarPark
             {
                 throw new Exception("This tractor is already taken");
             }
-            if (tractor.carryingCapacity < MaxWeight)
+            if (tractor.carryingCapacity < MaxWeight - freeMass)
             {
-                throw new Exception("Carrying capacity of the tractor must be no less than that of the trailer");
+                throw new Exception("Carrying capacity of the tractor must be no less than weight of the trailer");
             }
             joinedTractor = tractor;
             tractor.isFree = false;

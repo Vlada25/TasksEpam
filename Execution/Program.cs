@@ -25,16 +25,14 @@ namespace Execution
 
                 //Console.WriteLine(trailer1.ToString());
 
-                Cargo c1 = new Cargo("milk", 12, 12.93, false, 0, 5);
-                Cargo c2 = new Cargo("fish", 10, 9.3, false, -12, 0);
-                Cargo c3 = new Cargo("DT", 420, 500, true);
-                //Cargo c4 = new Cargo("porridge", 15, 44.46, false);
-                Cargo c5 = new Cargo("washing-powder", 30, 40.6, false);
-                Cargo c6 = new Cargo("fairy", 18, 18.36, false);
+                Cargo c1 = new Cargo("milk", 12, 12.93, false, 0, 5, Cargo.CargoTypes.Product);
+                Cargo c2 = new Cargo("fish", 10, 9.3, false, -12, 0, Cargo.CargoTypes.Product);
+                Cargo c3 = new Cargo("DT", 420, 500, true, Cargo.CargoTypes.Fuel);
+                //Cargo c4 = new Cargo("porridge", 15, 44.46, false, Cargo.CargoTypes.Product);
+                Cargo c5 = new Cargo("washing-powder", 30, 40.6, false, Cargo.CargoTypes.Chemicals);
+                Cargo c6 = new Cargo("fairy", 18, 18.36, false, Cargo.CargoTypes.Chemicals);
 
                 //c4.TypeOfCargo = Cargo.CargoTypes.Product;
-                c5.TypeOfCargo = Cargo.CargoTypes.Chemicals;
-                c6.TypeOfCargo = Cargo.CargoTypes.Chemicals;
 
                 trailer1.LoadTrailer(c1);
                 trailer1.LoadTrailer(c2);
@@ -61,17 +59,19 @@ namespace Execution
                 trailer1.JoingWithTractor(tractor1);
 
                 Console.WriteLine(tractor1.ToString());
-                Console.WriteLine(trailer1.ToString());
+                //Console.WriteLine(trailer1.ToString());
 
                 trailer1.UnhookFromTractor();
                 trailer2.JoingWithTractor(tractor1);
 
-                Console.WriteLine(trailer1.ToString());
-                Console.WriteLine(trailer2.ToString());
+                //Console.WriteLine(trailer1.ToString());
+                //Console.WriteLine(trailer2.ToString());
 
                 Service.ViewCarPark(listOfTrailers, listOfTractors);
                 Service.FindSemitrailer(listOfTrailers, Semitrailer.TypesOfTrailers.Refrigerator);
                 Service.FindSemitrailer(listOfTrailers, 30, 150, Service.WeightOrVolume.Weight);
+                Service.FindCouplingsByCargo(listOfTrailers, Cargo.CargoTypes.Fuel);
+                Service.FindCouplingWithAnyFreeSpace(listOfTrailers);
             }
             catch(Exception error)
             {

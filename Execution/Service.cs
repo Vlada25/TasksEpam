@@ -85,5 +85,49 @@ namespace Execution
                 Console.WriteLine("no info");
             }
         }
+        public static void FindCouplingsByCargo(List<Semitrailer> listOfTrailers, Cargo.CargoTypes cargoType)
+        {
+            bool noInfo = true;
+            Console.WriteLine("\nType of cargo: " + cargoType);
+            foreach (Semitrailer trailer in listOfTrailers)
+            {
+                bool isThereDesiredType = false;
+                foreach (Cargo cargo in trailer.listOfCargo)
+                {
+                    if (cargo.TypeOfCargo == cargoType)
+                    {
+                        isThereDesiredType = true;
+                        break;
+                    }
+                }
+                if (isThereDesiredType && trailer.joinedTractor != null)
+                {
+                    Console.WriteLine(trailer.GetTypeOfTrailer() + " #" + trailer.number + 
+                        " joined with tractor " + trailer.joinedTractor.model + " #" + trailer.joinedTractor.number);
+                    noInfo = false;
+                }
+            }
+            if (noInfo)
+            {
+                Console.WriteLine("no info");
+            }
+        }
+        public static void FindCouplingWithAnyFreeSpace(List<Semitrailer> listOfTrailers)
+        {
+            bool noInfo = true;
+            foreach (Semitrailer trailer in listOfTrailers)
+            {
+                if (trailer.joinedTractor != null && trailer.joinedTractor.carryingCapacity > trailer.GetWeihgtOfAllCargo())
+                {
+                    Console.WriteLine("\n" + trailer.GetTypeOfTrailer() + " #" + trailer.number +
+                        " joined with tractor " + trailer.joinedTractor.model + " #" + trailer.joinedTractor.number);
+                    noInfo = false;
+                }
+            }
+            if (noInfo)
+            {
+                Console.WriteLine("no info");
+            }
+        }
     }
 }
