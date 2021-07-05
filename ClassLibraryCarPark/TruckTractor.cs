@@ -52,5 +52,28 @@ namespace ClassLibraryCarPark
         {
             return $"Tractor #{number}\nModel: {model}\nCarrying capacity: {carryingCapacity}\n";
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is TruckTractor tractor &&
+                   number == tractor.number &&
+                   EqualityComparer<List<string>>.Default.Equals(existNumbers, tractor.existNumbers) &&
+                   model == tractor.model &&
+                   fuelConsumption == tractor.fuelConsumption &&
+                   carryingCapacity == tractor.carryingCapacity &&
+                   isFree == tractor.isFree;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 1098702807;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(number);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<string>>.Default.GetHashCode(existNumbers);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(model);
+            hashCode = hashCode * -1521134295 + fuelConsumption.GetHashCode();
+            hashCode = hashCode * -1521134295 + carryingCapacity.GetHashCode();
+            hashCode = hashCode * -1521134295 + isFree.GetHashCode();
+            return hashCode;
+        }
     }
 }

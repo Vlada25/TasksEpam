@@ -44,5 +44,32 @@ namespace ClassLibraryCarPark
         {
             return name + " ";
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Cargo cargo &&
+                   weight == cargo.weight &&
+                   volume == cargo.volume &&
+                   name == cargo.name &&
+                   isLiquid == cargo.isLiquid &&
+                   TypeOfCargo == cargo.TypeOfCargo &&
+                   StartTemperature == cargo.StartTemperature &&
+                   EndTemperature == cargo.EndTemperature &&
+                   wasTemperatureSet == cargo.wasTemperatureSet;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -851064942;
+            hashCode = hashCode * -1521134295 + weight.GetHashCode();
+            hashCode = hashCode * -1521134295 + volume.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
+            hashCode = hashCode * -1521134295 + isLiquid.GetHashCode();
+            hashCode = hashCode * -1521134295 + TypeOfCargo.GetHashCode();
+            hashCode = hashCode * -1521134295 + StartTemperature.GetHashCode();
+            hashCode = hashCode * -1521134295 + EndTemperature.GetHashCode();
+            hashCode = hashCode * -1521134295 + wasTemperatureSet.GetHashCode();
+            return hashCode;
+        }
     }
 }

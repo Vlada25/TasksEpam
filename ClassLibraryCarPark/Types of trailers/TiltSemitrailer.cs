@@ -12,6 +12,31 @@ namespace ClassLibraryCarPark.Types_of_trailers
             typeOfTrailer = TypesOfTrailers.TiltSemitrailer;
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is TiltSemitrailer semitrailer &&
+                   base.Equals(obj) &&
+                   number == semitrailer.number &&
+                   EqualityComparer<TruckTractor>.Default.Equals(joinedTractor, semitrailer.joinedTractor) &&
+                   typeOfTrailer == semitrailer.typeOfTrailer &&
+                   EqualityComparer<List<Cargo>>.Default.Equals(listOfCargo, semitrailer.listOfCargo) &&
+                   MaxWeight == semitrailer.MaxWeight &&
+                   MaxVolume == semitrailer.MaxVolume;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -779872140;
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(number);
+            hashCode = hashCode * -1521134295 + EqualityComparer<TruckTractor>.Default.GetHashCode(joinedTractor);
+            hashCode = hashCode * -1521134295 + typeOfTrailer.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<Cargo>>.Default.GetHashCode(listOfCargo);
+            hashCode = hashCode * -1521134295 + MaxWeight.GetHashCode();
+            hashCode = hashCode * -1521134295 + MaxVolume.GetHashCode();
+            return hashCode;
+        }
+
         public void LoadTrailer(Cargo cargo)
         {
             if (cargo.isLiquid)
