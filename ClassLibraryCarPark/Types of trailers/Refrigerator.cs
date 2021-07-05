@@ -9,7 +9,7 @@ namespace ClassLibraryCarPark.Types_of_trailers
         public Refrigerator(double maxWeight, double maxVolume)
             : base(maxWeight, maxVolume)
         {
-            typeOfTrailer = "Refrigerator";
+            typeOfTrailer = TypesOfTrailers.Refrigerator;
         }
         public void LoadTrailer(Cargo cargo)
         {

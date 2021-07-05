@@ -9,7 +9,7 @@ namespace ClassLibraryCarPark.Types_of_trailers
         public TiltSemitrailer(double maxWeight, double maxVolume)
             : base(maxWeight, maxVolume)
         {
-            typeOfTrailer = "TiltSemitrailer";
+            typeOfTrailer = TypesOfTrailers.TiltSemitrailer;
         }
 
         public void LoadTrailer(Cargo cargo)

@@ -5,28 +5,38 @@ namespace ClassLibraryCarPark
 {
     public abstract class Semitrailer 
     {
+        public enum TypesOfTrailers
+        {
+            TankTruck,
+            Refrigerator,
+            TiltSemitrailer
+        }
         public string number;
         public TruckTractor joinedTractor;
-        private readonly double maxWeight;
-        private readonly double maxVolume;
         private double freeMass;
         private double freeVolume;
-        protected string typeOfTrailer;
+        protected TypesOfTrailers typeOfTrailer;
         protected static List<string> existNumbers = new List<string>();
         protected List<Cargo> listOfCargo = new List<Cargo>();
+        public double MaxWeight { get; }
+        public double MaxVolume { get; }
         public Semitrailer(double maxWeight, double maxVolume)
         {
             number = GenerateNumber();
             existNumbers.Add(number);
-            this.maxVolume = maxVolume;
-            this.maxWeight = maxWeight;
+            MaxVolume = maxVolume;
+            MaxWeight = maxWeight;
             freeMass = maxWeight;
             freeVolume = maxVolume;
         }
+        public TypesOfTrailers GetTypeOfTrailer()
+        {
+            return typeOfTrailer;
+        }
         public void UnloadAll()
         {
-            freeMass = maxWeight;
-            freeVolume = maxVolume;
+            freeMass = MaxWeight;
+            freeVolume = MaxVolume;
             listOfCargo.Clear();
         }
         public void UnloadTrailer(Cargo cargo)
@@ -62,7 +72,7 @@ namespace ClassLibraryCarPark
             {
                 throw new Exception("This tractor is already taken");
             }
-            if (tractor.carryingCapacity < maxWeight)
+            if (tractor.carryingCapacity < MaxWeight)
             {
                 throw new Exception("Carrying capacity of the tractor must be no less than that of the trailer");
             }
@@ -118,7 +128,7 @@ namespace ClassLibraryCarPark
         {
             string result = "";
             result += $"Trailer #{number}\nType of trailer: {typeOfTrailer}\n" +
-                $"Carrying capacity: {maxWeight}\nMaximum volume: {maxVolume}\nCargo: ";
+                $"Carrying capacity: {MaxWeight}\nMaximum volume: {MaxVolume}\nCargo: ";
             if (listOfCargo.Count == 0)
             {
                 result += "trailer is empty";
@@ -130,8 +140,8 @@ namespace ClassLibraryCarPark
                     result += listOfCargo[i].ToString();
                 }
             }
-            result += $"\nFree space:\n\tweight: {Math.Round(freeMass / maxWeight * 100, 2)}%" 
-                + $"\n\tvolume: {Math.Round(freeVolume / maxVolume * 100, 2)}%";
+            result += $"\nFree space:\n\tweight: {Math.Round(freeMass / MaxWeight * 100, 2)}%" 
+                + $"\n\tvolume: {Math.Round(freeVolume / MaxVolume * 100, 2)}%";
             if (joinedTractor != null)
             {
                 result += $"\nJoined with tractor #{joinedTractor.number}";

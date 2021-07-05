@@ -1,6 +1,7 @@
 ﻿using ClassLibraryCarPark;
 using ClassLibraryCarPark.Types_of_trailers;
 using System;
+using System.Collections.Generic;
 
 namespace Execution
 {
@@ -12,9 +13,15 @@ namespace Execution
             // p = m*V
             try
             {
+                List<Semitrailer> listOfTrailers = new List<Semitrailer>();
+                List<TruckTractor> listOfTractors = new List<TruckTractor>();
+
                 Refrigerator trailer1 = new Refrigerator(40, 50);
                 TankTruck trailer2 = new TankTruck(1000, 1200);
                 TiltSemitrailer trailer3 = new TiltSemitrailer(100, 200);
+                listOfTrailers.Add(trailer1);
+                listOfTrailers.Add(trailer2);
+                listOfTrailers.Add(trailer3);
 
                 //Console.WriteLine(trailer1.ToString());
 
@@ -48,9 +55,9 @@ namespace Execution
                 Console.WriteLine(trailer2.ToString());
                 Console.WriteLine(trailer3.ToString());
 
-
                 Console.WriteLine("\nAFTER JOING:\n");
                 TruckTractor tractor1 = new TruckTractor("MAN 40.604 DFAT", 41.3, 50000);
+                listOfTractors.Add(tractor1);
                 trailer1.JoingWithTractor(tractor1);
 
                 Console.WriteLine(tractor1.ToString());
@@ -61,6 +68,10 @@ namespace Execution
 
                 Console.WriteLine(trailer1.ToString());
                 Console.WriteLine(trailer2.ToString());
+
+                Service.ViewCarPark(listOfTrailers, listOfTractors);
+                Service.FindSemitrailer(listOfTrailers, Semitrailer.TypesOfTrailers.Refrigerator);
+                Service.FindSemitrailer(listOfTrailers, 30, 150, Service.WeightOrVolume.Weight);
             }
             catch(Exception error)
             {

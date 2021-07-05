@@ -9,7 +9,7 @@ namespace ClassLibraryCarPark.Types_of_trailers
         public TankTruck(double maxWeight, double maxVolume)
             : base(maxWeight, maxVolume)
         {
-            typeOfTrailer = "TankTruck";
+            typeOfTrailer = TypesOfTrailers.TankTruck;
         }
         public void LoadTrailer(Cargo cargo)
         {
