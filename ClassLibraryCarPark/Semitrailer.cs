@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ClassLibraryCarPark
 {
-    public abstract class Semitrailer 
+    public abstract class Semitrailer : ITrailer
     {
         public enum TypesOfTrailers
         {
@@ -29,6 +29,7 @@ namespace ClassLibraryCarPark
             freeMass = maxWeight;
             freeVolume = maxVolume;
         }
+        public abstract void LoadTrailer(Cargo cargo);
         public TypesOfTrailers GetTypeOfTrailer()
         {
             return typeOfTrailer;
@@ -101,7 +102,7 @@ namespace ClassLibraryCarPark
             freeMass -= weight;
             freeVolume -= volume;
         }
-        public string GenerateNumber()
+        private string GenerateNumber()
         {
             string res;
             Random rand = new Random();

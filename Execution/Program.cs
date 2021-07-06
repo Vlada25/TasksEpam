@@ -2,6 +2,7 @@
 using ClassLibraryCarPark.Types_of_trailers;
 using System;
 using System.Collections.Generic;
+using System.Xml;
 
 namespace Execution
 {
@@ -9,6 +10,21 @@ namespace Execution
     {
         static void Main(string[] args)
         {
+            /*
+            XmlDocument xml = new XmlDocument();
+            xml.Load(@"E:\Epam May 2021\TasksEpam\CarPark1.xml");
+            XmlElement element = xml.DocumentElement;
+            foreach (XmlNode xnode in element)
+            {
+                Console.WriteLine(xnode.Attributes.GetNamedItem("name").Value);
+                foreach (XmlNode childnode in xnode.ChildNodes)
+                {
+                    if (childnode.Name == "maxWeight")
+                        Console.WriteLine("max weight: " + childnode.InnerText);
+                    if (childnode.Name == "maxVolume")
+                        Console.WriteLine("max volume: " + childnode.InnerText);
+                }
+            }*/
             // if milk or something like that is in boxes or bags, then it doesn't rush with liquid
             // p = m*V
             try
@@ -16,6 +32,10 @@ namespace Execution
                 List<Semitrailer> listOfTrailers = new List<Semitrailer>();
                 List<TruckTractor> listOfTractors = new List<TruckTractor>();
 
+                //XmlReader.ReadInfo(listOfTrailers);
+
+                Service.ViewCarPark(listOfTrailers, listOfTractors);
+                /*
                 Refrigerator trailer1 = new Refrigerator(40, 50);
                 TankTruck trailer2 = new TankTruck(1000, 1200);
                 TiltSemitrailer trailer3 = new TiltSemitrailer(100, 200);
@@ -72,6 +92,7 @@ namespace Execution
                 Service.FindSemitrailer(listOfTrailers, 30, 150, Service.WeightOrVolume.Weight);
                 Service.FindCouplingsByCargo(listOfTrailers, Cargo.CargoTypes.Fuel);
                 Service.FindCouplingWithAnyFreeSpace(listOfTrailers);
+                */
             }
             catch(Exception error)
             {

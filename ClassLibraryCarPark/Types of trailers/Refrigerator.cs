@@ -4,14 +4,37 @@ using System.Text;
 
 namespace ClassLibraryCarPark.Types_of_trailers
 {
-    public class Refrigerator : Semitrailer, ITrailer
+    public class Refrigerator : Semitrailer
     {
         public Refrigerator(double maxWeight, double maxVolume)
             : base(maxWeight, maxVolume)
         {
             typeOfTrailer = TypesOfTrailers.Refrigerator;
         }
-
+        public override void LoadTrailer(Cargo cargo)
+        {
+            if (cargo.isLiquid)
+            {
+                throw new Exception("Refrigerators can't carry liquid");
+            }
+            if (!cargo.wasTemperatureSet)
+            {
+                throw new Exception("Temperature wasn't set");
+            }
+            if (listOfCargo.Count > 0)
+            {
+                for (int i = 0; i < listOfCargo.Count; i++)
+                {
+                    if (listOfCargo[i].StartTemperature > cargo.EndTemperature
+                        || listOfCargo[i].EndTemperature < cargo.StartTemperature)
+                    {
+                        throw new Exception("Mismatch of temperature transportation");
+                    }
+                }
+            }
+            ChangeWeightAndVolume(cargo.weight, cargo.volume);
+            listOfCargo.Add(cargo);
+        }
         public override bool Equals(object obj)
         {
             return obj is Refrigerator refrigerator &&
@@ -35,31 +58,6 @@ namespace ClassLibraryCarPark.Types_of_trailers
             hashCode = hashCode * -1521134295 + MaxWeight.GetHashCode();
             hashCode = hashCode * -1521134295 + MaxVolume.GetHashCode();
             return hashCode;
-        }
-
-        public void LoadTrailer(Cargo cargo)
-        {
-            if (cargo.isLiquid)
-            {
-                throw new Exception("Refrigerators can't carry liquid");
-            }
-            if (!cargo.wasTemperatureSet)
-            {
-                throw new Exception("Temperature wasn't set");
-            }
-            if (listOfCargo.Count > 0)
-            {
-                for (int i = 0; i < listOfCargo.Count; i++)
-                {
-                    if (listOfCargo[i].StartTemperature > cargo.EndTemperature
-                        || listOfCargo[i].EndTemperature < cargo.StartTemperature)
-                    {
-                        throw new Exception("Mismatch of temperature transportation");
-                    }
-                }
-            }
-            ChangeWeightAndVolume(cargo.weight, cargo.volume);
-            listOfCargo.Add(cargo);
         }
     }
 }

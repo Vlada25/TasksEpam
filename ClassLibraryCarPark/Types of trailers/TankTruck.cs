@@ -4,14 +4,26 @@ using System.Text;
 
 namespace ClassLibraryCarPark.Types_of_trailers
 {
-    public class TankTruck : Semitrailer, ITrailer
+    public class TankTruck : Semitrailer
     {
         public TankTruck(double maxWeight, double maxVolume)
             : base(maxWeight, maxVolume)
         {
             typeOfTrailer = TypesOfTrailers.TankTruck;
         }
-
+        public override void LoadTrailer(Cargo cargo)
+        {
+            if (!cargo.isLiquid)
+            {
+                throw new Exception("Tank trucks can only carry liquid");
+            }
+            if (listOfCargo.Count > 1)
+            {
+                throw new Exception("Tank trucks can carry only one kind of liquid");
+            }
+            ChangeWeightAndVolume(cargo.weight, cargo.volume);
+            listOfCargo.Add(cargo);
+        }
         public override bool Equals(object obj)
         {
             return obj is TankTruck truck &&
@@ -35,20 +47,6 @@ namespace ClassLibraryCarPark.Types_of_trailers
             hashCode = hashCode * -1521134295 + MaxWeight.GetHashCode();
             hashCode = hashCode * -1521134295 + MaxVolume.GetHashCode();
             return hashCode;
-        }
-
-        public void LoadTrailer(Cargo cargo)
-        {
-            if (!cargo.isLiquid)
-            {
-                throw new Exception("Tank trucks can only carry liquid");
-            }
-            if (listOfCargo.Count > 1)
-            {
-                throw new Exception("Tank trucks can carry only one kind of liquid");
-            }
-            ChangeWeightAndVolume(cargo.weight, cargo.volume);
-            listOfCargo.Add(cargo);
-        }
+        }  
     }
 }

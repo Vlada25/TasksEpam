@@ -4,14 +4,36 @@ using System.Text;
 
 namespace ClassLibraryCarPark.Types_of_trailers
 {
-    public class TiltSemitrailer : Semitrailer, ITrailer
+    public class TiltSemitrailer : Semitrailer
     {
         public TiltSemitrailer(double maxWeight, double maxVolume)
             : base(maxWeight, maxVolume)
         {
             typeOfTrailer = TypesOfTrailers.TiltSemitrailer;
         }
-
+        public override void LoadTrailer(Cargo cargo)
+        {
+            if (cargo.isLiquid)
+            {
+                throw new Exception("Tilt semitrailers can't carry liquid");
+            }
+            if (cargo.wasTemperatureSet)
+            {
+                throw new Exception("Special temperature conditions are required");
+            }
+            if (listOfCargo.Count > 0)
+            {
+                for (int i = 0; i < listOfCargo.Count; i++)
+                {
+                    if (listOfCargo[i].TypeOfCargo != cargo.TypeOfCargo)
+                    {
+                        throw new Exception("Different types of cargo");
+                    }
+                }
+            }
+            ChangeWeightAndVolume(cargo.weight, cargo.volume);
+            listOfCargo.Add(cargo);
+        }
         public override bool Equals(object obj)
         {
             return obj is TiltSemitrailer semitrailer &&
@@ -35,30 +57,6 @@ namespace ClassLibraryCarPark.Types_of_trailers
             hashCode = hashCode * -1521134295 + MaxWeight.GetHashCode();
             hashCode = hashCode * -1521134295 + MaxVolume.GetHashCode();
             return hashCode;
-        }
-
-        public void LoadTrailer(Cargo cargo)
-        {
-            if (cargo.isLiquid)
-            {
-                throw new Exception("Tilt semitrailers can't carry liquid");
-            }
-            if (cargo.wasTemperatureSet)
-            {
-                throw new Exception("Special temperature conditions are required");
-            }
-            if (listOfCargo.Count > 0)
-            {
-                for (int i = 0; i < listOfCargo.Count; i++)
-                {
-                    if (listOfCargo[i].TypeOfCargo != cargo.TypeOfCargo)
-                    {
-                        throw new Exception("Different types of cargo");
-                    }
-                }
-            }
-            ChangeWeightAndVolume(cargo.weight, cargo.volume);
-            listOfCargo.Add(cargo);
         }
     }
 }
