@@ -13,62 +13,62 @@ namespace ClassLibraryCarPark
             ConstructionMaterials,
             Fuel
         }
-        public double weight;
-        public double volume;
-        public string name;
-        public bool isLiquid;
+        public double Weight;
+        public double Volume;
+        public string Name;
+        public bool IsLiquid;
         public CargoTypes TypeOfCargo { get;}
         public int StartTemperature { get; }
         public int EndTemperature { get; }
-        public bool wasTemperatureSet = false;
+        public bool WasTemperatureSet = false;
         public Cargo(string name, double weight, double volume, bool isLiquid, CargoTypes type)
         {
-            this.name = name;
-            this.weight = weight;
-            this.volume = volume;
-            this.isLiquid = isLiquid;
+            Name = name;
+            Weight = weight;
+            Volume = volume;
+            IsLiquid = isLiquid;
             TypeOfCargo = type;
         }
         public Cargo(string name, double weight, double volume, bool isLiquid, int startTemperature, int endTemperature, CargoTypes type)
         {
-            this.name = name;
-            this.weight = weight;
-            this.volume = volume;
-            this.isLiquid = isLiquid;
+            Name = name;
+            Weight = weight;
+            Volume = volume;
+            IsLiquid = isLiquid;
             StartTemperature = startTemperature;
             EndTemperature = endTemperature;
-            wasTemperatureSet = true;
+            WasTemperatureSet = true;
             TypeOfCargo = type;
         }
         public override string ToString()
         {
-            return name + " ";
+            return Name + " ";
         }
 
         public override bool Equals(object obj)
         {
             return obj is Cargo cargo &&
-                   weight == cargo.weight &&
-                   volume == cargo.volume &&
-                   name == cargo.name &&
-                   isLiquid == cargo.isLiquid &&
+                   Weight == cargo.Weight &&
+                   Volume == cargo.Volume &&
+                   Name == cargo.Name &&
+                   IsLiquid == cargo.IsLiquid &&
                    TypeOfCargo == cargo.TypeOfCargo &&
                    StartTemperature == cargo.StartTemperature &&
                    EndTemperature == cargo.EndTemperature &&
-                   wasTemperatureSet == cargo.wasTemperatureSet;
+                   WasTemperatureSet == cargo.WasTemperatureSet;
         }
 
         public override int GetHashCode()
         {
             int hashCode = -851064942;
-            hashCode = hashCode * -1521134295 + weight.GetHashCode();
-            hashCode = hashCode * -1521134295 + volume.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-            hashCode = hashCode * -1521134295 + isLiquid.GetHashCode();
+            hashCode = hashCode * -1521134295 + Weight.GetHashCode();
+            hashCode = hashCode * -1521134295 + Volume.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + IsLiquid.GetHashCode();
             hashCode = hashCode * -1521134295 + TypeOfCargo.GetHashCode();
             hashCode = hashCode * -1521134295 + StartTemperature.GetHashCode();
             hashCode = hashCode * -1521134295 + EndTemperature.GetHashCode();
-            hashCode = hashCode * -1521134295 + wasTemperatureSet.GetHashCode();
+            hashCode = hashCode * -1521134295 + WasTemperatureSet.GetHashCode();
             return hashCode;
         }
     }

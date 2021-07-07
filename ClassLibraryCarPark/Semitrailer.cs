@@ -11,23 +11,23 @@ namespace ClassLibraryCarPark
             Refrigerator,
             TiltSemitrailer
         }
-        public string number;
-        public TruckTractor joinedTractor;
-        private double freeMass;
-        private double freeVolume;
+        public string Number;
+        public TruckTractor JoinedTractor;
+        private double _freeMass;
+        private double _freeVolume;
         protected TypesOfTrailers typeOfTrailer;
         protected static List<string> existNumbers = new List<string>();
-        public List<Cargo> listOfCargo = new List<Cargo>();
+        public List<Cargo> ListOfCargo = new List<Cargo>();
         public double MaxWeight { get; }
         public double MaxVolume { get; }
         public Semitrailer(double maxWeight, double maxVolume)
         {
-            number = GenerateNumber();
-            existNumbers.Add(number);
+            Number = GenerateNumber();
+            existNumbers.Add(Number);
             MaxVolume = maxVolume;
             MaxWeight = maxWeight;
-            freeMass = maxWeight;
-            freeVolume = maxVolume;
+            _freeMass = maxWeight;
+            _freeVolume = maxVolume;
         }
         public abstract void LoadTrailer(Cargo cargo);
         public TypesOfTrailers GetTypeOfTrailer()
@@ -36,27 +36,27 @@ namespace ClassLibraryCarPark
         }
         public double GetWeihgtOfAllCargo()
         {
-            return MaxWeight - freeMass;
+            return MaxWeight - _freeMass;
         }
         public void UnloadAll()
         {
-            freeMass = MaxWeight;
-            freeVolume = MaxVolume;
-            listOfCargo.Clear();
+            _freeMass = MaxWeight;
+            _freeVolume = MaxVolume;
+            ListOfCargo.Clear();
         }
         public void UnloadTrailer(Cargo cargo)
         {
-            if (!listOfCargo.Contains(cargo))
+            if (!ListOfCargo.Contains(cargo))
             {
                 throw new Exception("There is no such load in this trailer");
             }
-            listOfCargo.Remove(cargo);
-            freeMass += cargo.weight;
-            freeVolume += cargo.volume;
+            ListOfCargo.Remove(cargo);
+            _freeMass += cargo.Weight;
+            _freeVolume += cargo.Volume;
         }
         public void UnloadTrailer(Cargo cargo, int percentOfCargo)
         {
-            if (!listOfCargo.Contains(cargo))
+            if (!ListOfCargo.Contains(cargo))
             {
                 throw new Exception("There is no such load in this trailer");
             }
@@ -66,10 +66,10 @@ namespace ClassLibraryCarPark
             }
             else if (percentOfCargo == 100)
             {
-                listOfCargo.Remove(cargo);
+                ListOfCargo.Remove(cargo);
             }
-            freeMass += cargo.weight * percentOfCargo / 100;
-            freeVolume += cargo.volume * percentOfCargo / 100;
+            _freeMass += cargo.Weight * percentOfCargo / 100;
+            _freeVolume += cargo.Volume * percentOfCargo / 100;
         }
         public void JoingWithTractor(TruckTractor tractor)
         {
@@ -77,30 +77,30 @@ namespace ClassLibraryCarPark
             {
                 throw new Exception("This tractor is already taken");
             }
-            if (tractor.carryingCapacity < MaxWeight - freeMass)
+            if (tractor.carryingCapacity < MaxWeight - _freeMass)
             {
-                throw new Exception("Carrying capacity of the tractor must be no less than weight of the trailer");
+                throw new Exception("Carrying capacity of the tractor must be no less than Weight of the trailer");
             }
-            joinedTractor = tractor;
+            JoinedTractor = tractor;
             tractor.isFree = false;
         }
         public void UnhookFromTractor()
         {
-            if (joinedTractor == null)
+            if (JoinedTractor == null)
             {
                 throw new Exception("The trailer is already free");
             }
-            joinedTractor.isFree = true;
-            joinedTractor = null;
+            JoinedTractor.isFree = true;
+            JoinedTractor = null;
         }
-        protected void ChangeWeightAndVolume(double weight, double volume)
+        protected void ChangeWeightAndVolume(double Weight, double Volume)
         {
-            if (freeMass < weight || freeVolume < volume)
+            if (_freeMass < Weight || _freeVolume < Volume)
             {
                 throw new Exception("Not enough space");
             }
-            freeMass -= weight;
-            freeVolume -= volume;
+            _freeMass -= Weight;
+            _freeVolume -= Volume;
         }
         private string GenerateNumber()
         {
@@ -125,31 +125,31 @@ namespace ClassLibraryCarPark
             }
             if (existNumbers.Contains(res))
             {
-                throw new Exception("This number is already exist");
+                throw new Exception("This Number is already exist");
             }
             return res;
         }
         public override string ToString()
         {
             string result = "";
-            result += $"Trailer #{number}\nType of trailer: {typeOfTrailer}\n" +
-                $"Carrying capacity: {MaxWeight}\nMaximum volume: {MaxVolume}\nCargo: ";
-            if (listOfCargo.Count == 0)
+            result += $"Trailer #{Number}\nType of trailer: {typeOfTrailer}\n" +
+                $"Carrying capacity: {MaxWeight}\nMaximum Volume: {MaxVolume}\nCargo: ";
+            if (ListOfCargo.Count == 0)
             {
                 result += "trailer is empty";
             }
             else
             {
-                for (int i = 0; i < listOfCargo.Count; i++)
+                for (int i = 0; i < ListOfCargo.Count; i++)
                 {
-                    result += listOfCargo[i].ToString();
+                    result += ListOfCargo[i].ToString();
                 }
             }
-            result += $"\nFree space:\n\tweight: {Math.Round(freeMass / MaxWeight * 100, 2)}%" 
-                + $"\n\tvolume: {Math.Round(freeVolume / MaxVolume * 100, 2)}%";
-            if (joinedTractor != null)
+            result += $"\nFree space:\n\tweight: {Math.Round(_freeMass / MaxWeight * 100, 2)}%" 
+                + $"\n\tvolume: {Math.Round(_freeVolume / MaxVolume * 100, 2)}%";
+            if (JoinedTractor != null)
             {
-                result += $"\nJoined with tractor #{joinedTractor.number}";
+                result += $"\nJoined with tractor #{JoinedTractor.Number}";
             }
             result += "\n";
             return result;
@@ -158,12 +158,12 @@ namespace ClassLibraryCarPark
         public override bool Equals(object obj)
         {
             return obj is Semitrailer semitrailer &&
-                   number == semitrailer.number &&
-                   EqualityComparer<TruckTractor>.Default.Equals(joinedTractor, semitrailer.joinedTractor) &&
-                   freeMass == semitrailer.freeMass &&
-                   freeVolume == semitrailer.freeVolume &&
+                   Number == semitrailer.Number &&
+                   EqualityComparer<TruckTractor>.Default.Equals(JoinedTractor, semitrailer.JoinedTractor) &&
+                   _freeMass == semitrailer._freeMass &&
+                   _freeVolume == semitrailer._freeVolume &&
                    typeOfTrailer == semitrailer.typeOfTrailer &&
-                   EqualityComparer<List<Cargo>>.Default.Equals(listOfCargo, semitrailer.listOfCargo) &&
+                   EqualityComparer<List<Cargo>>.Default.Equals(ListOfCargo, semitrailer.ListOfCargo) &&
                    MaxWeight == semitrailer.MaxWeight &&
                    MaxVolume == semitrailer.MaxVolume;
         }
@@ -171,12 +171,12 @@ namespace ClassLibraryCarPark
         public override int GetHashCode()
         {
             int hashCode = 958523410;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(number);
-            hashCode = hashCode * -1521134295 + EqualityComparer<TruckTractor>.Default.GetHashCode(joinedTractor);
-            hashCode = hashCode * -1521134295 + freeMass.GetHashCode();
-            hashCode = hashCode * -1521134295 + freeVolume.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Number);
+            hashCode = hashCode * -1521134295 + EqualityComparer<TruckTractor>.Default.GetHashCode(JoinedTractor);
+            hashCode = hashCode * -1521134295 + _freeMass.GetHashCode();
+            hashCode = hashCode * -1521134295 + _freeVolume.GetHashCode();
             hashCode = hashCode * -1521134295 + typeOfTrailer.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<List<Cargo>>.Default.GetHashCode(listOfCargo);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<Cargo>>.Default.GetHashCode(ListOfCargo);
             hashCode = hashCode * -1521134295 + MaxWeight.GetHashCode();
             hashCode = hashCode * -1521134295 + MaxVolume.GetHashCode();
             return hashCode;

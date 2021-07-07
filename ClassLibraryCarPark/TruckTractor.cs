@@ -6,7 +6,7 @@ namespace ClassLibraryCarPark
 {
     public class TruckTractor
     {
-        public string number;
+        public string Number;
         private readonly List<string> existNumbers = new List<string>();
         public string model;
         public double fuelConsumption;
@@ -14,8 +14,8 @@ namespace ClassLibraryCarPark
         public bool isFree;
         public TruckTractor(string model, double fuelConsumption, double carryingCapacity)
         {
-            number = GenerateNumber();
-            existNumbers.Add(number);
+            Number = GenerateNumber();
+            existNumbers.Add(Number);
             this.model = model;
             this.fuelConsumption = fuelConsumption;
             this.carryingCapacity = carryingCapacity;
@@ -44,19 +44,19 @@ namespace ClassLibraryCarPark
             }
             if (existNumbers.Contains(res))
             {
-                throw new Exception("This number is already exist");
+                throw new Exception("This Number is already exist");
             }
             return res;
         }
         public override string ToString()
         {
-            return $"Tractor #{number}\nModel: {model}\nCarrying capacity: {carryingCapacity}\n";
+            return $"Tractor #{Number}\nModel: {model}\nCarrying capacity: {carryingCapacity}\n";
         }
 
         public override bool Equals(object obj)
         {
             return obj is TruckTractor tractor &&
-                   number == tractor.number &&
+                   Number == tractor.Number &&
                    EqualityComparer<List<string>>.Default.Equals(existNumbers, tractor.existNumbers) &&
                    model == tractor.model &&
                    fuelConsumption == tractor.fuelConsumption &&
@@ -67,7 +67,7 @@ namespace ClassLibraryCarPark
         public override int GetHashCode()
         {
             int hashCode = 1098702807;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(number);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Number);
             hashCode = hashCode * -1521134295 + EqualityComparer<List<string>>.Default.GetHashCode(existNumbers);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(model);
             hashCode = hashCode * -1521134295 + fuelConsumption.GetHashCode();

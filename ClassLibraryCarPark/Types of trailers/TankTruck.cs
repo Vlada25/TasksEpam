@@ -13,25 +13,25 @@ namespace ClassLibraryCarPark.Types_of_trailers
         }
         public override void LoadTrailer(Cargo cargo)
         {
-            if (!cargo.isLiquid)
+            if (!cargo.IsLiquid)
             {
                 throw new Exception("Tank trucks can only carry liquid");
             }
-            if (listOfCargo.Count > 1)
+            if (ListOfCargo.Count > 1)
             {
                 throw new Exception("Tank trucks can carry only one kind of liquid");
             }
-            ChangeWeightAndVolume(cargo.weight, cargo.volume);
-            listOfCargo.Add(cargo);
+            ChangeWeightAndVolume(cargo.Weight, cargo.Volume);
+            ListOfCargo.Add(cargo);
         }
         public override bool Equals(object obj)
         {
             return obj is TankTruck truck &&
                    base.Equals(obj) &&
-                   number == truck.number &&
-                   EqualityComparer<TruckTractor>.Default.Equals(joinedTractor, truck.joinedTractor) &&
+                   Number == truck.Number &&
+                   EqualityComparer<TruckTractor>.Default.Equals(JoinedTractor, truck.JoinedTractor) &&
                    typeOfTrailer == truck.typeOfTrailer &&
-                   EqualityComparer<List<Cargo>>.Default.Equals(listOfCargo, truck.listOfCargo) &&
+                   EqualityComparer<List<Cargo>>.Default.Equals(ListOfCargo, truck.ListOfCargo) &&
                    MaxWeight == truck.MaxWeight &&
                    MaxVolume == truck.MaxVolume;
         }
@@ -40,10 +40,10 @@ namespace ClassLibraryCarPark.Types_of_trailers
         {
             int hashCode = -779872140;
             hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(number);
-            hashCode = hashCode * -1521134295 + EqualityComparer<TruckTractor>.Default.GetHashCode(joinedTractor);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Number);
+            hashCode = hashCode * -1521134295 + EqualityComparer<TruckTractor>.Default.GetHashCode(JoinedTractor);
             hashCode = hashCode * -1521134295 + typeOfTrailer.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<List<Cargo>>.Default.GetHashCode(listOfCargo);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<Cargo>>.Default.GetHashCode(ListOfCargo);
             hashCode = hashCode * -1521134295 + MaxWeight.GetHashCode();
             hashCode = hashCode * -1521134295 + MaxVolume.GetHashCode();
             return hashCode;

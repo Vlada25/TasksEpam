@@ -23,7 +23,7 @@ namespace Execution
             {
                 foreach (Semitrailer trailer in listOfTrailers)
                 {
-                    Console.WriteLine(trailer.GetTypeOfTrailer() + "\t#" + trailer.number);
+                    Console.WriteLine(trailer.GetTypeOfTrailer() + "\t#" + trailer.Number);
                 }
             }
             
@@ -36,7 +36,7 @@ namespace Execution
             {
                 foreach (TruckTractor tractor in listOfTractors)
                 {
-                    Console.WriteLine(tractor.model + "\t#" + tractor.number);
+                    Console.WriteLine(tractor.model + "\t#" + tractor.Number);
                 }
             }
         }
@@ -48,7 +48,7 @@ namespace Execution
             {
                 if (typeOfTrailer == trailer.GetTypeOfTrailer())
                 {
-                    Console.WriteLine(trailer.GetTypeOfTrailer() + "\t#" + trailer.number);
+                    Console.WriteLine(trailer.GetTypeOfTrailer() + "\t#" + trailer.Number);
                     noInfo = false;
                 }
             }
@@ -67,7 +67,7 @@ namespace Execution
                 {
                     if (trailer.MaxWeight >= minValue && trailer.MaxWeight <= maxValue)
                     {
-                        Console.WriteLine(trailer.GetTypeOfTrailer() + "\t#" + trailer.number);
+                        Console.WriteLine(trailer.GetTypeOfTrailer() + "\t#" + trailer.Number);
                         noInfo = false;
                     }
                 }
@@ -75,7 +75,7 @@ namespace Execution
                 {
                     if (trailer.MaxVolume >= minValue && trailer.MaxVolume <= maxValue)
                     {
-                        Console.WriteLine(trailer.GetTypeOfTrailer() + "\t#" + trailer.number);
+                        Console.WriteLine(trailer.GetTypeOfTrailer() + "\t#" + trailer.Number);
                         noInfo = false;
                     }
                 }
@@ -92,7 +92,7 @@ namespace Execution
             foreach (Semitrailer trailer in listOfTrailers)
             {
                 bool isThereDesiredType = false;
-                foreach (Cargo cargo in trailer.listOfCargo)
+                foreach (Cargo cargo in trailer.ListOfCargo)
                 {
                     if (cargo.TypeOfCargo == cargoType)
                     {
@@ -100,10 +100,10 @@ namespace Execution
                         break;
                     }
                 }
-                if (isThereDesiredType && trailer.joinedTractor != null)
+                if (isThereDesiredType && trailer.JoinedTractor != null)
                 {
-                    Console.WriteLine(trailer.GetTypeOfTrailer() + " #" + trailer.number + 
-                        " joined with tractor " + trailer.joinedTractor.model + " #" + trailer.joinedTractor.number);
+                    Console.WriteLine(trailer.GetTypeOfTrailer() + " #" + trailer.Number + 
+                        " joined with tractor " + trailer.JoinedTractor.model + " #" + trailer.JoinedTractor.Number);
                     noInfo = false;
                 }
             }
@@ -117,10 +117,10 @@ namespace Execution
             bool noInfo = true;
             foreach (Semitrailer trailer in listOfTrailers)
             {
-                if (trailer.joinedTractor != null && trailer.joinedTractor.carryingCapacity > trailer.GetWeihgtOfAllCargo())
+                if (trailer.JoinedTractor != null && trailer.JoinedTractor.carryingCapacity > trailer.GetWeihgtOfAllCargo())
                 {
-                    Console.WriteLine("\n" + trailer.GetTypeOfTrailer() + " #" + trailer.number +
-                        " joined with tractor " + trailer.joinedTractor.model + " #" + trailer.joinedTractor.number);
+                    Console.WriteLine("\n" + trailer.GetTypeOfTrailer() + " #" + trailer.Number +
+                        " joined with tractor " + trailer.JoinedTractor.model + " #" + trailer.JoinedTractor.Number);
                     noInfo = false;
                 }
             }

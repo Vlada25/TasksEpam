@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <transport>
-  <trailer name="trailer1">
+  <trailer Name="trailer1">
+    <type>Refrigerator</type>
     <maxWeight>40</maxWeight>
     <maxVolume>50</maxVolume>
   </trailer>

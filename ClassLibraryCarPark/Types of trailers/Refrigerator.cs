@@ -13,36 +13,36 @@ namespace ClassLibraryCarPark.Types_of_trailers
         }
         public override void LoadTrailer(Cargo cargo)
         {
-            if (cargo.isLiquid)
+            if (cargo.IsLiquid)
             {
                 throw new Exception("Refrigerators can't carry liquid");
             }
-            if (!cargo.wasTemperatureSet)
+            if (!cargo.WasTemperatureSet)
             {
                 throw new Exception("Temperature wasn't set");
             }
-            if (listOfCargo.Count > 0)
+            if (ListOfCargo.Count > 0)
             {
-                for (int i = 0; i < listOfCargo.Count; i++)
+                for (int i = 0; i < ListOfCargo.Count; i++)
                 {
-                    if (listOfCargo[i].StartTemperature > cargo.EndTemperature
-                        || listOfCargo[i].EndTemperature < cargo.StartTemperature)
+                    if (ListOfCargo[i].StartTemperature > cargo.EndTemperature
+                        || ListOfCargo[i].EndTemperature < cargo.StartTemperature)
                     {
                         throw new Exception("Mismatch of temperature transportation");
                     }
                 }
             }
-            ChangeWeightAndVolume(cargo.weight, cargo.volume);
-            listOfCargo.Add(cargo);
+            ChangeWeightAndVolume(cargo.Weight, cargo.Volume);
+            ListOfCargo.Add(cargo);
         }
         public override bool Equals(object obj)
         {
             return obj is Refrigerator refrigerator &&
                    base.Equals(obj) &&
-                   number == refrigerator.number &&
-                   EqualityComparer<TruckTractor>.Default.Equals(joinedTractor, refrigerator.joinedTractor) &&
+                   Number == refrigerator.Number &&
+                   EqualityComparer<TruckTractor>.Default.Equals(JoinedTractor, refrigerator.JoinedTractor) &&
                    typeOfTrailer == refrigerator.typeOfTrailer &&
-                   EqualityComparer<List<Cargo>>.Default.Equals(listOfCargo, refrigerator.listOfCargo) &&
+                   EqualityComparer<List<Cargo>>.Default.Equals(ListOfCargo, refrigerator.ListOfCargo) &&
                    MaxWeight == refrigerator.MaxWeight &&
                    MaxVolume == refrigerator.MaxVolume;
         }
@@ -51,10 +51,10 @@ namespace ClassLibraryCarPark.Types_of_trailers
         {
             int hashCode = -779872140;
             hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(number);
-            hashCode = hashCode * -1521134295 + EqualityComparer<TruckTractor>.Default.GetHashCode(joinedTractor);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Number);
+            hashCode = hashCode * -1521134295 + EqualityComparer<TruckTractor>.Default.GetHashCode(JoinedTractor);
             hashCode = hashCode * -1521134295 + typeOfTrailer.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<List<Cargo>>.Default.GetHashCode(listOfCargo);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<Cargo>>.Default.GetHashCode(ListOfCargo);
             hashCode = hashCode * -1521134295 + MaxWeight.GetHashCode();
             hashCode = hashCode * -1521134295 + MaxVolume.GetHashCode();
             return hashCode;
