@@ -36,7 +36,7 @@ namespace Execution
             {
                 foreach (TruckTractor tractor in listOfTractors)
                 {
-                    Console.WriteLine(tractor.model + "\t#" + tractor.Number);
+                    Console.WriteLine(tractor.Model + "\t#" + tractor.Number);
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace Execution
                 if (isThereDesiredType && trailer.JoinedTractor != null)
                 {
                     Console.WriteLine(trailer.GetTypeOfTrailer() + " #" + trailer.Number + 
-                        " joined with tractor " + trailer.JoinedTractor.model + " #" + trailer.JoinedTractor.Number);
+                        " joined with tractor " + trailer.JoinedTractor.Model + " #" + trailer.JoinedTractor.Number);
                     noInfo = false;
                 }
             }
@@ -117,10 +117,10 @@ namespace Execution
             bool noInfo = true;
             foreach (Semitrailer trailer in listOfTrailers)
             {
-                if (trailer.JoinedTractor != null && trailer.JoinedTractor.carryingCapacity > trailer.GetWeihgtOfAllCargo())
+                if (trailer.JoinedTractor != null && trailer.JoinedTractor.CarryingCapacity > trailer.GetWeihgtOfAllCargo())
                 {
                     Console.WriteLine("\n" + trailer.GetTypeOfTrailer() + " #" + trailer.Number +
-                        " joined with tractor " + trailer.JoinedTractor.model + " #" + trailer.JoinedTractor.Number);
+                        " joined with tractor " + trailer.JoinedTractor.Model + " #" + trailer.JoinedTractor.Number);
                     noInfo = false;
                 }
             }

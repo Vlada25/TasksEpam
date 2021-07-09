@@ -42,6 +42,10 @@ namespace ClassLibraryCarPark
         {
             _freeMass = MaxWeight;
             _freeVolume = MaxVolume;
+            if (JoinedTractor != null)
+            {
+                JoinedTractor.ExtraWeight = 0;
+            }
             ListOfCargo.Clear();
         }
         public void UnloadTrailer(Cargo cargo)
@@ -53,6 +57,10 @@ namespace ClassLibraryCarPark
             ListOfCargo.Remove(cargo);
             _freeMass += cargo.Weight;
             _freeVolume += cargo.Volume;
+            if (JoinedTractor != null)
+            {
+                JoinedTractor.ExtraWeight -= cargo.Weight;
+            }
         }
         public void UnloadTrailer(Cargo cargo, int percentOfCargo)
         {
@@ -70,19 +78,24 @@ namespace ClassLibraryCarPark
             }
             _freeMass += cargo.Weight * percentOfCargo / 100;
             _freeVolume += cargo.Volume * percentOfCargo / 100;
+            if (JoinedTractor != null)
+            {
+                JoinedTractor.ExtraWeight -= cargo.Weight * percentOfCargo / 100;
+            }
         }
         public void JoingWithTractor(TruckTractor tractor)
         {
-            if (!tractor.isFree)
+            if (!tractor.IsFree)
             {
                 throw new Exception("This tractor is already taken");
             }
-            if (tractor.carryingCapacity < MaxWeight - _freeMass)
+            if (tractor.CarryingCapacity < MaxWeight - _freeMass)
             {
                 throw new Exception("Carrying capacity of the tractor must be no less than Weight of the trailer");
             }
             JoinedTractor = tractor;
-            tractor.isFree = false;
+            tractor.ExtraWeight = MaxWeight - _freeMass;
+            tractor.IsFree = false;
         }
         public void UnhookFromTractor()
         {
@@ -90,7 +103,7 @@ namespace ClassLibraryCarPark
             {
                 throw new Exception("The trailer is already free");
             }
-            JoinedTractor.isFree = true;
+            JoinedTractor.IsFree = true;
             JoinedTractor = null;
         }
         protected void ChangeWeightAndVolume(double Weight, double Volume)
@@ -131,7 +144,7 @@ namespace ClassLibraryCarPark
         }
         public override string ToString()
         {
-            string result = "";
+            string result = "\n";
             result += $"Trailer #{Number}\nType of trailer: {typeOfTrailer}\n" +
                 $"Carrying capacity: {MaxWeight}\nMaximum Volume: {MaxVolume}\nCargo: ";
             if (ListOfCargo.Count == 0)
@@ -151,7 +164,6 @@ namespace ClassLibraryCarPark
             {
                 result += $"\nJoined with tractor #{JoinedTractor.Number}";
             }
-            result += "\n";
             return result;
         }
 

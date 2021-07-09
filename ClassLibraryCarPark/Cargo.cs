@@ -17,7 +17,7 @@ namespace ClassLibraryCarPark
         public double Volume;
         public string Name;
         public bool IsLiquid;
-        public CargoTypes TypeOfCargo { get;}
+        public CargoTypes TypeOfCargo { get; }
         public int StartTemperature { get; }
         public int EndTemperature { get; }
         public bool WasTemperatureSet = false;
@@ -42,7 +42,7 @@ namespace ClassLibraryCarPark
         }
         public override string ToString()
         {
-            return Name + " ";
+            return $"\n{Name} - {TypeOfCargo}";
         }
 
         public override bool Equals(object obj)

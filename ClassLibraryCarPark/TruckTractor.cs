@@ -8,18 +8,24 @@ namespace ClassLibraryCarPark
     {
         public string Number;
         private readonly List<string> existNumbers = new List<string>();
-        public string model;
-        public double fuelConsumption;
-        public double carryingCapacity;
-        public bool isFree;
+        public string Model;
+        private readonly double _fuelConsumption;
+        public double ExtraWeight;
+        public double CarryingCapacity;
+        public bool IsFree;
         public TruckTractor(string model, double fuelConsumption, double carryingCapacity)
         {
             Number = GenerateNumber();
             existNumbers.Add(Number);
-            this.model = model;
-            this.fuelConsumption = fuelConsumption;
-            this.carryingCapacity = carryingCapacity;
-            isFree = true;
+            Model = model;
+            _fuelConsumption = fuelConsumption;
+            CarryingCapacity = carryingCapacity;
+            IsFree = true;
+            ExtraWeight = 0;
+        }
+        public double CountFuelConsumption()
+        {
+            return _fuelConsumption + ExtraWeight * 1.3;
         }
         public string GenerateNumber()
         {
@@ -50,7 +56,7 @@ namespace ClassLibraryCarPark
         }
         public override string ToString()
         {
-            return $"Tractor #{Number}\nModel: {model}\nCarrying capacity: {carryingCapacity}\n";
+            return $"Tractor #{Number}\nModel: {Model}\nCarrying capacity: {CarryingCapacity}\n";
         }
 
         public override bool Equals(object obj)
@@ -58,10 +64,10 @@ namespace ClassLibraryCarPark
             return obj is TruckTractor tractor &&
                    Number == tractor.Number &&
                    EqualityComparer<List<string>>.Default.Equals(existNumbers, tractor.existNumbers) &&
-                   model == tractor.model &&
-                   fuelConsumption == tractor.fuelConsumption &&
-                   carryingCapacity == tractor.carryingCapacity &&
-                   isFree == tractor.isFree;
+                   Model == tractor.Model &&
+                   _fuelConsumption == tractor._fuelConsumption &&
+                   CarryingCapacity == tractor.CarryingCapacity &&
+                   IsFree == tractor.IsFree;
         }
 
         public override int GetHashCode()
@@ -69,10 +75,10 @@ namespace ClassLibraryCarPark
             int hashCode = 1098702807;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Number);
             hashCode = hashCode * -1521134295 + EqualityComparer<List<string>>.Default.GetHashCode(existNumbers);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(model);
-            hashCode = hashCode * -1521134295 + fuelConsumption.GetHashCode();
-            hashCode = hashCode * -1521134295 + carryingCapacity.GetHashCode();
-            hashCode = hashCode * -1521134295 + isFree.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Model);
+            hashCode = hashCode * -1521134295 + _fuelConsumption.GetHashCode();
+            hashCode = hashCode * -1521134295 + CarryingCapacity.GetHashCode();
+            hashCode = hashCode * -1521134295 + IsFree.GetHashCode();
             return hashCode;
         }
     }
