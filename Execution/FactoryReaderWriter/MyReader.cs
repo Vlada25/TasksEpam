@@ -7,6 +7,6 @@ namespace Execution.FactoryReaderWriter
 {
     abstract class MyReader
     {
-        public abstract void ReadInfo(List<Semitrailer> listOfTrailers, List<TruckTractor> listOfTractors, List<Cargo> listOfCargo);
+        public abstract void Read(List<Semitrailer> listOfTrailers, List<TruckTractor> listOfTractors, List<Cargo> listOfCargo);
     }
 }

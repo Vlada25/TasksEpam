@@ -35,7 +35,11 @@ namespace Execution
 
                 //MyReader reader = new MyXmlReader();
                 MyReader reader = new MyStreamReader();
-                reader.ReadInfo(trailers, tractors, cargo);
+                reader.Read(trailers, tractors, cargo);
+
+                //MyWriter writer = new MyXmlWriter();
+                MyWriter writer = new MyStreamWriter();
+                writer.Write(trailers, tractors, cargo);
 
                 Service.ViewCarPark(trailers, tractors);
 

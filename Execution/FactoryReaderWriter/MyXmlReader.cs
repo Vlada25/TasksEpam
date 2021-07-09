@@ -10,7 +10,7 @@ namespace Execution.FactoryReaderWriter
     class MyXmlReader : MyReader
     {
         const string FILENAME = @"E:\Epam May 2021\TasksEpam\CarPark1.xml";
-        public override void ReadInfo(List<Semitrailer> listOfTrailers, List<TruckTractor> listOfTractors, List<Cargo> listOfCargo)
+        public override void Read(List<Semitrailer> listOfTrailers, List<TruckTractor> listOfTractors, List<Cargo> listOfCargo)
         {
             XmlReader xmlReader = XmlReader.Create(FILENAME);
             while (xmlReader.Read())
