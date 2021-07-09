@@ -33,7 +33,8 @@ namespace Execution
                 List<TruckTractor> tractors = new List<TruckTractor>();
                 List<Cargo> cargo = new List<Cargo>();
 
-                MyReader reader = new MyXmlReader();
+                //MyReader reader = new MyXmlReader();
+                MyReader reader = new MyStreamReader();
                 reader.ReadInfo(trailers, tractors, cargo);
 
                 Service.ViewCarPark(trailers, tractors);
@@ -58,14 +59,13 @@ namespace Execution
                 Console.WriteLine(trailers[(int)Indices.TiltSemitrailer].ToString());
 
                 Console.WriteLine("\n\nAFTER JOING:\n");
-                /*
                 trailers[(int)Indices.Refrigerator].JoingWithTractor(tractors[0]);
 
                 Console.WriteLine(tractors[0].ToString());
                 Console.WriteLine(trailers[(int)Indices.Refrigerator].ToString());
 
                 trailers[(int)Indices.Refrigerator].UnhookFromTractor();
-                trailers[(int)Indices.TankTruck].JoingWithTractor(tractors[0]);*/
+                trailers[(int)Indices.TankTruck].JoingWithTractor(tractors[0]);
                 trailers[(int)Indices.TiltSemitrailer].JoingWithTractor(tractors[1]);
 
                 Console.WriteLine(trailers[(int)Indices.Refrigerator].ToString());

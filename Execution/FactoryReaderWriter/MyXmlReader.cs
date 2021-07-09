@@ -9,9 +9,10 @@ namespace Execution.FactoryReaderWriter
 {
     class MyXmlReader : MyReader
     {
+        const string FILENAME = @"E:\Epam May 2021\TasksEpam\CarPark1.xml";
         public override void ReadInfo(List<Semitrailer> listOfTrailers, List<TruckTractor> listOfTractors, List<Cargo> listOfCargo)
         {
-            XmlReader xmlReader = XmlReader.Create(@"E:\Epam May 2021\TasksEpam\CarPark1.xml");
+            XmlReader xmlReader = XmlReader.Create(FILENAME);
             while (xmlReader.Read())
             {
                 if ((xmlReader.NodeType == XmlNodeType.Element))
@@ -20,11 +21,11 @@ namespace Execution.FactoryReaderWriter
                     {
                         AddTrailer(xmlReader, listOfTrailers);
                     }
-                    if (xmlReader.Name == "tractor")
+                    else if (xmlReader.Name == "tractor")
                     {
                         AddTractor(xmlReader, listOfTractors);
                     }
-                    if (xmlReader.Name == "cargo")
+                    else if (xmlReader.Name == "cargo")
                     {
                         AddCargo(xmlReader, listOfCargo);
                     }
