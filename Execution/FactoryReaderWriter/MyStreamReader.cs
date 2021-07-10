@@ -12,6 +12,7 @@ namespace Execution.FactoryReaderWriter
     class MyStreamReader : MyReader
     {
         const string FILENAME = @"E:\Epam May 2021\TasksEpam\CarPark1.xml";
+
         public override void Read(List<Semitrailer> listOfTrailers, List<TruckTractor> listOfTractors, List<Cargo> listOfCargo)
         {
             string contents;
@@ -38,6 +39,12 @@ namespace Execution.FactoryReaderWriter
                 }
             }
         }
+
+        /// <summary>
+        /// Reading information about trailer and adding it to the list
+        /// </summary>
+        /// <param name="xnode"> Allows to read information </param>
+        /// <param name="listOfTrailers"> All trailers </param>
         private void AddTrailer(XmlNode xnode, List<Semitrailer> listOfTrailers)
         {
             string trailerType = xnode.Attributes.GetNamedItem("type").Value;
@@ -57,6 +64,12 @@ namespace Execution.FactoryReaderWriter
                 default: throw new Exception("Invalid type");
             }
         }
+
+        /// <summary>
+        /// Reading information about tractor and adding it to the list
+        /// </summary>
+        /// <param name="xnode"> Allows to read information </param>
+        /// <param name="listOfTractors"> All tractors </param>
         private void AddTractor(XmlNode xnode, List<TruckTractor> listOfTractors)
         {
             string model = xnode.Attributes.GetNamedItem("model").Value;
@@ -64,6 +77,12 @@ namespace Execution.FactoryReaderWriter
             double carryingCapacity = Convert.ToDouble(xnode.Attributes.GetNamedItem("carryingCapacity").Value);
             listOfTractors.Add(new TruckTractor(model, fuelConsumption, carryingCapacity));
         }
+
+        /// <summary>
+        /// Reading information about cargo and adding it to the list
+        /// </summary>
+        /// <param name="xnode"> Allows to read information </param>
+        /// <param name="listOfCargo"> All cargo </param>
         private void AddCargo(XmlNode xnode, List<Cargo> listOfCargo)
         {
             string name = xnode.Attributes.GetNamedItem("name").Value;
@@ -88,6 +107,21 @@ namespace Execution.FactoryReaderWriter
                 cargo = new Cargo(name, weight, volume, isLiquid, cargoType);
             }
             listOfCargo.Add(cargo);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 }

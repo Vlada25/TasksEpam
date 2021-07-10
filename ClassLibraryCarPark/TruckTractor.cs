@@ -23,10 +23,20 @@ namespace ClassLibraryCarPark
             IsFree = true;
             ExtraWeight = 0;
         }
+
+        /// <summary>
+        /// Counting of the fuel consumption (given the weight of the trailer, if any)
+        /// </summary>
+        /// <returns> Fuel consumption </returns>
         public double CountFuelConsumption()
         {
             return _fuelConsumption + ExtraWeight * 1.3;
         }
+
+        /// <summary>
+        /// Generation of tractor's number
+        /// </summary>
+        /// <returns> Number of tractor </returns>
         public string GenerateNumber()
         {
             string res;

@@ -41,6 +41,12 @@ namespace Execution.FactoryReaderWriter
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Writing trailer to the new xml file
+        /// </summary>
+        /// <param name="xmlTextWriter"> Writes information </param>
+        /// <param name="listOfTrailers"> All trailers </param>
         private void WriteTrailer(XmlTextWriter xmlTextWriter, List<Semitrailer> listOfTrailers)
         {
             foreach (Semitrailer trailer in listOfTrailers)
@@ -56,6 +62,12 @@ namespace Execution.FactoryReaderWriter
                 xmlTextWriter.WriteEndElement();
             }
         }
+
+        /// <summary>
+        /// Writing tractor to the new xml file
+        /// </summary>
+        /// <param name="xmlTextWriter"> Writes information </param>
+        /// <param name="listOfTractors"> All tractors </param>
         private void WriteTractor(XmlTextWriter xmlTextWriter, List<TruckTractor> listOfTractors)
         {
             foreach (TruckTractor tractor in listOfTractors)
@@ -71,6 +83,12 @@ namespace Execution.FactoryReaderWriter
                 xmlTextWriter.WriteEndElement();
             }
         }
+
+        /// <summary>
+        /// Writing cargo to the new xml file
+        /// </summary>
+        /// <param name="xmlTextWriter"> Writes information </param>
+        /// <param name="listOfCargo"> All cargo </param>
         private void WriteCargo(XmlTextWriter xmlTextWriter, List<Cargo> listOfCargo)
         {
             foreach (Cargo cargo in listOfCargo)
@@ -99,6 +117,21 @@ namespace Execution.FactoryReaderWriter
 
                 xmlTextWriter.WriteEndElement();
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 }

@@ -32,6 +32,12 @@ namespace Execution.FactoryReaderWriter
                 }
             }
         }
+
+        /// <summary>
+        /// Reading information about trailer and adding it to the list
+        /// </summary>
+        /// <param name="xmlReader"> Allows to read information </param>
+        /// <param name="listOfTrailers"> All trailers </param>
         private void AddTrailer(XmlReader xmlReader, List<Semitrailer> listOfTrailers)
         {
             if (xmlReader.HasAttributes)
@@ -54,6 +60,12 @@ namespace Execution.FactoryReaderWriter
                 }
             }
         }
+
+        /// <summary>
+        /// Reading information about tractor and adding it to the list
+        /// </summary>
+        /// <param name="xmlReader"> Allows to read information </param>
+        /// <param name="listOfTractors"> All tractors </param>
         private void AddTractor(XmlReader xmlReader, List<TruckTractor> listOfTractors)
         {
             if (xmlReader.HasAttributes)
@@ -64,6 +76,12 @@ namespace Execution.FactoryReaderWriter
                 listOfTractors.Add(new TruckTractor(model, fuelConsumption, carryingCapacity));
             }
         }
+
+        /// <summary>
+        /// Reading information about cargo and adding it to the list
+        /// </summary>
+        /// <param name="xmlReader"> Allows to read information </param>
+        /// <param name="listOfCargo"> All cargo </param>
         private void AddCargo(XmlReader xmlReader, List<Cargo> listOfCargo)
         {
             if (xmlReader.HasAttributes)
@@ -91,6 +109,21 @@ namespace Execution.FactoryReaderWriter
                 }
                 listOfCargo.Add(cargo);
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 }

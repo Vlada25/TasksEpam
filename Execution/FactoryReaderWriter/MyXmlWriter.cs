@@ -24,6 +24,12 @@ namespace Execution.FactoryReaderWriter
             xmlWriter.WriteEndDocument();
             xmlWriter.Close();
         }
+
+        /// <summary>
+        /// Writing trailer to the new xml file
+        /// </summary>
+        /// <param name="xmlWriter"> Writes information </param>
+        /// <param name="listOfTrailers"> All trailers </param>
         private void WriteTrailer(XmlWriter xmlWriter, List<Semitrailer> listOfTrailers)
         {
             foreach (Semitrailer trailer in listOfTrailers)
@@ -35,6 +41,12 @@ namespace Execution.FactoryReaderWriter
                 xmlWriter.WriteEndElement();
             }
         }
+
+        /// <summary>
+        /// Writing tractor to the new xml file
+        /// </summary>
+        /// <param name="xmlWriter"> Writes information </param>
+        /// <param name="listOfTractors"> All tractors </param>
         private void WriteTractor(XmlWriter xmlWriter, List<TruckTractor> listOfTractors)
         {
             foreach (TruckTractor tractor in listOfTractors)
@@ -46,6 +58,12 @@ namespace Execution.FactoryReaderWriter
                 xmlWriter.WriteEndElement();
             }
         }
+
+        /// <summary>
+        /// Writing cargo to the new xml file
+        /// </summary>
+        /// <param name="xmlWriter"> Writes information </param>
+        /// <param name="listOfCargo"> All cargo </param>
         private void WriteCargo(XmlWriter xmlWriter, List<Cargo> listOfCargo)
         {
             foreach (Cargo cargo in listOfCargo)
@@ -63,6 +81,23 @@ namespace Execution.FactoryReaderWriter
                 }
                 xmlWriter.WriteEndElement();
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is MyXmlWriter writer &&
+                   base.Equals(obj) &&
+                   EqualityComparer<XmlWriter>.Default.Equals(xmlWriter, writer.xmlWriter);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(base.GetHashCode(), xmlWriter);
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 }

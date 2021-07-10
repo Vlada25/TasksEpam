@@ -12,6 +12,12 @@ namespace Execution
             Weight,
             Volume
         }
+
+        /// <summary>
+        /// Allows to view all trailers and tractors
+        /// </summary>
+        /// <param name="listOfTrailers"> All trailers </param>
+        /// <param name="listOfTractors"> All tractors </param>
         public static void ViewCarPark(List<Semitrailer> listOfTrailers, List<TruckTractor> listOfTractors)
         {
             Console.WriteLine("\nTrailers:");
@@ -40,6 +46,12 @@ namespace Execution
                 }
             }
         }
+
+        /// <summary>
+        /// Looking for a trailer by type
+        /// </summary>
+        /// <param name="listOfTrailers"> All trailers </param>
+        /// <param name="typeOfTrailer"> Selected type of trailer </param>
         public static void FindSemitrailer(List<Semitrailer> listOfTrailers, Semitrailer.TypesOfTrailers typeOfTrailer)
         {
             bool noInfo = true;
@@ -57,6 +69,14 @@ namespace Execution
                 Console.WriteLine("no info");
             }
         }
+
+        /// <summary>
+        /// Looking for trailer by mass or volume (in range)
+        /// </summary>
+        /// <param name="listOfTrailers"> All trailers </param>
+        /// <param name="minValue"> Start value </param>
+        /// <param name="maxValue"> End value </param>
+        /// <param name="value"> Mass or volume </param>
         public static void FindSemitrailer(List<Semitrailer> listOfTrailers, double minValue, double maxValue, WeightOrVolume value)
         {
             bool noInfo = true;
@@ -85,6 +105,12 @@ namespace Execution
                 Console.WriteLine("no info");
             }
         }
+
+        /// <summary>
+        /// Search for hitch depending on the transported cargo
+        /// </summary>
+        /// <param name="listOfTrailers"> All trailers </param>
+        /// <param name="cargoType"> Type of cargo </param>
         public static void FindCouplingsByCargo(List<Semitrailer> listOfTrailers, Cargo.CargoTypes cargoType)
         {
             bool noInfo = true;
@@ -112,6 +138,11 @@ namespace Execution
                 Console.WriteLine("no info");
             }
         }
+
+        /// <summary>
+        /// Searching for hitch where there is any free space in semitrailer
+        /// </summary>
+        /// <param name="listOfTrailers"> All trailers </param>
         public static void FindCouplingWithAnyFreeSpace(List<Semitrailer> listOfTrailers)
         {
             bool noInfo = true;

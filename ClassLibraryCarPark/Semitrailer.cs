@@ -29,15 +29,34 @@ namespace ClassLibraryCarPark
             _freeMass = maxWeight;
             _freeVolume = maxVolume;
         }
+
+        /// <summary>
+        /// Trailer loading
+        /// </summary>
+        /// <param name="cargo"> What we load into the trailer </param>
         public abstract void LoadTrailer(Cargo cargo);
+
+        /// <summary>
+        /// Getting type of semitrailer
+        /// </summary>
+        /// <returns> Type of semitrailer </returns>
         public TypesOfTrailers GetTypeOfTrailer()
         {
             return typeOfTrailer;
         }
+
+        /// <summary>
+        /// Getting weight of all loaded cargo
+        /// </summary>
+        /// <returns> Weight of cargo in semitrailer </returns>
         public double GetWeihgtOfAllCargo()
         {
             return MaxWeight - _freeMass;
         }
+
+        /// <summary>
+        /// Remove all cargo from the trailer
+        /// </summary>
         public void UnloadAll()
         {
             _freeMass = MaxWeight;
@@ -48,6 +67,11 @@ namespace ClassLibraryCarPark
             }
             ListOfCargo.Clear();
         }
+
+        /// <summary>
+        /// Remove the specified load from the trailer
+        /// </summary>
+        /// <param name="cargo"> Selected cargo </param>
         public void UnloadTrailer(Cargo cargo)
         {
             if (!ListOfCargo.Contains(cargo))
@@ -62,6 +86,12 @@ namespace ClassLibraryCarPark
                 JoinedTractor.ExtraWeight -= cargo.Weight;
             }
         }
+
+        /// <summary>
+        /// Remove part of the specified load from the trailer
+        /// </summary>
+        /// <param name="cargo"> Selected cargo </param>
+        /// <param name="percentOfCargo"> The percentage of the mass of the cargo to be removed </param>
         public void UnloadTrailer(Cargo cargo, int percentOfCargo)
         {
             if (!ListOfCargo.Contains(cargo))
@@ -83,6 +113,11 @@ namespace ClassLibraryCarPark
                 JoinedTractor.ExtraWeight -= cargo.Weight * percentOfCargo / 100;
             }
         }
+
+        /// <summary>
+        /// Tractor clutch
+        /// </summary>
+        /// <param name="tractor"> Selected tractor </param>
         public void JoingWithTractor(TruckTractor tractor)
         {
             if (!tractor.IsFree)
@@ -97,6 +132,10 @@ namespace ClassLibraryCarPark
             tractor.ExtraWeight = MaxWeight - _freeMass;
             tractor.IsFree = false;
         }
+
+        /// <summary>
+        /// Disconnection from the tractor
+        /// </summary>
         public void UnhookFromTractor()
         {
             if (JoinedTractor == null)
@@ -106,15 +145,26 @@ namespace ClassLibraryCarPark
             JoinedTractor.IsFree = true;
             JoinedTractor = null;
         }
-        protected void ChangeWeightAndVolume(double Weight, double Volume)
+
+        /// <summary>
+        /// Changing mass and volume when adding new cargo
+        /// </summary>
+        /// <param name="weight"> Weight of new cargo </param>
+        /// <param name="volume"> Volume of new cargo </param>
+        protected void ChangeWeightAndVolume(double weight, double volume)
         {
-            if (_freeMass < Weight || _freeVolume < Volume)
+            if (_freeMass < weight || _freeVolume < volume)
             {
                 throw new Exception("Not enough space");
             }
-            _freeMass -= Weight;
-            _freeVolume -= Volume;
+            _freeMass -= weight;
+            _freeVolume -= volume;
         }
+
+        /// <summary>
+        /// Generation of trailer's number
+        /// </summary>
+        /// <returns> Number of trailer </returns>
         private string GenerateNumber()
         {
             string res;
