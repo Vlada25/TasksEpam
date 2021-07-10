@@ -1,11 +1,10 @@
-﻿using ClassLibraryCarPark;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Execution
+namespace ClassLibraryCarPark
 {
-    class Service
+    public class CarParkService
     {
         public enum WeightOrVolume
         {
@@ -18,33 +17,36 @@ namespace Execution
         /// </summary>
         /// <param name="listOfTrailers"> All trailers </param>
         /// <param name="listOfTractors"> All tractors </param>
-        public static void ViewCarPark(List<Semitrailer> listOfTrailers, List<TruckTractor> listOfTractors)
+        /// <returns> Some information about all trailers and tractors </returns>
+        public static string ViewCarPark(List<Semitrailer> listOfTrailers, List<TruckTractor> listOfTractors)
         {
-            Console.WriteLine("\nTrailers:");
+            string result = "";
+            result += "\nTrailers:\n";
             if (listOfTrailers.Count == 0)
             {
-                Console.WriteLine("no info");
+                result += "no info";
             }
             else
             {
                 foreach (Semitrailer trailer in listOfTrailers)
                 {
-                    Console.WriteLine(trailer.GetTypeOfTrailer() + "\t#" + trailer.Number);
+                    result += $"{trailer.GetTypeOfTrailer()} \t# {trailer.Number}\n";
                 }
             }
-            
-            Console.WriteLine("\nTractors:");
+
+            result += "\nTractors:\n";
             if (listOfTractors.Count == 0)
             {
-                Console.WriteLine("no info");
+                result += "no info";
             }
             else
             {
                 foreach (TruckTractor tractor in listOfTractors)
                 {
-                    Console.WriteLine(tractor.Model + "\t#" + tractor.Number);
+                    result += $"{tractor.Model} \t# {tractor.Number}\n";
                 }
             }
+            return result;
         }
 
         /// <summary>
@@ -52,22 +54,25 @@ namespace Execution
         /// </summary>
         /// <param name="listOfTrailers"> All trailers </param>
         /// <param name="typeOfTrailer"> Selected type of trailer </param>
-        public static void FindSemitrailer(List<Semitrailer> listOfTrailers, Semitrailer.TypesOfTrailers typeOfTrailer)
+        /// <returns> Some information about appropriate trailers </returns>
+        public static string FindSemitrailer(List<Semitrailer> listOfTrailers, Semitrailer.TypesOfTrailers typeOfTrailer)
         {
+            string result = "";
             bool noInfo = true;
-            Console.WriteLine("\nType: " + typeOfTrailer);
+            result += $"\nType: {typeOfTrailer}\n";
             foreach (Semitrailer trailer in listOfTrailers)
             {
                 if (typeOfTrailer == trailer.GetTypeOfTrailer())
                 {
-                    Console.WriteLine(trailer.GetTypeOfTrailer() + "\t#" + trailer.Number);
+                    result += $"{trailer.GetTypeOfTrailer()} \t# {trailer.Number}\n";
                     noInfo = false;
                 }
             }
             if (noInfo)
             {
-                Console.WriteLine("no info");
+                result += "no info";
             }
+            return result;
         }
 
         /// <summary>
@@ -77,17 +82,19 @@ namespace Execution
         /// <param name="minValue"> Start value </param>
         /// <param name="maxValue"> End value </param>
         /// <param name="value"> Mass or volume </param>
-        public static void FindSemitrailer(List<Semitrailer> listOfTrailers, double minValue, double maxValue, WeightOrVolume value)
+        /// <returns> Some information about appropriate trailers </returns>
+        public static string FindSemitrailer(List<Semitrailer> listOfTrailers, double minValue, double maxValue, WeightOrVolume value)
         {
+            string result = "";
             bool noInfo = true;
-            Console.WriteLine("\n" + value + " : " + minValue + " - " + maxValue);
+            result += $"\n{value} : {minValue} - {maxValue}\n";
             foreach (Semitrailer trailer in listOfTrailers)
             {
                 if (value == WeightOrVolume.Weight)
                 {
                     if (trailer.MaxWeight >= minValue && trailer.MaxWeight <= maxValue)
                     {
-                        Console.WriteLine(trailer.GetTypeOfTrailer() + "\t#" + trailer.Number);
+                        result += $"{trailer.GetTypeOfTrailer()} \t# {trailer.Number}\n";
                         noInfo = false;
                     }
                 }
@@ -95,15 +102,16 @@ namespace Execution
                 {
                     if (trailer.MaxVolume >= minValue && trailer.MaxVolume <= maxValue)
                     {
-                        Console.WriteLine(trailer.GetTypeOfTrailer() + "\t#" + trailer.Number);
+                        result += $"{trailer.GetTypeOfTrailer()} \t# {trailer.Number}\n";
                         noInfo = false;
                     }
                 }
             }
             if (noInfo)
             {
-                Console.WriteLine("no info");
+                result += "no info";
             }
+            return result;
         }
 
         /// <summary>
@@ -111,10 +119,12 @@ namespace Execution
         /// </summary>
         /// <param name="listOfTrailers"> All trailers </param>
         /// <param name="cargoType"> Type of cargo </param>
-        public static void FindCouplingsByCargo(List<Semitrailer> listOfTrailers, Cargo.CargoTypes cargoType)
+        /// <returns> Some information about appropriate couplings </returns>
+        public static string FindCouplingsByCargo(List<Semitrailer> listOfTrailers, Cargo.CargoTypes cargoType)
         {
+            string result = "";
             bool noInfo = true;
-            Console.WriteLine("\nType of cargo: " + cargoType);
+            result += $"\nType of cargo: {cargoType}\n";
             foreach (Semitrailer trailer in listOfTrailers)
             {
                 bool isThereDesiredType = false;
@@ -128,37 +138,41 @@ namespace Execution
                 }
                 if (isThereDesiredType && trailer.JoinedTractor != null)
                 {
-                    Console.WriteLine(trailer.GetTypeOfTrailer() + " #" + trailer.Number + 
-                        " joined with tractor " + trailer.JoinedTractor.Model + " #" + trailer.JoinedTractor.Number);
+                    result += $"{trailer.GetTypeOfTrailer()} #{trailer.Number}" +
+                        $" joined with tractor {trailer.JoinedTractor.Model} #{trailer.JoinedTractor.Number}";
                     noInfo = false;
                 }
             }
             if (noInfo)
             {
-                Console.WriteLine("no info");
+                result += "no info";
             }
+            return result;
         }
 
         /// <summary>
         /// Searching for hitch where there is any free space in semitrailer
         /// </summary>
         /// <param name="listOfTrailers"> All trailers </param>
-        public static void FindCouplingWithAnyFreeSpace(List<Semitrailer> listOfTrailers)
+        /// <returns> Some information about appropriate couplings </returns>
+        public static string FindCouplingWithAnyFreeSpace(List<Semitrailer> listOfTrailers)
         {
+            string result = "";
             bool noInfo = true;
             foreach (Semitrailer trailer in listOfTrailers)
             {
                 if (trailer.JoinedTractor != null && trailer.JoinedTractor.CarryingCapacity > trailer.GetWeihgtOfAllCargo())
                 {
-                    Console.WriteLine("\n" + trailer.GetTypeOfTrailer() + " #" + trailer.Number +
-                        " joined with tractor " + trailer.JoinedTractor.Model + " #" + trailer.JoinedTractor.Number);
+                    result += $"\n{trailer.GetTypeOfTrailer()} #{trailer.Number}" +
+                        $" joined with tractor {trailer.JoinedTractor.Model} #{trailer.JoinedTractor.Number}";
                     noInfo = false;
                 }
             }
             if (noInfo)
             {
-                Console.WriteLine("no info");
+                result += "no info";
             }
+            return result;
         }
     }
 }

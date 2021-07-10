@@ -41,9 +41,8 @@ namespace Execution
                 MyWriter writer = new MyStreamWriter();
                 writer.Write(trailers, tractors, cargo);
 
-                Service.ViewCarPark(trailers, tractors);
+                Console.WriteLine(CarParkService.ViewCarPark(trailers, tractors));
 
-                /*
                 trailers[(int)Indices.Refrigerator].LoadTrailer(cargo[(int)Indices.Milk]);
                 trailers[(int)Indices.Refrigerator].LoadTrailer(cargo[(int)Indices.Fish]);
                 trailers[(int)Indices.TankTruck].LoadTrailer(cargo[(int)Indices.DT]);
@@ -76,14 +75,13 @@ namespace Execution
                 Console.WriteLine(trailers[(int)Indices.Refrigerator].ToString());
                 Console.WriteLine(trailers[(int)Indices.TankTruck].ToString());
 
-                Service.ViewCarPark(trailers, tractors);
-                Service.FindSemitrailer(trailers, Semitrailer.TypesOfTrailers.Refrigerator);
-                Service.FindSemitrailer(trailers, 30, 150, Service.WeightOrVolume.Weight);
-                Service.FindCouplingsByCargo(trailers, Cargo.CargoTypes.Fuel);
-                Service.FindCouplingWithAnyFreeSpace(trailers);
+                Console.WriteLine(CarParkService.ViewCarPark(trailers, tractors));
+                Console.WriteLine(CarParkService.FindSemitrailer(trailers, Semitrailer.TypesOfTrailers.Refrigerator));
+                Console.WriteLine(CarParkService.FindSemitrailer(trailers, 30, 150, CarParkService.WeightOrVolume.Weight));
+                Console.WriteLine(CarParkService.FindCouplingsByCargo(trailers, Cargo.CargoTypes.Fuel));
+                Console.WriteLine(CarParkService.FindCouplingWithAnyFreeSpace(trailers));
 
                 Console.WriteLine($"\nFuel consumption of {tractors[1].Model} #{tractors[1].Number} = {tractors[1].CountFuelConsumption()}");
-                */
             }
             catch(Exception error)
             {

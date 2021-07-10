@@ -61,5 +61,19 @@ namespace UnitTestTask2
 
             Assert.AreEqual(result, expected);
         }
+
+        [TestMethod]
+        public void UnloadTrailer_Test()
+        {
+            Semitrailer trailer = new Refrigerator(40, 50);
+            Cargo cargo = new Cargo("milk", 12, 12.93, false, 3, 5, Cargo.CargoTypes.Product);
+            trailer.LoadTrailer(cargo);
+            trailer.UnloadTrailer(cargo);
+
+            int result = trailer.ListOfCargo.Count;
+            int expected = 0;
+
+            Assert.AreEqual(result, expected);
+        }
     }
 }
