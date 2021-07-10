@@ -43,6 +43,7 @@ namespace Execution
 
                 Service.ViewCarPark(trailers, tractors);
 
+                /*
                 trailers[(int)Indices.Refrigerator].LoadTrailer(cargo[(int)Indices.Milk]);
                 trailers[(int)Indices.Refrigerator].LoadTrailer(cargo[(int)Indices.Fish]);
                 trailers[(int)Indices.TankTruck].LoadTrailer(cargo[(int)Indices.DT]);
@@ -82,6 +83,7 @@ namespace Execution
                 Service.FindCouplingWithAnyFreeSpace(trailers);
 
                 Console.WriteLine($"\nFuel consumption of {tractors[1].Model} #{tractors[1].Number} = {tractors[1].CountFuelConsumption()}");
+                */
             }
             catch(Exception error)
             {
