@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="UnitTestSemitrailer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTestService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
