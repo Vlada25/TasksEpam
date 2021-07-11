@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<carpark>
-  <trailer type="Refrigerator" maxWeight="40" maxVolume="50" />
-  <trailer type="TankTruck" maxWeight="1000" maxVolume="1200" />
-  <trailer type="TiltSemitrailer" maxWeight="100" maxVolume="200" />
-  <tractor model="MAN_40.604_DFAT" fuelConsumption="41,3" carryingCapacity="10000" />
-  <tractor model="MAN_12.170" fuelConsumption="15,7" carryingCapacity="4500" />
-  <cargo name="milk" weight="12" volume="12,93" isLiquid="False" type="Product" startTemp="0" endTemp="5" />
-  <cargo name="fish" weight="10" volume="9,3" isLiquid="False" type="Product" startTemp="-12" endTemp="0" />
-  <cargo name="DT" weight="420" volume="500" isLiquid="True" type="Fuel" />
-  <cargo name="porridge" weight="15" volume="44,46" isLiquid="False" type="Product" />
-  <cargo name="washing_powder" weight="30" volume="40,6" isLiquid="False" type="Chemicals" />
-  <cargo name="fairy" weight="18" volume="18,36" isLiquid="False" type="Chemicals" />
-</carpark>
+﻿<?xml version="1.0" encoding="utf-8"?><carpark><trailer type="Refrigerator" maxWeight="40" maxVolume="50" /><trailer type="TankTruck" maxWeight="1000" maxVolume="1200" /><trailer type="TiltSemitrailer" maxWeight="100" maxVolume="200" /><tractor model="MAN_40.604_DFAT" fuelConsumption="314,3" carryingCapacity="10000" /><tractor model="MAN_12.170" fuelConsumption="38,900000000000006" carryingCapacity="4500" /><cargo name="milk" weight="12" volume="12,93" isLiquid="False" type="Product" startTemp="0" endTemp="5" /><cargo name="fish" weight="10" volume="9,3" isLiquid="False" type="Product" startTemp="-12" endTemp="0" /><cargo name="DT" weight="420" volume="500" isLiquid="True" type="Fuel" /><cargo name="porridge" weight="15" volume="44,46" isLiquid="False" type="Product" /><cargo name="washing_powder" weight="30" volume="40,6" isLiquid="False" type="Chemicals" /><cargo name="fairy" weight="18" volume="18,36" isLiquid="False" type="Chemicals" /></carpark>

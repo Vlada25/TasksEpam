@@ -9,7 +9,7 @@ namespace Execution.FactoryReaderWriter
 
     class MyXmlWriter : MyWriter
     {
-        const string FILENAME = @"E:\Epam May 2021\Vlada25\TasksEpam\CarPark1.xml";
+        const string FILENAME = @"E:\Epam May 2021\Vlada25\TasksEpam\NewCarPark.xml";
         readonly XmlWriter xmlWriter = XmlWriter.Create(FILENAME);
 
         public override void Write(List<Semitrailer> listOfTrailers, List<TruckTractor> listOfTractors, List<Cargo> listOfCargo)

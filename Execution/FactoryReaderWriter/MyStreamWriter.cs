@@ -9,7 +9,7 @@ namespace Execution.FactoryReaderWriter
 {
     class MyStreamWriter : MyWriter
     {
-        const string FILENAME = @"E:\Epam May 2021\Vlada25\TasksEpam\CarPark1.xml";
+        const string FILENAME = @"E:\Epam May 2021\Vlada25\TasksEpam\NewCarPark.xml";
         public override void Write(List<Semitrailer> listOfTrailers, List<TruckTractor> listOfTractors, List<Cargo> listOfCargo)
         {
             FileStream fileStream;
@@ -59,6 +59,15 @@ namespace Execution.FactoryReaderWriter
                 xmlTextWriter.WriteAttributeString("type", type);
                 xmlTextWriter.WriteAttributeString("maxWeight", maxWeight);
                 xmlTextWriter.WriteAttributeString("maxVolume", maxVolume);
+                if (trailer.ListOfCargo.Count != 0)
+                {
+                    string trailerCargo = "";
+                    foreach (Cargo cargo in trailer.ListOfCargo)
+                    {
+                        trailerCargo += cargo.Name + " ";
+                    }
+                    xmlTextWriter.WriteAttributeString("cargo", trailerCargo);
+                }
                 xmlTextWriter.WriteEndElement();
             }
         }
