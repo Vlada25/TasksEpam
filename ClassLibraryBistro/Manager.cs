@@ -12,7 +12,7 @@ namespace ClassLibraryBistro
             Coctail
         }
         private static bool _alreadyExist = false;
-        public List<ClientOrder> ClientOrdersList = new List<ClientOrder>();
+        public static List<ClientOrder> ClientOrdersList = new List<ClientOrder>();
         public Manager()
         {
             if (_alreadyExist)
@@ -52,7 +52,6 @@ namespace ClassLibraryBistro
                 result += $"\nIs order ready: ";
                 result += order.IsDone ? "Yes" : "No";
             }
-            
             return result;
         }
     }

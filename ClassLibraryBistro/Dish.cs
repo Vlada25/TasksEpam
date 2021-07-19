@@ -8,11 +8,12 @@ namespace ClassLibraryBistro
         public string Name { get; }
         public Manager.Menu Type { get; }
 
-        public List<Product> Ingredients;
+        public bool IsDishDone;
         public Dish(string name, Manager.Menu type)
         {
             Name = name;
             Type = type;
+            IsDishDone = false;
         }
         public override string ToString()
         {
