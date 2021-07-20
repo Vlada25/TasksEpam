@@ -9,6 +9,7 @@ namespace ClassLibraryBistro
         public string ClientNumber { get; }
         double finalBill = 0;
         string orderTime;
+        public int SpentMinutes = 0;
         public bool IsDone = false;
         public List<Dish> Dishes = new List<Dish>();
         public List<int> ContOfPortionsList = new List<int>();

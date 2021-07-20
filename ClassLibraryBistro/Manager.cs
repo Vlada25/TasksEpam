@@ -9,6 +9,7 @@ namespace ClassLibraryBistro
         public enum Menu
         {
             Salad,
+            Meat,
             Coctail
         }
         private static bool _alreadyExist = false;

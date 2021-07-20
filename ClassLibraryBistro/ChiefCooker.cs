@@ -9,8 +9,6 @@ namespace ClassLibraryBistro
         public struct Product
         {
             public string Name;
-            public int Count;
-            public double Weight;
             public double TotalPrice;
         }
         public enum CookOperations
@@ -23,10 +21,21 @@ namespace ClassLibraryBistro
             Bake,
             Add
         }
+        public enum KitchenUtensils
+        {
+            Pan,
+            Saucepan,
+            Oven,
+            Grill,
+            Bowl
+        }
+        const int PAN_CAPACITY = 2;
         private static bool _alreadyExist = false;
-        List<Product> ingredients; 
-        public Dish dish;
-        double costOfAllIngredients;
+        List<Product> ingredients = new List<Product>();
+        ClientOrder clientOrder;
+        double costOfIngredients;
+        Dictionary<string, string> recipes = new Dictionary<string, string>();
+        double freeSpaceInPan;
         public ChiefCooker()
         {
             if (_alreadyExist)
@@ -35,67 +44,118 @@ namespace ClassLibraryBistro
             }
             _alreadyExist = true;
         }
-        public void CompleteTheOrder(string clientNumber, string dishName)
+        public void CompleteTheOrder(string clientNumber)
         {
-            bool isDishExist = false;
+            bool isNumberExist = false;
             foreach (ClientOrder order in Manager.ClientOrdersList)
             {
-                if (clientNumber == order.ClientNumber)
+                if (clientNumber.Equals(order.ClientNumber))
                 {
-                    foreach (Dish dish in order.Dishes)
-                    {
-                        if (dishName == dish.Name)
-                        {
-                            this.dish = dish;
-                            isDishExist = true;
-                            ingredients = new List<Product>();
-                            costOfAllIngredients = 0;
-                            break;
-                        }
-                    }
+                    isNumberExist = true;
+                    clientOrder = order;
+                    costOfIngredients = 0;
+                    freeSpaceInPan = PAN_CAPACITY;
+                    break;
                 }
             }
-            if (!isDishExist)
+            if (!isNumberExist)
             {
-                throw new Exception("Dish in this order is not exist");
+                throw new Exception("This order is not exist");
             }
         }
-        public void AddIngredient(string name, double totalPrice, int count)
+        public void AddProduct(string name, double totalPrice)
         {
             Product product = new Product();
             product.Name = name;
             product.TotalPrice = totalPrice;
-            product.Count = count;
             ingredients.Add(product);
         }
-        public void AddIngredient(string name, double totalPrice, double weight)
+        public void Cook(Recipe recipe, int count)
         {
-            Product product = new Product();
-            product.Name = name;
-            product.TotalPrice = totalPrice;
-            product.Weight = weight;
-            ingredients.Add(product);
+            foreach (Recipe.KitchenDirections direction in recipe.Directions)
+            {
+                bool isDishInOrder = false;
+                foreach (Dish dish in clientOrder.Dishes)
+                {
+                    if (direction.ProductName.Equals(dish.Name))
+                    {
+                        isDishInOrder = true;
+                        break;
+                    }
+                }
+                if (!isDishInOrder)
+                {
+                    throw new Exception("There is no such dish in the order");
+                }
+            }
+        }
+        private void Fry(string ingredientName, double weight, int minutes)
+        {
+            int indexOfCurrentIngredient = FindIndexOfIngredient(ingredientName);
+
+            if (indexOfCurrentIngredient < 0)
+            {
+                throw new Exception("There is no such ingredient");
+            }
+            if (freeSpaceInPan - weight < 0)
+            {
+                throw new Exception("The pan is full");
+            }
+
+            freeSpaceInPan -= weight;
+            costOfIngredients += ingredients[indexOfCurrentIngredient].TotalPrice * weight;
+            clientOrder.SpentMinutes += minutes;
+        }
+        public void MoveContentToAnotherContainer(KitchenUtensils placeFrom, KitchenUtensils placeTo)
+        {
+            switch (placeFrom)
+            {
+                case KitchenUtensils.Pan:
+                    freeSpaceInPan = 0;
+                    break;
+            }
+            //switch (placeTo)
+        }
+        public void HandOverTheDish()
+        {
+
+        }
+        private int FindIndexOfIngredient(string ingredientName)
+        {
+            int index = -1;
+            for (int i = 0; i < ingredients.Count; i++)
+            {
+                if (ingredientName.Equals(ingredients[i].Name))
+                {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
         }
         public string ViewAllIngredients()
         {
-            string result = "\nAll products:";
+            string result = $"\nAll products:";
             foreach (Product product in ingredients)
             {
-                if (product.Count == 0)
+                result += $"\n{product.Name} - {product.TotalPrice}$";
+            }
+            return result;
+        }
+        public string ViewCurrentOrder()
+        {
+            string result = "\nCurrent order #";
+            result += clientOrder?.ClientNumber ?? "???\nNo orders in progress";
+            if (clientOrder != null)
+            {
+                foreach (Dish dish in clientOrder.Dishes)
                 {
-                    result += $"\n{product.Name} - {product.Weight}g";
-                }
-                else
-                {
-                    result += $"\n{product.Name} - {product.Count}";
+                    result += "\n" + dish.ToString();
                 }
             }
             return result;
         }
         // пока заказ выполняется, его нельзя допонить
-        // приготовить блюдо с определённым названием
-        // завершить приготовление, указать номер заказа
-        // удалить из списка неготовых заказов при совпадении названий
         // когда завершится приготовление блюда, сдать менеджеру на проверку того, готовы ли все блюда из заказа
     }
 }
