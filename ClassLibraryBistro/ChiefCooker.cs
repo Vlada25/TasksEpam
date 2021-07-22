@@ -25,7 +25,8 @@ namespace ClassLibraryBistro
             Fry,
             Boil,
             Stew,
-            Bake
+            Bake,
+            Squeeze
         }
         public enum KitchenDevices
         {
@@ -106,10 +107,22 @@ namespace ClassLibraryBistro
                                 }
                             }
                         }
-                        freeSpaceInPan -= commonWeight * countOfPortions;
-                        if (freeSpaceInPan < 0)
+                        switch (direction.Device)
                         {
-                            throw new Exception("Too many portions");
+                            case KitchenDevices.Pan:
+                                freeSpaceInPan -= commonWeight * countOfPortions;
+                                if (freeSpaceInPan < 0)
+                                {
+                                    throw new Exception($"Too many portions of {currentDish.Name}");
+                                }
+                                break;
+                            case KitchenDevices.Grill:
+                                freeSpaceInGrill -= commonWeight * countOfPortions;
+                                if (freeSpaceInGrill < 0)
+                                {
+                                    throw new Exception($"Too many portions of {currentDish.Name}");
+                                }
+                                break;
                         }
                         break;
                 }
@@ -259,6 +272,20 @@ namespace ClassLibraryBistro
             currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
                 $"Grate {ingredientName}";
         }
+        public void SqueezeDirection(string ingredientName)
+        {
+            currentRecipe.CountOfOperations++;
+            currentRecipe.SpentMinutes += 2;
+
+            Recipe.KitchenDirections direction = new Recipe.KitchenDirections();
+            direction.NamesOfIngredients = new List<string>();
+            direction.CookOperation = CookOperations.Squeeze;
+            direction.NamesOfIngredients.Add(ingredientName);
+            currentRecipe.Directions.Add(direction);
+
+            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+                $"Squeeze juice from {ingredientName}";
+        }
         public void MixAllDirection()
         {
             currentRecipe.CountOfOperations++;
@@ -313,6 +340,17 @@ namespace ClassLibraryBistro
                 }
             }
             return result;
+        }
+        public string ViewRecipe(string name)
+        {
+            foreach (Recipe recipe in recipes)
+            {
+                if (recipe.Name == name)
+                {
+                    return recipe.ToString();
+                }
+            }
+            return "Recipe not found";
         }
         // пока заказ выполняется, его нельзя допонить
         // когда завершится приготовление блюда, сдать менеджеру на проверку того, готовы ли все блюда из заказа
