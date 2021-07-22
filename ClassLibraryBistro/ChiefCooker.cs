@@ -10,16 +10,22 @@ namespace ClassLibraryBistro
         {
             public string Name;
             public double TotalPrice;
+            public Product(string name, double price)
+            {
+                Name = name;
+                TotalPrice = price;
+            }
         }
         public enum CookOperations
         {
+            Add,
             Cut,
+            Grate,
             Mix,
             Fry,
             Boil,
             Stew,
-            Bake,
-            Add
+            Bake
         }
         public enum KitchenUtensils
         {
@@ -31,10 +37,11 @@ namespace ClassLibraryBistro
         }
         const int PAN_CAPACITY = 2;
         private static bool _alreadyExist = false;
-        List<Product> ingredients = new List<Product>();
+        List<Product> products = new List<Product>();
+        List<Recipe> recipes = new List<Recipe>();
+        public Recipe currentRecipe;
         ClientOrder clientOrder;
         double costOfIngredients;
-        Dictionary<string, string> recipes = new Dictionary<string, string>();
         double freeSpaceInPan;
         public ChiefCooker()
         {
@@ -63,80 +70,125 @@ namespace ClassLibraryBistro
                 throw new Exception("This order is not exist");
             }
         }
-        public void AddProduct(string name, double totalPrice)
+        public void AddProducts(params Product[] products)
         {
-            Product product = new Product();
-            product.Name = name;
-            product.TotalPrice = totalPrice;
-            ingredients.Add(product);
+            this.products.AddRange(products);
         }
-        public void Cook(Recipe recipe, int count)
+
+        public void CookTheDish(string name, Manager.Menu type)
         {
-            foreach (Recipe.KitchenDirections direction in recipe.Directions)
+            Recipe currentDish = new Recipe();
+            
+            bool isRecipeExist = false;
+            foreach (Recipe recipe in recipes)
             {
-                bool isDishInOrder = false;
-                foreach (Dish dish in clientOrder.Dishes)
+                if (recipe.Name == name && recipe.IsRecipeCompleted &&
+                    recipe.DishType == type)
                 {
-                    if (direction.ProductName.Equals(dish.Name))
+                    currentDish = recipe;
+                    isRecipeExist = true;
+                    break;
+                }
+            }
+            if (!isRecipeExist)
+            {
+                throw new Exception("There is no such recipe, you can add it");
+            }
+
+            foreach (Recipe.Ingredient ingredient in currentDish.Ingredients)
+            {
+                bool isProductExist = false;
+                foreach (Product product in products)
+                {
+                    if (product.Name.Equals(ingredient.Name))
                     {
-                        isDishInOrder = true;
+                        isProductExist = true;
                         break;
                     }
                 }
-                if (!isDishInOrder)
+                if (!isProductExist)
                 {
-                    throw new Exception("There is no such dish in the order");
+                    throw new Exception("Not all the products you need");
                 }
             }
-        }
-        private void Fry(string ingredientName, double weight, int minutes)
-        {
-            int indexOfCurrentIngredient = FindIndexOfIngredient(ingredientName);
 
-            if (indexOfCurrentIngredient < 0)
-            {
-                throw new Exception("There is no such ingredient");
-            }
-            if (freeSpaceInPan - weight < 0)
-            {
-                throw new Exception("The pan is full");
-            }
-
-            freeSpaceInPan -= weight;
-            costOfIngredients += ingredients[indexOfCurrentIngredient].TotalPrice * weight;
-            clientOrder.SpentMinutes += minutes;
+            Console.WriteLine(currentDish.ToString());
         }
-        public void MoveContentToAnotherContainer(KitchenUtensils placeFrom, KitchenUtensils placeTo)
+        // Functions to recipe creation
+        public void CreateRecipe(Recipe recipe)
         {
-            switch (placeFrom)
+            if (recipes.Count != 0)
             {
-                case KitchenUtensils.Pan:
-                    freeSpaceInPan = 0;
-                    break;
-            }
-            //switch (placeTo)
-        }
-        public void HandOverTheDish()
-        {
-
-        }
-        private int FindIndexOfIngredient(string ingredientName)
-        {
-            int index = -1;
-            for (int i = 0; i < ingredients.Count; i++)
-            {
-                if (ingredientName.Equals(ingredients[i].Name))
+                if (!currentRecipe.IsRecipeCompleted)
                 {
-                    index = i;
-                    break;
+                    throw new Exception("The previous recipe is incomplete");
                 }
             }
-            return index;
+            recipes.Add(recipe);
+            currentRecipe = recipe;
         }
+        public void IdentifyIngredients(params Recipe.Ingredient[] ingredients)
+        {
+            currentRecipe.Ingredients.AddRange(ingredients);
+            currentRecipe.WrittenRecipe += "\nNecessary ingredients: ";
+            foreach (Recipe.Ingredient product in ingredients)
+            {
+                currentRecipe.WrittenRecipe += $"\n\t{product.Name} - {product.Weight} kg; ";
+            }
+        }
+        public void CutDirection(int startSize, int endSize, string ingredientName)
+        {
+            currentRecipe.CountOfOperations++;
+            Recipe.KitchenDirections direction = new Recipe.KitchenDirections();
+            direction.NamesOfIngredients = new List<string>();
+            direction.CookOperations = CookOperations.Cut;
+            direction.NamesOfIngredients.Add(ingredientName);
+            currentRecipe.Directions.Add(direction);
+            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+                $"Cut {ingredientName} into {startSize}-{endSize} mm pieces";
+        }
+        public void GrateDirection(string ingredientName)
+        {
+            currentRecipe.CountOfOperations++;
+            Recipe.KitchenDirections direction = new Recipe.KitchenDirections();
+            direction.NamesOfIngredients = new List<string>();
+            direction.CookOperations = CookOperations.Grate;
+            direction.NamesOfIngredients.Add(ingredientName);
+            currentRecipe.Directions.Add(direction);
+            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+                $"Grate {ingredientName}";
+        }
+        public void MixAllDirection()
+        {
+            currentRecipe.CountOfOperations++;
+            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) Mix all ingredients";
+        }
+        public void FryDirection(int minutes, params string[] ingredientNames)
+        {
+            currentRecipe.CountOfOperations++;
+            Recipe.KitchenDirections direction = new Recipe.KitchenDirections();
+            direction.NamesOfIngredients = new List<string>();
+            direction.CookOperations = CookOperations.Fry;
+            direction.NamesOfIngredients.AddRange(ingredientNames);
+            direction.SpentMinutes = minutes;
+            currentRecipe.Directions.Add(direction);
+            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+                $"Fry {minutes} min";
+            foreach (string ingredientName in ingredientNames)
+            {
+                currentRecipe.WrittenRecipe += $" {ingredientName};";
+            }
+        }
+        public void CompleteRecipeCreation()
+        {
+            currentRecipe.IsRecipeCompleted = true;
+        }
+
+        // Functions to view necessary information
         public string ViewAllIngredients()
         {
             string result = $"\nAll products:";
-            foreach (Product product in ingredients)
+            foreach (Product product in products)
             {
                 result += $"\n{product.Name} - {product.TotalPrice}$";
             }

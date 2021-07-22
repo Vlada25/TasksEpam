@@ -8,25 +8,51 @@ namespace ClassLibraryBistro
     {
         public struct KitchenDirections
         {
-            public string ProductName;
-            public double WeightOfProduct;
+            public List<string> NamesOfIngredients;
             public ChiefCooker.CookOperations CookOperations;
             public int SpentMinutes;
+            public SizesOfPeaces SizeOfPieces;
         }
+        public struct Ingredient
+        {
+            public string Name;
+            public double Weight;
+            public Ingredient(string name, double weight)
+            {
+                Name = name;
+                Weight = weight;
+            }
+        }
+        public struct SizesOfPeaces
+        {
+            public int StartSize;
+            public int EndSize;
+        }
+
         public string Name;
+        public Manager.Menu DishType;
+        public int CountOfPortions;
+        public bool IsRecipeCompleted = false;
+        public int CountOfOperations = 0;
+        public string WrittenRecipe = "";
+        public List<Ingredient> Ingredients = new List<Ingredient>();
         public List<KitchenDirections> Directions = new List<KitchenDirections>();
-        public Recipe(string name)
+
+        public Recipe() { }
+        public Recipe(string name, Manager.Menu type, int countOfPortions)
         {
             Name = name;
+            DishType = type;
+            CountOfPortions = countOfPortions;
+            WrittenRecipe += $"\nRecipe of {Convert.ToString(type).ToLower()} {name}";
         }
-        public void AddDirection(ChiefCooker.CookOperations operation, string productName, double weight, int minutes)
+        public override string ToString()
         {
-            KitchenDirections direction = new KitchenDirections();
-            direction.CookOperations = operation;
-            direction.ProductName = productName;
-            direction.WeightOfProduct = weight;
-            direction.SpentMinutes = minutes;
-            Directions.Add(direction);
+            if (!IsRecipeCompleted)
+            {
+                return $"{WrittenRecipe}\n...INCOMPLETED...";
+            }
+            return WrittenRecipe;
         }
     }
 }
