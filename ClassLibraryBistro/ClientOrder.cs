@@ -7,23 +7,20 @@ namespace ClassLibraryBistro
     public class ClientOrder
     {
         public string ClientNumber { get; }
-        double finalBill = 0;
+        public double FinalBill = 0;
         string orderTime;
         public int SpentMinutes = 0;
         public bool IsDone = false;
         public List<Dish> Dishes = new List<Dish>();
-        public List<int> ContOfPortionsList = new List<int>();
         public ClientOrder(string clientNumber, Manager.Menu dishType, string dishName, int countOfPortions, string orderTime)
         {
             ClientNumber = SetClientNumber(clientNumber);
             this.orderTime = SetTime(orderTime);
-            Dishes.Add(new Dish(dishName, dishType));
-            ContOfPortionsList.Add(countOfPortions);
+            Dishes.Add(new Dish(dishName, dishType, countOfPortions));
         }
         public void AddDish(Manager.Menu dishType, string dishName, int countOfPortions)
         {
-            Dishes.Add(new Dish(dishName, dishType));
-            ContOfPortionsList.Add(countOfPortions);
+            Dishes.Add(new Dish(dishName, dishType, countOfPortions));
         }
         string SetClientNumber(string number)
         {
@@ -60,12 +57,16 @@ namespace ClassLibraryBistro
         {
             string result = "";
             result += $"\nClient #{ClientNumber} made an order at {orderTime}";
-            for(int i = 0; i < ContOfPortionsList.Count; i++)
+            for(int i = 0; i < Dishes.Count; i++)
             {
-                result += $"\n{Dishes[i]} - {ContOfPortionsList[i]} - ";
+                result += $"\n{Dishes[i]} - ";
                 result += Dishes[i].IsDishDone ? "done" : "not done";
             }
-            result += $"\nFinal bill: {finalBill}$";
+            if (IsDone)
+            {
+                result += $"\nFinal bill: {FinalBill}$";
+                result += $"\nSpent minutes: {SpentMinutes}"; 
+            }
             return result;
         }
     }

@@ -9,8 +9,8 @@ namespace ClassLibraryBistro
         public struct KitchenDirections
         {
             public List<string> NamesOfIngredients;
-            public ChiefCooker.CookOperations CookOperations;
-            public int SpentMinutes;
+            public ChiefCooker.CookOperations CookOperation;
+            public ChiefCooker.KitchenDevices Device;
             public SizesOfPeaces SizeOfPieces;
         }
         public struct Ingredient
@@ -31,19 +31,18 @@ namespace ClassLibraryBistro
 
         public string Name;
         public Manager.Menu DishType;
-        public int CountOfPortions;
         public bool IsRecipeCompleted = false;
         public int CountOfOperations = 0;
+        public int SpentMinutes = 0;
         public string WrittenRecipe = "";
         public List<Ingredient> Ingredients = new List<Ingredient>();
         public List<KitchenDirections> Directions = new List<KitchenDirections>();
 
         public Recipe() { }
-        public Recipe(string name, Manager.Menu type, int countOfPortions)
+        public Recipe(string name, Manager.Menu type)
         {
             Name = name;
             DishType = type;
-            CountOfPortions = countOfPortions;
             WrittenRecipe += $"\nRecipe of {Convert.ToString(type).ToLower()} {name}";
         }
         public override string ToString()
