@@ -10,7 +10,10 @@ namespace ClassLibraryBistro
         {
             Salad,
             Meat,
-            Coctail
+            Coctail,
+            Soup,
+            Dessert,
+            HotDrink
         }
         private static bool _alreadyExist = false;
         public static List<ClientOrder> ClientOrdersList = new List<ClientOrder>();
@@ -34,6 +37,10 @@ namespace ClassLibraryBistro
             {
                 if (order.ClientNumber.Equals(clientNumber))
                 {
+                    if (order.OrderInProgress)
+                    {
+                        throw new Exception("This order is in progress, you can't add new dishes");
+                    }
                     isOrderExist = true;
                     order.AddDish(dishType, dishName, countOfPortions);
                     break;
@@ -52,6 +59,7 @@ namespace ClassLibraryBistro
                 result += order.ToString();
                 result += $"\nIs order ready: ";
                 result += order.IsDone ? "Yes" : "No";
+                result += "\n";
             }
             return result;
         }

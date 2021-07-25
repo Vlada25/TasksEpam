@@ -24,26 +24,27 @@ namespace ClassLibraryBistro
             Mix,
             Fry,
             Boil,
-            Stew,
             Bake,
             Squeeze
         }
         public enum KitchenDevices
         {
             Pan,
-            Saucepan,
-            Oven,
+            //Saucepan,
+            //Oven,
             Grill,
-            Bowl
+            //Bowl
         }
         const int PAN_CAPACITY = 2,
-            GRILL_CAPACITY = 3;
+            GRILL_CAPACITY = 3,
+            COUNT_OF_DISHES_IN_OVEN = 2;
         static bool _alreadyExist = false;
         List<Product> products = new List<Product>();
         List<Recipe> recipes = new List<Recipe>();
         public Recipe currentRecipe;
         ClientOrder clientOrder = null;
-        //double costOfIngredients;
+        int counterOfDishes;
+
         double freeSpaceInPan, 
             freeSpaceInGrill;
         public ChiefCooker()
@@ -62,10 +63,9 @@ namespace ClassLibraryBistro
                 if (clientNumber.Equals(order.ClientNumber))
                 {
                     isNumberExist = true;
+                    order.OrderInProgress = true;
                     clientOrder = order;
-                    //costOfIngredients = 0;
-                    freeSpaceInPan = PAN_CAPACITY;
-                    freeSpaceInGrill = GRILL_CAPACITY;
+                    counterOfDishes = 0;
                     break;
                 }
             }
@@ -90,6 +90,9 @@ namespace ClassLibraryBistro
 
             CheckDishInOrder(name, countOfPortions);
             CheckExistenceOfAllProducts(currentDish);
+
+            freeSpaceInPan = PAN_CAPACITY;
+            freeSpaceInGrill = GRILL_CAPACITY;
 
             foreach (Recipe.KitchenDirections direction in currentDish.Directions)
             {
@@ -125,6 +128,18 @@ namespace ClassLibraryBistro
                                 break;
                         }
                         break;
+                    case CookOperations.Cut:
+                        if (direction.NamesOfIngredients.Count > 5)
+                        {
+                            throw new Exception("You can't cut more than 5 ingredients at the same time");
+                        }
+                        break;
+                    case CookOperations.Bake:
+                        if (countOfPortions > COUNT_OF_DISHES_IN_OVEN)
+                        {
+                            throw new Exception("You can't bake more than 2 dishes at the same time");
+                        }
+                        break;
                 }
             }
 
@@ -136,6 +151,7 @@ namespace ClassLibraryBistro
                     if (dish.NeedPortions == 0)
                     {
                         dish.IsDishDone = true;
+                        counterOfDishes++;
                     }
                     break;
                 }
@@ -143,6 +159,11 @@ namespace ClassLibraryBistro
 
             clientOrder.FinalBill += CountPriceOfIngredients(currentDish, countOfPortions);
             clientOrder.SpentMinutes += currentDish.SpentMinutes;
+
+            if (counterOfDishes == clientOrder.Dishes.Count)
+            {
+                clientOrder.IsDone = true;
+            }
         }
         private Recipe DefineCurrentDish(string name, Manager.Menu type)
         {
@@ -244,7 +265,43 @@ namespace ClassLibraryBistro
                 currentRecipe.WrittenRecipe += $"\n\t{product.Name} - {product.Weight} kg; ";
             }
         }
-        public void CutDirection(int startSize, int endSize, string ingredientName)
+        public void AddDirection(params string[] ingredientNames)
+        {
+            currentRecipe.CountOfOperations++;
+            currentRecipe.SpentMinutes += 1;
+
+            Recipe.KitchenDirections direction = new Recipe.KitchenDirections();
+            direction.NamesOfIngredients = new List<string>();
+            direction.CookOperation = CookOperations.Add;
+            direction.NamesOfIngredients.AddRange(ingredientNames);
+            currentRecipe.Directions.Add(direction);
+
+            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+                $"Add";
+            foreach (string ingredientName in ingredientNames)
+            {
+                currentRecipe.WrittenRecipe += $" {ingredientName},";
+            }
+        }
+        public void MixDirection(params string[] ingredientNames)
+        {
+            currentRecipe.CountOfOperations++;
+            currentRecipe.SpentMinutes += 2;
+
+            Recipe.KitchenDirections direction = new Recipe.KitchenDirections();
+            direction.NamesOfIngredients = new List<string>();
+            direction.CookOperation = CookOperations.Mix;
+            direction.NamesOfIngredients.AddRange(ingredientNames);
+            currentRecipe.Directions.Add(direction);
+
+            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+                $"Mix";
+            foreach (string ingredientName in ingredientNames)
+            {
+                currentRecipe.WrittenRecipe += $" {ingredientName},";
+            }
+        }
+        public void CutDirection(int startSize, int endSize, params string[] ingredientNames)
         {
             currentRecipe.CountOfOperations++;
             currentRecipe.SpentMinutes += 2;
@@ -252,11 +309,15 @@ namespace ClassLibraryBistro
             Recipe.KitchenDirections direction = new Recipe.KitchenDirections();
             direction.NamesOfIngredients = new List<string>();
             direction.CookOperation = CookOperations.Cut;
-            direction.NamesOfIngredients.Add(ingredientName);
+            direction.NamesOfIngredients.AddRange(ingredientNames);
             currentRecipe.Directions.Add(direction);
 
             currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
-                $"Cut {ingredientName} into {startSize}-{endSize} mm pieces";
+                $"Cut into {startSize}-{endSize} mm pieces:";
+            foreach (string ingredientName in ingredientNames)
+            {
+                currentRecipe.WrittenRecipe += $" {ingredientName},";
+            }
         }
         public void GrateDirection(string ingredientName)
         {
@@ -309,8 +370,58 @@ namespace ClassLibraryBistro
                 $"Fry {minutes} min";
             foreach (string ingredientName in ingredientNames)
             {
-                currentRecipe.WrittenRecipe += $" {ingredientName};";
+                currentRecipe.WrittenRecipe += $" {ingredientName},";
             }
+        }
+        public void BoilDirection(int minutes, params string[] ingredientNames)
+        {
+            currentRecipe.CountOfOperations++;
+            currentRecipe.SpentMinutes += minutes;
+
+            Recipe.KitchenDirections direction = new Recipe.KitchenDirections();
+            direction.NamesOfIngredients = new List<string>();
+            direction.CookOperation = CookOperations.Boil;
+            direction.NamesOfIngredients.AddRange(ingredientNames);
+            currentRecipe.Directions.Add(direction);
+
+            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+                $"Boil {minutes} min";
+            foreach (string ingredientName in ingredientNames)
+            {
+                currentRecipe.WrittenRecipe += $" {ingredientName},";
+            }
+        }
+        public void BakeDirection(int minutes, params string[] ingredientNames)
+        {
+            currentRecipe.CountOfOperations++;
+            currentRecipe.SpentMinutes += minutes;
+
+            Recipe.KitchenDirections direction = new Recipe.KitchenDirections();
+            direction.NamesOfIngredients = new List<string>();
+            direction.CookOperation = CookOperations.Bake;
+            direction.NamesOfIngredients.AddRange(ingredientNames);
+            currentRecipe.Directions.Add(direction);
+
+            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+                $"Bake {minutes} min";
+            foreach (string ingredientName in ingredientNames)
+            {
+                currentRecipe.WrittenRecipe += $" {ingredientName},";
+            }
+        }
+        public void BakeDirection(int minutes)
+        {
+            currentRecipe.CountOfOperations++;
+            currentRecipe.SpentMinutes += minutes;
+
+            Recipe.KitchenDirections direction = new Recipe.KitchenDirections();
+            direction.NamesOfIngredients = new List<string>();
+            direction.CookOperation = CookOperations.Bake;
+            direction.NamesOfIngredients.Add("All");
+            currentRecipe.Directions.Add(direction);
+
+            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+                $"Bake all {minutes} min";
         }
         public void CompleteRecipeCreation()
         {
@@ -353,6 +464,5 @@ namespace ClassLibraryBistro
             return "Recipe not found";
         }
         // пока заказ выполняется, его нельзя допонить
-        // когда завершится приготовление блюда, сдать менеджеру на проверку того, готовы ли все блюда из заказа
     }
 }

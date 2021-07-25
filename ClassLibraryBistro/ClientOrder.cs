@@ -11,6 +11,7 @@ namespace ClassLibraryBistro
         string orderTime;
         public int SpentMinutes = 0;
         public bool IsDone = false;
+        public bool OrderInProgress = false;
         public List<Dish> Dishes = new List<Dish>();
         public ClientOrder(string clientNumber, Manager.Menu dishType, string dishName, int countOfPortions, string orderTime)
         {
@@ -37,6 +38,7 @@ namespace ClassLibraryBistro
         }
         private string SetTime(string time)
         {
+            // Bistro is open from 9:00 to 23:00
             Exception ex = new Exception("Invalid value of time");
             if (time.Length != 5)
             {
@@ -64,7 +66,7 @@ namespace ClassLibraryBistro
             }
             if (IsDone)
             {
-                result += $"\nFinal bill: {FinalBill}$";
+                result += $"\nFinal bill: {Math.Round(FinalBill, 2)}$";
                 result += $"\nSpent minutes: {SpentMinutes}"; 
             }
             return result;
