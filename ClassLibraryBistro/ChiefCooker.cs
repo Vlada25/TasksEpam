@@ -30,10 +30,10 @@ namespace ClassLibraryBistro
         public enum KitchenDevices
         {
             Pan,
-            //Saucepan,
-            //Oven,
-            Grill,
-            //Bowl
+            Saucepan,
+            Kettle,
+            CoffeeMachine,
+            Grill
         }
         const int PAN_CAPACITY = 2,
             GRILL_CAPACITY = 3,
@@ -113,6 +113,7 @@ namespace ClassLibraryBistro
                         switch (direction.Device)
                         {
                             case KitchenDevices.Pan:
+                                currentRecipe.PriceOfDish += 0.1 * direction.Minutes;
                                 freeSpaceInPan -= commonWeight * countOfPortions;
                                 if (freeSpaceInPan < 0)
                                 {
@@ -120,6 +121,7 @@ namespace ClassLibraryBistro
                                 }
                                 break;
                             case KitchenDevices.Grill:
+                                currentRecipe.PriceOfDish += 0.2 * direction.Minutes;
                                 freeSpaceInGrill -= commonWeight * countOfPortions;
                                 if (freeSpaceInGrill < 0)
                                 {
@@ -135,9 +137,24 @@ namespace ClassLibraryBistro
                         }
                         break;
                     case CookOperations.Bake:
+                        currentRecipe.PriceOfDish += 0.1 * direction.Minutes;
                         if (countOfPortions > COUNT_OF_DISHES_IN_OVEN)
                         {
                             throw new Exception("You can't bake more than 2 dishes at the same time");
+                        }
+                        break;
+                    case CookOperations.Boil:
+                        switch (direction.Device)
+                        {
+                            case KitchenDevices.Saucepan:
+                                currentRecipe.PriceOfDish += 0.1 * direction.Minutes;
+                                break;
+                            case KitchenDevices.Kettle:
+                                currentRecipe.PriceOfDish += 0.05 * direction.Minutes;
+                                break;
+                            case KitchenDevices.CoffeeMachine:
+                                currentRecipe.PriceOfDish += 0.3 * direction.Minutes;
+                                break;
                         }
                         break;
                 }
@@ -157,7 +174,7 @@ namespace ClassLibraryBistro
                 }
             }
 
-            clientOrder.FinalBill += CountPriceOfIngredients(currentDish, countOfPortions);
+            clientOrder.FinalBill += currentDish.PriceOfDish * countOfPortions;
             clientOrder.SpentMinutes += currentDish.SpentMinutes;
 
             if (counterOfDishes == clientOrder.Dishes.Count)
@@ -225,16 +242,16 @@ namespace ClassLibraryBistro
                 }
             }
         }
-        private double CountPriceOfIngredients(Recipe currentDish, int countOfPortions)
+        private double CountPriceOfIngredients(List<Recipe.Ingredient> ingredients)
         {
             double price = 0;
-            foreach (Recipe.Ingredient ingredient in currentDish.Ingredients)
+            foreach (Recipe.Ingredient ingredient in ingredients)
             {
                 foreach (Product product in products)
                 {
                     if (product.Name.Equals(ingredient.Name))
                     {
-                        price += product.TotalPrice * ingredient.Weight * countOfPortions;
+                        price += product.TotalPrice * ingredient.Weight;
                         break;
                     }
                 }
@@ -259,6 +276,8 @@ namespace ClassLibraryBistro
         public void IdentifyIngredients(params Recipe.Ingredient[] ingredients)
         {
             currentRecipe.Ingredients.AddRange(ingredients);
+            currentRecipe.PriceOfDish = CountPriceOfIngredients(currentRecipe.Ingredients);
+
             currentRecipe.WrittenRecipe += "\nNecessary ingredients: ";
             foreach (Recipe.Ingredient product in ingredients)
             {
@@ -363,6 +382,7 @@ namespace ClassLibraryBistro
             direction.NamesOfIngredients = new List<string>();
             direction.CookOperation = CookOperations.Fry;
             direction.Device = device;
+            direction.Minutes = minutes;
             direction.NamesOfIngredients.AddRange(ingredientNames);
             currentRecipe.Directions.Add(direction);
 
@@ -373,7 +393,7 @@ namespace ClassLibraryBistro
                 currentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
-        public void BoilDirection(int minutes, params string[] ingredientNames)
+        public void BoilDirection(int minutes, KitchenDevices device, params string[] ingredientNames)
         {
             currentRecipe.CountOfOperations++;
             currentRecipe.SpentMinutes += minutes;
@@ -381,6 +401,8 @@ namespace ClassLibraryBistro
             Recipe.KitchenDirections direction = new Recipe.KitchenDirections();
             direction.NamesOfIngredients = new List<string>();
             direction.CookOperation = CookOperations.Boil;
+            direction.Device = device;
+            direction.Minutes = minutes;
             direction.NamesOfIngredients.AddRange(ingredientNames);
             currentRecipe.Directions.Add(direction);
 
@@ -426,6 +448,8 @@ namespace ClassLibraryBistro
         public void CompleteRecipeCreation()
         {
             currentRecipe.WrittenRecipe += $"\nTime: {currentRecipe.SpentMinutes} minutes";
+            currentRecipe.WrittenRecipe += $"\nPrice of ingredients: {Math.Round(currentRecipe.PriceOfDish, 2)}$";
+
             currentRecipe.IsRecipeCompleted = true;
         }
 

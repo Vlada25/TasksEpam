@@ -10,6 +10,7 @@ namespace ClassLibraryBistro
         {
             public List<string> NamesOfIngredients;
             public ChiefCooker.CookOperations CookOperation;
+            public int Minutes;
             public ChiefCooker.KitchenDevices Device;
             public SizesOfPeaces SizeOfPieces;
         }
@@ -34,6 +35,7 @@ namespace ClassLibraryBistro
         public bool IsRecipeCompleted = false;
         public int CountOfOperations = 0;
         public int SpentMinutes = 0;
+        public double PriceOfDish;
         public string WrittenRecipe = "";
         public List<Ingredient> Ingredients = new List<Ingredient>();
         public List<KitchenDirections> Directions = new List<KitchenDirections>();
