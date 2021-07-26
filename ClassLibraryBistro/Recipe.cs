@@ -6,7 +6,7 @@ namespace ClassLibraryBistro
 {
     public class Recipe
     {
-        public struct KitchenDirections
+        public struct KitchenActions
         {
             public List<string> NamesOfIngredients;
             public ChiefCooker.CookOperations CookOperation;
@@ -38,7 +38,7 @@ namespace ClassLibraryBistro
         public double PriceOfDish;
         public string WrittenRecipe = "";
         public List<Ingredient> Ingredients = new List<Ingredient>();
-        public List<KitchenDirections> Directions = new List<KitchenDirections>();
+        public List<KitchenActions> Actions = new List<KitchenActions>();
 
         public Recipe() { }
         public Recipe(string name, Manager.Menu type)

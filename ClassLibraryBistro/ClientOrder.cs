@@ -8,7 +8,7 @@ namespace ClassLibraryBistro
     {
         public string ClientNumber { get; }
         public double FinalBill = 0;
-        string orderTime;
+        public string OrderTime;
         public int SpentMinutes = 0;
         public bool IsDone = false;
         public bool OrderInProgress = false;
@@ -16,7 +16,7 @@ namespace ClassLibraryBistro
         public ClientOrder(string clientNumber, Manager.Menu dishType, string dishName, int countOfPortions, string orderTime)
         {
             ClientNumber = SetClientNumber(clientNumber);
-            this.orderTime = SetTime(orderTime);
+            OrderTime = Helper.SetTime(orderTime);
             Dishes.Add(new Dish(dishName, dishType, countOfPortions));
         }
         public void AddDish(Manager.Menu dishType, string dishName, int countOfPortions)
@@ -36,29 +36,10 @@ namespace ClassLibraryBistro
             }
             return number;
         }
-        private string SetTime(string time)
-        {
-            // Bistro is open from 9:00 to 23:00
-            Exception ex = new Exception("Invalid value of time");
-            if (time.Length != 5)
-            {
-                throw ex;
-            }
-            else if (!Int32.TryParse(Convert.ToString(time[0]) + Convert.ToString(time[1]), out int hours)
-                    || !Int32.TryParse(Convert.ToString(time[3]) + Convert.ToString(time[4]), out int minutes))
-            {
-                throw ex;
-            }
-            else if (hours < 9 || hours > 22 || minutes < 0 || minutes > 59)
-            {
-                throw ex;
-            }
-            return time;
-        }
         public override string ToString()
         {
             string result = "";
-            result += $"\nClient #{ClientNumber} made an order at {orderTime}";
+            result += $"\nClient #{ClientNumber} made an order at {OrderTime}";
             for(int i = 0; i < Dishes.Count; i++)
             {
                 result += $"\n{Dishes[i]} - ";

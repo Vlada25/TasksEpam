@@ -22,37 +22,37 @@ namespace ExecutionTask3
                 manager.AddDishToOrder("105", Manager.Menu.HotDrink, "Cappuccino", 1);
 
                 chiefCooker.AddProducts(
-                    new ChiefCooker.Product("Green salad", 17.63),
-                    new ChiefCooker.Product("Tomato", 4.9),
-                    new ChiefCooker.Product("Chicken", 7.5),
-                    new ChiefCooker.Product("White bread", 2.2),
-                    new ChiefCooker.Product("Butter", 20.28),
-                    new ChiefCooker.Product("Garlic", 6.6),
-                    new ChiefCooker.Product("Cheese", 16.7),
-                    new ChiefCooker.Product("Mayonnaise", 6.42),
-                    new ChiefCooker.Product("Beef", 33),
-                    new ChiefCooker.Product("Flavoring", 27.4),
-                    new ChiefCooker.Product("Sugar", 1.54),
-                    new ChiefCooker.Product("Soda", 2),
-                    new ChiefCooker.Product("White rum", 67),
-                    new ChiefCooker.Product("Lime", 7.5),
-                    new ChiefCooker.Product("Mint", 39.8),
-                    new ChiefCooker.Product("Ice", 2),
-                    new ChiefCooker.Product("Greens", 16.9),
-                    new ChiefCooker.Product("Rice", 2.2),
-                    new ChiefCooker.Product("Onion", 1.6),
-                    new ChiefCooker.Product("Carrot", 1.55),
-                    new ChiefCooker.Product("Salt", 0.64),
-                    new ChiefCooker.Product("Water", 0.5),
-                    new ChiefCooker.Product("Egg", 3),
-                    new ChiefCooker.Product("Sour cream", 5.25),
-                    new ChiefCooker.Product("Baking soda", 2.18),
-                    new ChiefCooker.Product("Flour", 1.28),
-                    new ChiefCooker.Product("Cherry", 9),
-                    new ChiefCooker.Product("Tea", 800),
-                    new ChiefCooker.Product("Coffee", 35),
-                    new ChiefCooker.Product("Milk", 1.34),
-                    new ChiefCooker.Product("Cinnamon", 18)
+                    new ChiefCooker.Product("Green salad", 17.63, new ChiefCooker.StorageConditions(0, 20)),
+                    new ChiefCooker.Product("Tomato", 4.9, new ChiefCooker.StorageConditions(0, 20)),
+                    new ChiefCooker.Product("Chicken", 7.5, new ChiefCooker.StorageConditions(-25, 10)),
+                    new ChiefCooker.Product("White bread", 2.2, new ChiefCooker.StorageConditions(5, 25)),
+                    new ChiefCooker.Product("Butter", 20.28, new ChiefCooker.StorageConditions(-25, 10)),
+                    new ChiefCooker.Product("Garlic", 6.6, new ChiefCooker.StorageConditions(0, 20)),
+                    new ChiefCooker.Product("Cheese", 16.7, new ChiefCooker.StorageConditions(0, 10)),
+                    new ChiefCooker.Product("Mayonnaise", 6.42, new ChiefCooker.StorageConditions(0, 10)),
+                    new ChiefCooker.Product("Beef", 33, new ChiefCooker.StorageConditions(-25, 10)),
+                    new ChiefCooker.Product("Flavoring", 27.4, new ChiefCooker.StorageConditions(5, 25)),
+                    new ChiefCooker.Product("Sugar", 1.54, new ChiefCooker.StorageConditions(10, 25)),
+                    new ChiefCooker.Product("Soda", 2, new ChiefCooker.StorageConditions(0, 10)),
+                    new ChiefCooker.Product("White rum", 67, new ChiefCooker.StorageConditions(10, 20)),
+                    new ChiefCooker.Product("Lime", 7.5, new ChiefCooker.StorageConditions(0, 20)),
+                    new ChiefCooker.Product("Mint", 39.8, new ChiefCooker.StorageConditions(0, 20)),
+                    new ChiefCooker.Product("Ice", 2, new ChiefCooker.StorageConditions(-25, -15)),
+                    new ChiefCooker.Product("Greens", 16.9, new ChiefCooker.StorageConditions(0, 20)),
+                    new ChiefCooker.Product("Rice", 2.2, new ChiefCooker.StorageConditions(10, 25)),
+                    new ChiefCooker.Product("Onion", 1.6, new ChiefCooker.StorageConditions(0, 20)),
+                    new ChiefCooker.Product("Carrot", 1.55, new ChiefCooker.StorageConditions(0, 20)),
+                    new ChiefCooker.Product("Salt", 0.64, new ChiefCooker.StorageConditions(10, 25)),
+                    new ChiefCooker.Product("Water", 0.5, new ChiefCooker.StorageConditions(0, 10)),
+                    new ChiefCooker.Product("Egg", 3, new ChiefCooker.StorageConditions(0, 10)),
+                    new ChiefCooker.Product("Sour cream", 5.25, new ChiefCooker.StorageConditions(0, 10)),
+                    new ChiefCooker.Product("Baking soda", 2.18, new ChiefCooker.StorageConditions(10, 25)),
+                    new ChiefCooker.Product("Flour", 1.28, new ChiefCooker.StorageConditions(10, 25)),
+                    new ChiefCooker.Product("Cherry", 9, new ChiefCooker.StorageConditions(0, 20)),
+                    new ChiefCooker.Product("Tea", 800, new ChiefCooker.StorageConditions(10, 25)),
+                    new ChiefCooker.Product("Coffee", 35, new ChiefCooker.StorageConditions(10, 25)),
+                    new ChiefCooker.Product("Milk", 1.34, new ChiefCooker.StorageConditions(0, 10)),
+                    new ChiefCooker.Product("Cinnamon", 18, new ChiefCooker.StorageConditions(10, 25))
                     );
 
                 // Salad Caesar
@@ -68,14 +68,14 @@ namespace ExecutionTask3
                     new Recipe.Ingredient("Mayonnaise", 0.02),
                     new Recipe.Ingredient("Flavoring", 0.002)
                     );
-                chiefCooker.CutDirection(1, 2, "Garlic");
-                chiefCooker.CutDirection(10, 30, "Chicken");
-                chiefCooker.FryDirection(10, ChiefCooker.KitchenDevices.Pan, "Butter", "Garlic", "Chicken");
-                chiefCooker.CutDirection(5, 15, "White bread");
-                chiefCooker.FryDirection(10, ChiefCooker.KitchenDevices.Pan, "White bread");
-                chiefCooker.CutDirection(3, 5, "Tomato");
-                chiefCooker.GrateDirection("Cheese");
-                chiefCooker.MixAllDirection();
+                chiefCooker.Cut(1, 2, "Garlic");
+                chiefCooker.Cut(10, 30, "Chicken");
+                chiefCooker.Fry(10, ChiefCooker.KitchenDevices.Pan, "Butter", "Garlic", "Chicken");
+                chiefCooker.Cut(5, 15, "White bread");
+                chiefCooker.Fry(10, ChiefCooker.KitchenDevices.Pan, "White bread");
+                chiefCooker.Cut(3, 5, "Tomato");
+                chiefCooker.Grate("Cheese");
+                chiefCooker.MixAll();
                 chiefCooker.CompleteRecipeCreation();
 
                 // Steak
@@ -85,9 +85,9 @@ namespace ExecutionTask3
                     new Recipe.Ingredient("Butter", 0.01),
                     new Recipe.Ingredient("Flavoring", 0.002)
                     );
-                chiefCooker.CutDirection(20, 30, "Beef");
-                chiefCooker.MixAllDirection();
-                chiefCooker.FryDirection(7, ChiefCooker.KitchenDevices.Grill, "Butter", "Beef");
+                chiefCooker.Cut(20, 30, "Beef");
+                chiefCooker.MixAll();
+                chiefCooker.Fry(7, ChiefCooker.KitchenDevices.Grill, "Butter", "Beef");
                 chiefCooker.CompleteRecipeCreation();
 
                 // Mojito
@@ -100,8 +100,8 @@ namespace ExecutionTask3
                     new Recipe.Ingredient("Mint", 0.01),
                     new Recipe.Ingredient("Ice", 0.05)
                     );
-                chiefCooker.SqueezeDirection("Lime");
-                chiefCooker.MixAllDirection();
+                chiefCooker.Squeze("Lime");
+                chiefCooker.MixAll();
                 chiefCooker.CompleteRecipeCreation();
 
                 // Soup Kharcho
@@ -118,15 +118,15 @@ namespace ExecutionTask3
                     new Recipe.Ingredient("Salt", 0.0015),
                     new Recipe.Ingredient("Water", 0.42)
                     );
-                chiefCooker.CutDirection(50, 70, "Chicken");
-                chiefCooker.BoilDirection(35, ChiefCooker.KitchenDevices.Saucepan, "Water", "Chicken");
-                chiefCooker.AddDirection("Rice", "Salt");
-                chiefCooker.BoilDirection(10, ChiefCooker.KitchenDevices.Saucepan, "Rice", "Salt");
-                chiefCooker.CutDirection(3, 5, "Onion", "Carrot", "Garlic", "Greens");
-                chiefCooker.FryDirection(5, ChiefCooker.KitchenDevices.Pan, "Butter", "Onion", "Carrot");
-                chiefCooker.SqueezeDirection("Tomato");
-                chiefCooker.AddDirection("Garlic");
-                chiefCooker.MixAllDirection();
+                chiefCooker.Cut(50, 70, "Chicken");
+                chiefCooker.Boil(35, ChiefCooker.KitchenDevices.Saucepan, "Water", "Chicken");
+                chiefCooker.Add("Rice", "Salt");
+                chiefCooker.Boil(10, ChiefCooker.KitchenDevices.Saucepan, "Rice", "Salt");
+                chiefCooker.Cut(3, 5, "Onion", "Carrot", "Garlic", "Greens");
+                chiefCooker.Fry(5, ChiefCooker.KitchenDevices.Pan, "Butter", "Onion", "Carrot");
+                chiefCooker.Squeze("Tomato");
+                chiefCooker.Add("Garlic");
+                chiefCooker.MixAll();
                 chiefCooker.CompleteRecipeCreation();
 
                 // Cherry pie
@@ -140,10 +140,10 @@ namespace ExecutionTask3
                     new Recipe.Ingredient("Flour", 0.3),
                     new Recipe.Ingredient("Cherry", 0.3)
                     );
-                chiefCooker.MixDirection("Egg", "Sugar");
-                chiefCooker.AddDirection("Sour cream", "Butter", "Baking soda", "Flour");
-                chiefCooker.AddDirection("Cherry");
-                chiefCooker.BakeDirection(30);
+                chiefCooker.Mix("Egg", "Sugar");
+                chiefCooker.Add("Sour cream", "Butter", "Baking soda", "Flour");
+                chiefCooker.Add("Cherry");
+                chiefCooker.Bake(30);
                 chiefCooker.CompleteRecipeCreation();
 
                 // Tea
@@ -152,8 +152,8 @@ namespace ExecutionTask3
                     new Recipe.Ingredient("Tea", 0.002),
                     new Recipe.Ingredient("Water", 0.2)
                     );
-                chiefCooker.BoilDirection(5, ChiefCooker.KitchenDevices.Kettle, "Water");
-                chiefCooker.AddDirection("Tea");
+                chiefCooker.Boil(5, ChiefCooker.KitchenDevices.Kettle, "Water");
+                chiefCooker.Add("Tea");
                 chiefCooker.CompleteRecipeCreation();
 
                 // Cappuccino
@@ -164,9 +164,9 @@ namespace ExecutionTask3
                     new Recipe.Ingredient("Milk", 0.07),
                     new Recipe.Ingredient("Cinnamon", 0.003)
                     );
-                chiefCooker.BoilDirection(5, ChiefCooker.KitchenDevices.CoffeeMachine, "Water", "Coffee");
-                chiefCooker.MixDirection("Milk");
-                chiefCooker.AddDirection("Cinnamon");
+                chiefCooker.Boil(5, ChiefCooker.KitchenDevices.CoffeeMachine, "Water", "Coffee");
+                chiefCooker.Mix("Milk");
+                chiefCooker.Add("Cinnamon");
                 chiefCooker.CompleteRecipeCreation();
 
 
@@ -181,12 +181,11 @@ namespace ExecutionTask3
                 chiefCooker.CookTheDish("Cherry pie", Manager.Menu.Dessert, 1);
                 chiefCooker.CookTheDish("Tea", Manager.Menu.HotDrink, 2);
 
-                Console.WriteLine(manager.ViewAllOrders());
+                Console.WriteLine(manager.ViewOrdersInTime("10:00", "11:30"));
+                Console.WriteLine(chiefCooker.ViewAllProductionCapacity());
                 //Console.WriteLine(chiefCooker.ViewRecipe("Cappuccino"));
-                //Console.WriteLine(chiefCooker.ViewAllIngredients());
-                //Console.WriteLine(chiefCooker.ViewCurrentOrder());
-
-                //Console.WriteLine(chiefCooker.currentRecipe.ToString());
+                Console.WriteLine(chiefCooker.ViewAllIngredients());
+                Console.WriteLine(chiefCooker.FindIngredientsByStorageConditions(new ChiefCooker.StorageConditions(-10, 10)));
             }
             catch(Exception error)
             {

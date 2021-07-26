@@ -51,15 +51,18 @@ namespace ClassLibraryBistro
                 throw new Exception("This number is not in the order list");
             }
         }
-        public string ViewAllOrders()
+        public string ViewOrdersInTime(string startTime, string endTime)
         {
             string result = "";
             foreach (ClientOrder order in ClientOrdersList)
             {
-                result += order.ToString();
-                result += $"\nIs order ready: ";
-                result += order.IsDone ? "Yes" : "No";
-                result += "\n";
+                if (Helper.IsTimeInRange(order.OrderTime, startTime, endTime))
+                {
+                    result += order.ToString();
+                    result += $"\nIs order ready: ";
+                    result += order.IsDone ? "Yes" : "No";
+                    result += "\n";
+                }
             }
             return result;
         }
