@@ -1,0 +1,79 @@
+
+All production capacity:
+Pan - 2 kg
+Saucepan - 5 kg
+Grill - 3 kg
+Count of dishes in oven - 2
+
+All products:
+Green salad - 17,63$
+Tomato - 4,9$
+Chicken - 7,5$
+White bread - 2,2$
+Butter - 20,28$
+Garlic - 6,6$
+Cheese - 16,7$
+Mayonnaise - 6,42$
+Beef - 33$
+Flavoring - 27,4$
+Sugar - 1,54$
+Soda - 2$
+White rum - 67$
+Lime - 7,5$
+Mint - 39,8$
+Ice - 2$
+Greens - 16,9$
+Rice - 2,2$
+Onion - 1,6$
+Carrot - 1,55$
+Salt - 0,64$
+Water - 0,5$
+Egg - 3$
+Sour cream - 5,25$
+Baking soda - 2,18$
+Flour - 1,28$
+Cherry - 9$
+Tea - 800$
+Coffee - 35$
+Milk - 1,34$
+Cinnamon - 18$
+
+Client #023 made an order at 10:23
+Salad: Caesar - 8 - done
+Meat: Steak - 16 - done
+Coctail: Mojito - 8 - done
+Final bill: 64,12$
+Spent minutes: 54
+Is order ready: Yes
+
+Client #105 made an order at 11:00
+Soup: Kharcho - 3 - done
+Dessert: Cherry pie - 1 - done
+HotDrink: Tea - 2 - done
+HotDrink: Cappuccino - 1 - done
+Final bill: 28,06$
+Spent minutes: 107
+Is order ready: Yes
+
+Client #040 made an order at 16:40
+HotDrink: Cappuccino - 2 - not done
+Is order ready: No
+
+
+Max number of uses:
+Butter - 20,28$ (used 28 times)
+
+Storage conditions -10-10 deg:
+Cheese - 16,7$ (0-10 deg)
+Mayonnaise - 6,42$ (0-10 deg)
+Soda - 2$ (0-10 deg)
+Water - 0,5$ (0-10 deg)
+Egg - 3$ (0-10 deg)
+Sour cream - 5,25$ (0-10 deg)
+Milk - 1,34$ (0-10 deg)
+
+Longest processing procedure:
+Boil (Saucepan) - 35 min
+
+The most expensive processing procedure:
+Using coffee machine - 0,3$/min

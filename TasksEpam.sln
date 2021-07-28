@@ -10,6 +10,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FilesForReading", "FilesForReading", "{5DE1B645-4F06-453F-A7CD-3F49D9D83871}"
 	ProjectSection(SolutionItems) = preProject
 		Products.xml = Products.xml
+		Recipes.xml = Recipes.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OutputFile", "OutputFile", "{6B55F732-0790-4FEA-A2ED-411A53FA4036}"
+	ProjectSection(SolutionItems) = preProject
+		OutputFile.txt = OutputFile.txt
 	EndProjectSection
 EndProject
 Global

@@ -122,7 +122,7 @@ namespace ClassLibraryBistro
                 throw new Exception("This order is not exist");
             }
         }
-        public void AddProducts(List<ChiefCooker.Product> products)
+        public void AddProducts(List<Product> products)
         {
             _products.AddRange(products);
         }
@@ -232,7 +232,7 @@ namespace ClassLibraryBistro
             _recipes.Add(recipe);
             CurrentRecipe = recipe;
         }
-        public void IdentifyIngredients(params Recipe.Ingredient[] ingredients)
+        public void IdentifyIngredients(List<Recipe.Ingredient> ingredients)
         {
             CurrentRecipe.Ingredients.AddRange(ingredients);
             CurrentRecipe.PriceOfDish = Helper.CountPriceOfIngredients(CurrentRecipe.Ingredients, _products);
@@ -395,7 +395,7 @@ namespace ClassLibraryBistro
         }
         public string ViewAllIngredients()
         {
-            string result = "\nAll _products:";
+            string result = "\nAll products:";
             foreach (Product product in _products)
             {
                 result += $"\n{product.Name} - {product.TotalPrice}$";

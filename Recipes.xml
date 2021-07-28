@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<recipes>
+  <recipe name="Caesar">
+    <ingredient name="Green salad" weight="0,03"></ingredient>
+    <ingredient name="Garlic" weight="0,002"></ingredient>
+    <ingredient name="Chicken" weight="0,01"></ingredient>
+    <ingredient name="Butter" weight="0,005"></ingredient>
+    <ingredient name="White bread" weight="0,05"></ingredient>
+    <ingredient name="Tomato" weight="0,05"></ingredient>
+    <ingredient name="Cheese" weight="0,05"></ingredient>
+    <ingredient name="Mayonnaise" weight="0,02"></ingredient>
+    <ingredient name="Flavoring" weight="0,002"></ingredient>
+  </recipe>
+  <recipe name="Steak">
+    <ingredient name="Beef" weight="0,02"></ingredient>
+    <ingredient name="Butter" weight="0,01"></ingredient>
+    <ingredient name="Flavoring" weight="0,002"></ingredient>
+  </recipe>
+  <recipe name="Mojito">
+    <ingredient name="Sugar" weight="0,013"></ingredient>
+    <ingredient name="Soda" weight="0,09"></ingredient>
+    <ingredient name="White rum" weight="0,045"></ingredient>
+    <ingredient name="Lime" weight="0,05"></ingredient>
+    <ingredient name="Mint" weight="0,01"></ingredient>
+    <ingredient name="Ice" weight="0,05"></ingredient>
+  </recipe>
+  <recipe name="Kharcho">
+    <ingredient name="Rice" weight="0,03"></ingredient>
+    <ingredient name="Garlic" weight="0,002"></ingredient>
+    <ingredient name="Chicken" weight="0,02"></ingredient>
+    <ingredient name="Butter" weight="0,01"></ingredient>
+    <ingredient name="Onion" weight="0,02"></ingredient>
+    <ingredient name="Tomato" weight="0,015"></ingredient>
+    <ingredient name="Carrot" weight="0,025"></ingredient>
+    <ingredient name="Greens" weight="0,01"></ingredient>
+    <ingredient name="Salt" weight="0,0015"></ingredient>
+    <ingredient name="Water" weight="0,42"></ingredient>
+  </recipe>
+  <recipe name="Cherry pie">
+    <ingredient name="Egg" weight="0,08"></ingredient>
+    <ingredient name="Sugar" weight="0,17"></ingredient>
+    <ingredient name="Sour cream" weight="0,23"></ingredient>
+    <ingredient name="Butter" weight="0,1"></ingredient>
+    <ingredient name="Baking soda" weight="0,001"></ingredient>
+    <ingredient name="Flour" weight="0,3"></ingredient>
+    <ingredient name="Cherry" weight="0,3"></ingredient>
+  </recipe>
+  <recipe name="Tea">
+    <ingredient name="Tea" weight="0,002"></ingredient>
+    <ingredient name="Water" weight="0,2"></ingredient>
+  </recipe>
+  <recipe name="Cappuccino">
+    <ingredient name="Coffee" weight="0,007"></ingredient>
+    <ingredient name="Water" weight="0,06"></ingredient>
+    <ingredient name="Milk" weight="0,07"></ingredient>
+    <ingredient name="Cinnamon" weight="0,003"></ingredient>
+  </recipe>
+</recipes>

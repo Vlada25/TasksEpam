@@ -21,21 +21,13 @@ namespace ExecutionTask3
                 manager.AddDishToOrder("105", Manager.Menu.HotDrink, "Tea", 2);
                 manager.AddDishToOrder("105", Manager.Menu.HotDrink, "Cappuccino", 1);
 
+                manager.TakeOrder("040", Manager.Menu.HotDrink, "Cappuccino", 2, "16:40");
+
                 chiefCooker.AddProducts(FileReader.ReadProducts());
 
                 // Salad Caesar
                 chiefCooker.CreateRecipe(new Recipe("Caesar", Manager.Menu.Salad));
-                chiefCooker.IdentifyIngredients(
-                    new Recipe.Ingredient("Green salad", 0.03),
-                    new Recipe.Ingredient("Garlic", 0.002),
-                    new Recipe.Ingredient("Chicken", 0.1),
-                    new Recipe.Ingredient("Butter", 0.005),
-                    new Recipe.Ingredient("White bread", 0.05),
-                    new Recipe.Ingredient("Tomato", 0.05),
-                    new Recipe.Ingredient("Cheese", 0.05),
-                    new Recipe.Ingredient("Mayonnaise", 0.02),
-                    new Recipe.Ingredient("Flavoring", 0.002)
-                    );
+                chiefCooker.IdentifyIngredients(FileReader.ReadRecipeIngredients("Caesar"));
                 chiefCooker.Cut(1, 2, "Garlic");
                 chiefCooker.Cut(10, 30, "Chicken");
                 chiefCooker.Fry(10, ChiefCooker.KitchenDevices.Pan, "Butter", "Garlic", "Chicken");
@@ -48,11 +40,7 @@ namespace ExecutionTask3
 
                 // Steak
                 chiefCooker.CreateRecipe(new Recipe("Steak", Manager.Menu.Meat));
-                chiefCooker.IdentifyIngredients(
-                    new Recipe.Ingredient("Beef", 0.2),
-                    new Recipe.Ingredient("Butter", 0.01),
-                    new Recipe.Ingredient("Flavoring", 0.002)
-                    );
+                chiefCooker.IdentifyIngredients(FileReader.ReadRecipeIngredients("Steak"));
                 chiefCooker.Cut(20, 30, "Beef");
                 chiefCooker.MixAll();
                 chiefCooker.Fry(7, ChiefCooker.KitchenDevices.Grill, "Butter", "Beef");
@@ -60,32 +48,14 @@ namespace ExecutionTask3
 
                 // Mojito
                 chiefCooker.CreateRecipe(new Recipe("Mojito", Manager.Menu.Coctail));
-                chiefCooker.IdentifyIngredients(
-                    new Recipe.Ingredient("Sugar", 0.013),
-                    new Recipe.Ingredient("Soda", 0.09),
-                    new Recipe.Ingredient("White rum", 0.045),
-                    new Recipe.Ingredient("Lime", 0.05),
-                    new Recipe.Ingredient("Mint", 0.01),
-                    new Recipe.Ingredient("Ice", 0.05)
-                    );
+                chiefCooker.IdentifyIngredients(FileReader.ReadRecipeIngredients("Mojito"));
                 chiefCooker.Squeze("Lime");
                 chiefCooker.MixAll();
                 chiefCooker.CompleteRecipeCreation();
 
                 // Soup Kharcho
                 chiefCooker.CreateRecipe(new Recipe("Kharcho", Manager.Menu.Soup));
-                chiefCooker.IdentifyIngredients(
-                    new Recipe.Ingredient("Chicken", 0.02),
-                    new Recipe.Ingredient("Rice", 0.03),
-                    new Recipe.Ingredient("Garlic", 0.002),
-                    new Recipe.Ingredient("Butter", 0.01),
-                    new Recipe.Ingredient("Onion", 0.02),
-                    new Recipe.Ingredient("Carrot", 0.025),
-                    new Recipe.Ingredient("Tomato", 0.015),
-                    new Recipe.Ingredient("Greens", 0.01),
-                    new Recipe.Ingredient("Salt", 0.0015),
-                    new Recipe.Ingredient("Water", 0.42)
-                    );
+                chiefCooker.IdentifyIngredients(FileReader.ReadRecipeIngredients("Kharcho"));
                 chiefCooker.Cut(50, 70, "Chicken");
                 chiefCooker.Boil(35, ChiefCooker.KitchenDevices.Saucepan, "Water", "Chicken");
                 chiefCooker.Add("Rice", "Salt");
@@ -99,15 +69,7 @@ namespace ExecutionTask3
 
                 // Cherry pie
                 chiefCooker.CreateRecipe(new Recipe("Cherry pie", Manager.Menu.Dessert));
-                chiefCooker.IdentifyIngredients(
-                    new Recipe.Ingredient("Egg", 0.08),
-                    new Recipe.Ingredient("Sugar", 0.17),
-                    new Recipe.Ingredient("Sour cream", 0.23),
-                    new Recipe.Ingredient("Butter", 0.1),
-                    new Recipe.Ingredient("Baking soda", 0.001),
-                    new Recipe.Ingredient("Flour", 0.3),
-                    new Recipe.Ingredient("Cherry", 0.3)
-                    );
+                chiefCooker.IdentifyIngredients(FileReader.ReadRecipeIngredients("Cherry pie"));
                 chiefCooker.Mix("Egg", "Sugar");
                 chiefCooker.Add("Sour cream", "Butter", "Baking soda", "Flour");
                 chiefCooker.Add("Cherry");
@@ -116,22 +78,14 @@ namespace ExecutionTask3
 
                 // Tea
                 chiefCooker.CreateRecipe(new Recipe("Tea", Manager.Menu.HotDrink));
-                chiefCooker.IdentifyIngredients(
-                    new Recipe.Ingredient("Tea", 0.002),
-                    new Recipe.Ingredient("Water", 0.2)
-                    );
+                chiefCooker.IdentifyIngredients(FileReader.ReadRecipeIngredients("Tea"));
                 chiefCooker.Boil(5, ChiefCooker.KitchenDevices.Kettle, "Water");
                 chiefCooker.Add("Tea");
                 chiefCooker.CompleteRecipeCreation();
 
                 // Cappuccino
                 chiefCooker.CreateRecipe(new Recipe("Cappuccino", Manager.Menu.HotDrink));
-                chiefCooker.IdentifyIngredients(
-                    new Recipe.Ingredient("Water", 0.06),
-                    new Recipe.Ingredient("Coffee", 0.007),
-                    new Recipe.Ingredient("Milk", 0.07),
-                    new Recipe.Ingredient("Cinnamon", 0.003)
-                    );
+                chiefCooker.IdentifyIngredients(FileReader.ReadRecipeIngredients("Cappuccino"));
                 chiefCooker.Boil(5, ChiefCooker.KitchenDevices.CoffeeMachine, "Water", "Coffee");
                 chiefCooker.Mix("Milk");
                 chiefCooker.Add("Cinnamon");
@@ -147,19 +101,23 @@ namespace ExecutionTask3
                 chiefCooker.CookTheDish("Kharcho", Manager.Menu.Soup, 3);
                 chiefCooker.CookTheDish("Cherry pie", Manager.Menu.Dessert, 1);
                 chiefCooker.CookTheDish("Tea", Manager.Menu.HotDrink, 2);
-                
-                Console.WriteLine(chiefCooker.ViewAllProductionCapacity());
-                Console.WriteLine(chiefCooker.ViewAllIngredients());
-                Console.WriteLine(manager.ViewOrdersInTime("10:00", "11:30"));
-                Console.WriteLine(chiefCooker.FindIngredientsByNumberOfUses(ChiefCooker.NumOfUses.Max));
-                Console.WriteLine(chiefCooker.FindIngredientsByStorageConditions(new ChiefCooker.StorageConditions(-10, 10)));
-                Console.WriteLine(chiefCooker.ViewLongestProcessingProcedure());
-                Console.WriteLine(chiefCooker.ViewTheMostExpensiveProcessingProcedure());
+                chiefCooker.CookTheDish("Cappuccino", Manager.Menu.HotDrink, 1);
+
+                chiefCooker.CompleteTheOrder("040");
+                chiefCooker.CookTheDish("Cappuccino", Manager.Menu.HotDrink, 1);
+
+                FileWriter.CleanFile();
+                FileWriter.Write(chiefCooker.ViewAllProductionCapacity());
+                FileWriter.Write(chiefCooker.ViewAllIngredients());
+                FileWriter.Write(manager.ViewOrdersInTime("10:00", "17:30"));
+                FileWriter.Write(chiefCooker.FindIngredientsByNumberOfUses(ChiefCooker.NumOfUses.Max));
+                FileWriter.Write(chiefCooker.FindIngredientsByStorageConditions(new ChiefCooker.StorageConditions(-10, 10)));
+                FileWriter.Write(chiefCooker.ViewLongestProcessingProcedure());
+                FileWriter.Write(chiefCooker.ViewTheMostExpensiveProcessingProcedure());
             }
             catch(Exception error)
             {
                 Console.WriteLine("Error: " + error.Message);
-                Console.WriteLine(error.StackTrace);
             }
         }
     }

@@ -45,10 +45,20 @@ namespace ClassLibraryBistro
             int startTimeMins = Convert.ToInt32(startTime.Substring(MINUTES_POS, 2));
             int endTimeMins = Convert.ToInt32(endTime.Substring(MINUTES_POS, 2));
 
-            if (startTimeHours <= timeHours && endTimeHours >= timeHours &&
-                startTimeMins <= timeMins && endTimeMins >= timeMins)
+            if (startTimeHours <= timeHours && endTimeHours >= timeHours)
             {
-                return true;
+                if (startTimeHours == timeHours && startTimeMins <= timeMins)
+                {
+                    return true;
+                }
+                else if (endTimeHours == timeHours && endTimeMins >= timeMins)
+                {
+                    return true;
+                }
+                else if (endTimeHours != timeHours && startTimeHours != timeHours)
+                {
+                    return true;
+                }
             }
             return false;
         }
