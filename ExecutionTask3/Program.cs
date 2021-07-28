@@ -21,39 +21,7 @@ namespace ExecutionTask3
                 manager.AddDishToOrder("105", Manager.Menu.HotDrink, "Tea", 2);
                 manager.AddDishToOrder("105", Manager.Menu.HotDrink, "Cappuccino", 1);
 
-                chiefCooker.AddProducts(
-                    new ChiefCooker.Product("Green salad", 17.63, new ChiefCooker.StorageConditions(0, 20)),
-                    new ChiefCooker.Product("Tomato", 4.9, new ChiefCooker.StorageConditions(0, 20)),
-                    new ChiefCooker.Product("Chicken", 7.5, new ChiefCooker.StorageConditions(-25, 10)),
-                    new ChiefCooker.Product("White bread", 2.2, new ChiefCooker.StorageConditions(5, 25)),
-                    new ChiefCooker.Product("Butter", 20.28, new ChiefCooker.StorageConditions(-25, 10)),
-                    new ChiefCooker.Product("Garlic", 6.6, new ChiefCooker.StorageConditions(0, 20)),
-                    new ChiefCooker.Product("Cheese", 16.7, new ChiefCooker.StorageConditions(0, 10)),
-                    new ChiefCooker.Product("Mayonnaise", 6.42, new ChiefCooker.StorageConditions(0, 10)),
-                    new ChiefCooker.Product("Beef", 33, new ChiefCooker.StorageConditions(-25, 10)),
-                    new ChiefCooker.Product("Flavoring", 27.4, new ChiefCooker.StorageConditions(5, 25)),
-                    new ChiefCooker.Product("Sugar", 1.54, new ChiefCooker.StorageConditions(10, 25)),
-                    new ChiefCooker.Product("Soda", 2, new ChiefCooker.StorageConditions(0, 10)),
-                    new ChiefCooker.Product("White rum", 67, new ChiefCooker.StorageConditions(10, 20)),
-                    new ChiefCooker.Product("Lime", 7.5, new ChiefCooker.StorageConditions(0, 20)),
-                    new ChiefCooker.Product("Mint", 39.8, new ChiefCooker.StorageConditions(0, 20)),
-                    new ChiefCooker.Product("Ice", 2, new ChiefCooker.StorageConditions(-25, -15)),
-                    new ChiefCooker.Product("Greens", 16.9, new ChiefCooker.StorageConditions(0, 20)),
-                    new ChiefCooker.Product("Rice", 2.2, new ChiefCooker.StorageConditions(10, 25)),
-                    new ChiefCooker.Product("Onion", 1.6, new ChiefCooker.StorageConditions(0, 20)),
-                    new ChiefCooker.Product("Carrot", 1.55, new ChiefCooker.StorageConditions(0, 20)),
-                    new ChiefCooker.Product("Salt", 0.64, new ChiefCooker.StorageConditions(10, 25)),
-                    new ChiefCooker.Product("Water", 0.5, new ChiefCooker.StorageConditions(0, 10)),
-                    new ChiefCooker.Product("Egg", 3, new ChiefCooker.StorageConditions(0, 10)),
-                    new ChiefCooker.Product("Sour cream", 5.25, new ChiefCooker.StorageConditions(0, 10)),
-                    new ChiefCooker.Product("Baking soda", 2.18, new ChiefCooker.StorageConditions(10, 25)),
-                    new ChiefCooker.Product("Flour", 1.28, new ChiefCooker.StorageConditions(10, 25)),
-                    new ChiefCooker.Product("Cherry", 9, new ChiefCooker.StorageConditions(0, 20)),
-                    new ChiefCooker.Product("Tea", 800, new ChiefCooker.StorageConditions(10, 25)),
-                    new ChiefCooker.Product("Coffee", 35, new ChiefCooker.StorageConditions(10, 25)),
-                    new ChiefCooker.Product("Milk", 1.34, new ChiefCooker.StorageConditions(0, 10)),
-                    new ChiefCooker.Product("Cinnamon", 18, new ChiefCooker.StorageConditions(10, 25))
-                    );
+                chiefCooker.AddProducts(FileReader.ReadProducts());
 
                 // Salad Caesar
                 chiefCooker.CreateRecipe(new Recipe("Caesar", Manager.Menu.Salad));
@@ -169,7 +137,6 @@ namespace ExecutionTask3
                 chiefCooker.Add("Cinnamon");
                 chiefCooker.CompleteRecipeCreation();
 
-
                 chiefCooker.CompleteTheOrder("023");
                 chiefCooker.CookTheDish("Caesar", Manager.Menu.Salad, 8);
                 chiefCooker.CookTheDish("Steak", Manager.Menu.Meat, 14);
@@ -180,7 +147,7 @@ namespace ExecutionTask3
                 chiefCooker.CookTheDish("Kharcho", Manager.Menu.Soup, 3);
                 chiefCooker.CookTheDish("Cherry pie", Manager.Menu.Dessert, 1);
                 chiefCooker.CookTheDish("Tea", Manager.Menu.HotDrink, 2);
-
+                
                 Console.WriteLine(chiefCooker.ViewAllProductionCapacity());
                 Console.WriteLine(chiefCooker.ViewAllIngredients());
                 Console.WriteLine(manager.ViewOrdersInTime("10:00", "11:30"));

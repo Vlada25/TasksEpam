@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<products>
+  <product name="Green salad">
+    <price>17,63</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>20</endTemperature>
+  </product>
+  
+  <product name="Tomato">
+    <price>4,9</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>20</endTemperature>
+  </product>
+  
+  <product name="Chicken">
+    <price>7,5</price>
+    <startTemperature>-25</startTemperature>
+    <endTemperature>10</endTemperature>
+  </product>
+  
+  <product name="White bread">
+    <price>2,2</price>
+    <startTemperature>5</startTemperature>
+    <endTemperature>25</endTemperature>
+  </product>
+  
+  <product name="Butter">
+    <price>20,28</price>
+    <startTemperature>-25</startTemperature>
+    <endTemperature>10</endTemperature>
+  </product>
+
+  <product name="Garlic">
+    <price>6,6</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>20</endTemperature>
+  </product>
+
+  <product name="Cheese">
+    <price>16,7</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>10</endTemperature>
+  </product>
+
+  <product name="Mayonnaise">
+    <price>6,42</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>10</endTemperature>
+  </product>
+
+  <product name="Beef">
+    <price>33</price>
+    <startTemperature>-25</startTemperature>
+    <endTemperature>10</endTemperature>
+  </product>
+
+  <product name="Flavoring">
+    <price>27,4</price>
+    <startTemperature>5</startTemperature>
+    <endTemperature>25</endTemperature>
+  </product>
+
+  <product name="Sugar">
+    <price>1,54</price>
+    <startTemperature>10</startTemperature>
+    <endTemperature>25</endTemperature>
+  </product>
+
+  <product name="Soda">
+    <price>2</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>10</endTemperature>
+  </product>
+
+  <product name="White rum">
+    <price>67</price>
+    <startTemperature>10</startTemperature>
+    <endTemperature>20</endTemperature>
+  </product>
+
+  <product name="Lime">
+    <price>7,5</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>20</endTemperature>
+  </product>
+
+  <product name="Mint">
+    <price>39,8</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>20</endTemperature>
+  </product>
+
+  <product name="Ice">
+    <price>2</price>
+    <startTemperature>-25</startTemperature>
+    <endTemperature>-15</endTemperature>
+  </product>
+
+  <product name="Greens">
+    <price>16,9</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>20</endTemperature>
+  </product>
+
+  <product name="Rice">
+    <price>2,2</price>
+    <startTemperature>10</startTemperature>
+    <endTemperature>25</endTemperature>
+  </product>
+
+  <product name="Onion">
+    <price>1,6</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>20</endTemperature>
+  </product>
+
+  <product name="Carrot">
+    <price>1,55</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>20</endTemperature>
+  </product>
+
+  <product name="Salt">
+    <price>0,64</price>
+    <startTemperature>10</startTemperature>
+    <endTemperature>25</endTemperature>
+  </product>
+
+  <product name="Water">
+    <price>0,5</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>10</endTemperature>
+  </product>
+
+  <product name="Egg">
+    <price>3</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>10</endTemperature>
+  </product>
+
+  <product name="Sour cream">
+    <price>5,25</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>10</endTemperature>
+  </product>
+
+  <product name="Baking soda">
+    <price>2,18</price>
+    <startTemperature>10</startTemperature>
+    <endTemperature>25</endTemperature>
+  </product>
+
+  <product name="Flour">
+    <price>1,28</price>
+    <startTemperature>10</startTemperature>
+    <endTemperature>25</endTemperature>
+  </product>
+
+  <product name="Cherry">
+    <price>9</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>20</endTemperature>
+  </product>
+
+  <product name="Tea">
+    <price>800</price>
+    <startTemperature>10</startTemperature>
+    <endTemperature>25</endTemperature>
+  </product>
+
+  <product name="Coffee">
+    <price>35</price>
+    <startTemperature>10</startTemperature>
+    <endTemperature>25</endTemperature>
+  </product>
+
+  <product name="Milk">
+    <price>1,34</price>
+    <startTemperature>0</startTemperature>
+    <endTemperature>10</endTemperature>
+  </product>
+
+  <product name="Cinnamon">
+    <price>18</price>
+    <startTemperature>10</startTemperature>
+    <endTemperature>25</endTemperature>
+  </product>
+</products>

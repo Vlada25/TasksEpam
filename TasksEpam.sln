@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibraryBistro", "ClassLibraryBistro\ClassLibraryBistro.csproj", "{04BA5436-5FE2-45F8-A3AC-C2EDD6A1A277}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibraryBistro", "ClassLibraryBistro\ClassLibraryBistro.csproj", "{04BA5436-5FE2-45F8-A3AC-C2EDD6A1A277}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExecutionTask3", "ExecutionTask3\ExecutionTask3.csproj", "{C10E41D8-F512-46EF-9D40-F4937512D591}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExecutionTask3", "ExecutionTask3\ExecutionTask3.csproj", "{C10E41D8-F512-46EF-9D40-F4937512D591}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FilesForReading", "FilesForReading", "{5DE1B645-4F06-453F-A7CD-3F49D9D83871}"
+	ProjectSection(SolutionItems) = preProject
+		Products.xml = Products.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

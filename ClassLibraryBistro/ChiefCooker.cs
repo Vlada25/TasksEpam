@@ -122,9 +122,9 @@ namespace ClassLibraryBistro
                 throw new Exception("This order is not exist");
             }
         }
-        public void AddProducts(params Product[] _products)
+        public void AddProducts(List<ChiefCooker.Product> products)
         {
-            this._products.AddRange(_products);
+            _products.AddRange(products);
         }
 
         public void CookTheDish(string name, Manager.Menu type, int countOfPortions)
