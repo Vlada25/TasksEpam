@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ClassLibraryBistro
 {
-    public class Recipe
+    public class Recipe : IDish
     {
         public struct KitchenActions
         {
@@ -30,9 +30,9 @@ namespace ClassLibraryBistro
             public int EndSize;
         }
 
-        public string Name;
-        public Manager.Menu DishType;
-        public bool IsRecipeCompleted = false;
+        public string Name { get; }
+        public Manager.Menu Type { get; }
+        public bool IsCompleted = false;
         public int CountOfOperations = 0;
         public int SpentMinutes = 0;
         public double PriceOfDish;
@@ -44,12 +44,12 @@ namespace ClassLibraryBistro
         public Recipe(string name, Manager.Menu type)
         {
             Name = name;
-            DishType = type;
+            Type = type;
             WrittenRecipe += $"\nRecipe of {Convert.ToString(type).ToLower()} {name}";
         }
         public override string ToString()
         {
-            if (!IsRecipeCompleted)
+            if (!IsCompleted)
             {
                 return $"{WrittenRecipe}\n...INCOMPLETED...";
             }

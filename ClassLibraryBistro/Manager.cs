@@ -25,12 +25,12 @@ namespace ClassLibraryBistro
             }
             _alreadyExist = true;
         }
-        public void TakeOrder(string clientNumber, Menu dishType, string dishName, int countOfPortions, string orderTime)
+        public void TakeOrder(string clientNumber, Menu Type, string dishName, int countOfPortions, string orderTime)
         {
-            ClientOrder clientOrder = new ClientOrder(clientNumber, dishType, dishName, countOfPortions, orderTime);
+            ClientOrder clientOrder = new ClientOrder(clientNumber, Type, dishName, countOfPortions, orderTime);
             ClientOrdersList.Add(clientOrder);
         }
-        public void AddDishToOrder(string clientNumber, Menu dishType, string dishName, int countOfPortions)
+        public void AddDishToOrder(string clientNumber, Menu Type, string dishName, int countOfPortions)
         {
             bool isOrderExist = false;
             foreach (ClientOrder order in ClientOrdersList)
@@ -42,7 +42,7 @@ namespace ClassLibraryBistro
                         throw new Exception("This order is in progress, you can't add new dishes");
                     }
                     isOrderExist = true;
-                    order.AddDish(dishType, dishName, countOfPortions);
+                    order.AddDish(Type, dishName, countOfPortions);
                     break;
                 }
             }

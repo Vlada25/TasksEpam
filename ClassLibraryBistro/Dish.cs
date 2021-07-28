@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ClassLibraryBistro
 {
-    public class Dish
+    public class Dish : IDish
     {
         public string Name { get; }
         public Manager.Menu Type { get; }

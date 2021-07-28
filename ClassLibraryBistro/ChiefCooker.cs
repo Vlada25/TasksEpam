@@ -36,6 +36,7 @@ namespace ClassLibraryBistro
             public KitchenDevices Device;
             public int Minutes;
         }
+
         public enum CookOperations
         {
             Add,
@@ -65,21 +66,26 @@ namespace ClassLibraryBistro
             Max,
             Min
         }
+
         const int PAN_CAPACITY = 2,
             SAUCEPAN_CAPACITY = 5,
             GRILL_CAPACITY = 3,
             COUNT_OF_DISHES_IN_OVEN = 2,
             MAX_CUT_INGREDIENTS = 5;
 
+        double _freeSpaceInPan,
+            _freeSpaceInSaucepan,
+            _freeSpaceInGrill;
+
         static bool _alreadyExist = false;
         public Recipe CurrentRecipe;
         ClientOrder _clientOrder = null;
         int _counterOfDishes;
-        ProcessingProcedure longestProcedure;
+        ProcessingProcedure _longestProcedure;
 
         readonly List<Product> _products = new List<Product>();
         readonly List<Recipe> _recipes = new List<Recipe>();
-        Dictionary<string, double> pricesForProcessingProcedures = new Dictionary<string, double> 
+        readonly Dictionary<string, double> pricesForProcessingProcedures = new Dictionary<string, double> 
         {
             { "Pan", 0.1 },
             { "Saucepan", 0.1 },
@@ -88,9 +94,6 @@ namespace ClassLibraryBistro
             { "Kettle", 0.05 },
             { "CoffeeMachine", 0.3 }
         };
-        double freeSpaceInPan,
-            freeSpaceInSaucepan,
-            freeSpaceInGrill;
 
         public ChiefCooker()
         {
@@ -136,9 +139,9 @@ namespace ClassLibraryBistro
             Helper.CheckDishInOrder(name, countOfPortions, _clientOrder);
             Helper.CheckExistenceOfAllProducts(currentDish, _products);
 
-            freeSpaceInPan = PAN_CAPACITY;
-            freeSpaceInSaucepan = SAUCEPAN_CAPACITY;
-            freeSpaceInGrill = GRILL_CAPACITY;
+            _freeSpaceInPan = PAN_CAPACITY;
+            _freeSpaceInSaucepan = SAUCEPAN_CAPACITY;
+            _freeSpaceInGrill = GRILL_CAPACITY;
 
             foreach (Recipe.KitchenActions action in currentDish.Actions)
             {
@@ -150,11 +153,11 @@ namespace ClassLibraryBistro
                         {
                             case KitchenDevices.Pan:
                                 CurrentRecipe.PriceOfDish += pricesForProcessingProcedures["Pan"] * action.Minutes;
-                                freeSpaceInPan = Helper.TrySetFreeSpaceInDevice(freeSpaceInPan, commonWeight, countOfPortions, currentDish.Name);
+                                _freeSpaceInPan = Helper.TrySetFreeSpaceInDevice(_freeSpaceInPan, commonWeight, countOfPortions, currentDish.Name);
                                 break;
                             case KitchenDevices.Grill:
                                 CurrentRecipe.PriceOfDish += pricesForProcessingProcedures["Grill"] * action.Minutes;
-                                freeSpaceInGrill = Helper.TrySetFreeSpaceInDevice(freeSpaceInGrill, commonWeight, countOfPortions, currentDish.Name);
+                                _freeSpaceInGrill = Helper.TrySetFreeSpaceInDevice(_freeSpaceInGrill, commonWeight, countOfPortions, currentDish.Name);
                                 break;
                         }
                         break;
@@ -173,7 +176,7 @@ namespace ClassLibraryBistro
                         break;
                     case CookOperations.Boil:
                         commonWeight = Helper.SetCommonWeight(action, currentDish);
-                        freeSpaceInSaucepan = Helper.TrySetFreeSpaceInDevice(freeSpaceInSaucepan, commonWeight, countOfPortions, currentDish.Name);
+                        _freeSpaceInSaucepan = Helper.TrySetFreeSpaceInDevice(_freeSpaceInSaucepan, commonWeight, countOfPortions, currentDish.Name);
 
                         switch (action.Device)
                         {
@@ -189,7 +192,7 @@ namespace ClassLibraryBistro
                         }
                         break;
                 }
-                longestProcedure = Helper.FindLongestProcessingProcedure(longestProcedure, action);
+                _longestProcedure = Helper.FindLongestProcessingProcedure(_longestProcedure, action);
             }
 
             foreach (Dish dish in _clientOrder.Dishes)
@@ -217,12 +220,11 @@ namespace ClassLibraryBistro
             Helper.CountNumOfUsesForProducts(currentDish, countOfPortions, _products);
         }
 
-        // Functions to recipe creation
         public void CreateRecipe(Recipe recipe)
         {
             if (_recipes.Count != 0)
             {
-                if (!CurrentRecipe.IsRecipeCompleted)
+                if (!CurrentRecipe.IsCompleted)
                 {
                     throw new Exception("The previous recipe is incomplete");
                 }
@@ -378,10 +380,10 @@ namespace ClassLibraryBistro
             CurrentRecipe.WrittenRecipe += $"\nTime: {CurrentRecipe.SpentMinutes} minutes";
             CurrentRecipe.WrittenRecipe += $"\nPrice of ingredients: {Math.Round(CurrentRecipe.PriceOfDish, 2)}$";
 
-            CurrentRecipe.IsRecipeCompleted = true;
+            CurrentRecipe.IsCompleted = true;
         }
 
-        // Functions to view necessary information
+
         public string ViewAllProductionCapacity()
         {
             string result = $"\nAll production capacity:";
@@ -447,7 +449,7 @@ namespace ClassLibraryBistro
         public string ViewLongestProcessingProcedure()
         {
             string result = "\nLongest processing procedure:";
-            result += $"\n{longestProcedure.Operation} ({longestProcedure.Device}) - {longestProcedure.Minutes} min";
+            result += $"\n{_longestProcedure.Operation} ({_longestProcedure.Device}) - {_longestProcedure.Minutes} min";
             return result;
         }
         public string ViewTheMostExpensiveProcessingProcedure()

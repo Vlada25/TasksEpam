@@ -113,8 +113,8 @@ namespace ClassLibraryBistro
             bool isRecipeExist = false;
             foreach (Recipe recipe in recipes)
             {
-                if (recipe.Name == name && recipe.IsRecipeCompleted &&
-                    recipe.DishType == type)
+                if (recipe.Name == name && recipe.IsCompleted &&
+                    recipe.Type == type)
                 {
                     selectedRecipe = recipe;
                     isRecipeExist = true;
@@ -168,15 +168,15 @@ namespace ClassLibraryBistro
             }
             return freeSpaceInDevice;
         }
-        public static ProcessingProcedure FindLongestProcessingProcedure(ProcessingProcedure longestProcedure, Recipe.KitchenActions action)
+        public static ProcessingProcedure FindLongestProcessingProcedure(ProcessingProcedure _longestProcedure, Recipe.KitchenActions action)
         {
-            if (longestProcedure.Minutes < action.Minutes)
+            if (_longestProcedure.Minutes < action.Minutes)
             {
-                longestProcedure.Operation = action.CookOperation;
-                longestProcedure.Device = action.Device;
-                longestProcedure.Minutes = action.Minutes;
+                _longestProcedure.Operation = action.CookOperation;
+                _longestProcedure.Device = action.Device;
+                _longestProcedure.Minutes = action.Minutes;
             }
-            return longestProcedure;
+            return _longestProcedure;
         }
     }
 }

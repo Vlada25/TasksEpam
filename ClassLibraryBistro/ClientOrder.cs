@@ -8,20 +8,20 @@ namespace ClassLibraryBistro
     {
         public string ClientNumber { get; }
         public double FinalBill = 0;
-        public string OrderTime;
+        public string OrderTime { get; }
         public int SpentMinutes = 0;
         public bool IsDone = false;
         public bool OrderInProgress = false;
         public List<Dish> Dishes = new List<Dish>();
-        public ClientOrder(string clientNumber, Manager.Menu dishType, string dishName, int countOfPortions, string orderTime)
+        public ClientOrder(string clientNumber, Manager.Menu Type, string dishName, int countOfPortions, string orderTime)
         {
             ClientNumber = SetClientNumber(clientNumber);
             OrderTime = Helper.SetTime(orderTime);
-            Dishes.Add(new Dish(dishName, dishType, countOfPortions));
+            Dishes.Add(new Dish(dishName, Type, countOfPortions));
         }
-        public void AddDish(Manager.Menu dishType, string dishName, int countOfPortions)
+        public void AddDish(Manager.Menu Type, string dishName, int countOfPortions)
         {
-            Dishes.Add(new Dish(dishName, dishType, countOfPortions));
+            Dishes.Add(new Dish(dishName, Type, countOfPortions));
         }
         string SetClientNumber(string number)
         {
