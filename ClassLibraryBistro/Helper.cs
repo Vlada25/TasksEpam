@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static ClassLibraryBistro.ChiefCooker;
 
 namespace ClassLibraryBistro
 {
@@ -9,6 +10,10 @@ namespace ClassLibraryBistro
         public static string SetTime(string time)
         {
             // Bistro is open from 9:00 to 23:00
+            const int OPEN_TIME_HOURS = 9,
+            CLOSE_TIME_HOURS = 22,
+            MAX_VALUE_OF_MINUTES = 59;
+
             Exception ex = new Exception("Invalid value of time");
             if (time.Length != 5)
             {
@@ -19,7 +24,7 @@ namespace ClassLibraryBistro
             {
                 throw ex;
             }
-            else if (hours < 9 || hours > 22 || minutes < 0 || minutes > 59)
+            else if (hours < OPEN_TIME_HOURS || hours > CLOSE_TIME_HOURS || minutes < 0 || minutes > MAX_VALUE_OF_MINUTES)
             {
                 throw ex;
             }
@@ -27,15 +32,18 @@ namespace ClassLibraryBistro
         }
         public static bool IsTimeInRange(string time, string startTime, string endTime)
         {
+            const int HOURS_POS = 0,
+                MINUTES_POS = 3;
+
             startTime = SetTime(startTime);
             endTime = SetTime(endTime);
 
-            int timeHours = Convert.ToInt32(time.Substring(0, 2));
-            int timeMins = Convert.ToInt32(time.Substring(3, 2));
-            int startTimeHours = Convert.ToInt32(startTime.Substring(0, 2));
-            int endTimeHours = Convert.ToInt32(endTime.Substring(0, 2));
-            int startTimeMins = Convert.ToInt32(startTime.Substring(3, 2));
-            int endTimeMins = Convert.ToInt32(endTime.Substring(3, 2));
+            int timeHours = Convert.ToInt32(time.Substring(HOURS_POS, 2));
+            int timeMins = Convert.ToInt32(time.Substring(MINUTES_POS, 2));
+            int startTimeHours = Convert.ToInt32(startTime.Substring(HOURS_POS, 2));
+            int endTimeHours = Convert.ToInt32(endTime.Substring(HOURS_POS, 2));
+            int startTimeMins = Convert.ToInt32(startTime.Substring(MINUTES_POS, 2));
+            int endTimeMins = Convert.ToInt32(endTime.Substring(MINUTES_POS, 2));
 
             if (startTimeHours <= timeHours && endTimeHours >= timeHours &&
                 startTimeMins <= timeMins && endTimeMins >= timeMins)
@@ -44,12 +52,12 @@ namespace ClassLibraryBistro
             }
             return false;
         }
-        public static double CountPriceOfIngredients(List<Recipe.Ingredient> ingredients, List<ChiefCooker.Product> products)
+        public static double CountPriceOfIngredients(List<Recipe.Ingredient> ingredients, List<Product> products)
         {
             double price = 0;
             foreach (Recipe.Ingredient ingredient in ingredients)
             {
-                foreach (ChiefCooker.Product product in products)
+                foreach (Product product in products)
                 {
                     if (product.Name.Equals(ingredient.Name))
                     {
@@ -60,12 +68,12 @@ namespace ClassLibraryBistro
             }
             return price;
         }
-        public static void CheckExistenceOfAllProducts(Recipe currentDish, List<ChiefCooker.Product> products)
+        public static void CheckExistenceOfAllProducts(Recipe currentDish, List<Product> products)
         {
             foreach (Recipe.Ingredient ingredient in currentDish.Ingredients)
             {
                 bool isProductExist = false;
-                foreach (ChiefCooker.Product product in products)
+                foreach (Product product in products)
                 {
                     if (product.Name.Equals(ingredient.Name))
                     {
@@ -119,6 +127,56 @@ namespace ClassLibraryBistro
             }
 
             return selectedRecipe;
+        }
+        public static void CountNumOfUsesForProducts(Recipe recipe, int countOfPortions, List<Product> products)
+        {
+            foreach (Recipe.Ingredient ingredient in recipe.Ingredients)
+            {
+                for (int i = 0; i < products.Count; i++)
+                {
+                    if (products[i].Name.Equals(ingredient.Name))
+                    {
+                        Product tmp = products[i];
+                        tmp.NumberOfUses += countOfPortions;
+                        products[i] = tmp;
+                        break;
+                    }
+                }
+            }
+        }
+        public static double SetCommonWeight(Recipe.KitchenActions action, Recipe currentDish)
+        {
+            double commonWeight = 0;
+            foreach (string nameOfIngredient in action.NamesOfIngredients)
+            {
+                foreach (Recipe.Ingredient ingredient in currentDish.Ingredients)
+                {
+                    if (nameOfIngredient.Equals(ingredient.Name))
+                    {
+                        commonWeight += ingredient.Weight;
+                    }
+                }
+            }
+            return commonWeight;
+        }
+        public static double TrySetFreeSpaceInDevice(double freeSpaceInDevice, double weight, int countOfPortions, string name)
+        {
+            freeSpaceInDevice -= weight * countOfPortions;
+            if (freeSpaceInDevice < 0)
+            {
+                throw new Exception($"Too many portions of {name}");
+            }
+            return freeSpaceInDevice;
+        }
+        public static ProcessingProcedure FindLongestProcessingProcedure(ProcessingProcedure longestProcedure, Recipe.KitchenActions action)
+        {
+            if (longestProcedure.Minutes < action.Minutes)
+            {
+                longestProcedure.Operation = action.CookOperation;
+                longestProcedure.Device = action.Device;
+                longestProcedure.Minutes = action.Minutes;
+            }
+            return longestProcedure;
         }
     }
 }

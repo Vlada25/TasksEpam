@@ -11,11 +11,13 @@ namespace ClassLibraryBistro
             public string Name;
             public double TotalPrice;
             public StorageConditions Conditions;
+            public int NumberOfUses;
             public Product(string name, double price, StorageConditions conditions)
             {
                 Name = name;
                 TotalPrice = price;
                 Conditions = conditions;
+                NumberOfUses = 0;
             }
         }
         public struct StorageConditions
@@ -27,6 +29,12 @@ namespace ClassLibraryBistro
                 StartTemperature = startTemperature;
                 EndTemperature = endTemperature;
             }
+        }
+        public struct ProcessingProcedure
+        {
+            public CookOperations Operation;
+            public KitchenDevices Device;
+            public int Minutes;
         }
         public enum CookOperations
         {
@@ -45,22 +53,45 @@ namespace ClassLibraryBistro
             Saucepan,
             Kettle,
             CoffeeMachine,
-            Grill
+            Grill,
+            Oven,
+            Knife,
+            Spoon,
+            Grater,
+            Juicer
+        }
+        public enum NumOfUses
+        {
+            Max,
+            Min
         }
         const int PAN_CAPACITY = 2,
             SAUCEPAN_CAPACITY = 5,
             GRILL_CAPACITY = 3,
-            COUNT_OF_DISHES_IN_OVEN = 2;
-        static bool _alreadyExist = false;
-        List<Product> products = new List<Product>();
-        List<Recipe> recipes = new List<Recipe>();
-        public Recipe currentRecipe;
-        ClientOrder clientOrder = null;
-        int counterOfDishes;
+            COUNT_OF_DISHES_IN_OVEN = 2,
+            MAX_CUT_INGREDIENTS = 5;
 
+        static bool _alreadyExist = false;
+        public Recipe CurrentRecipe;
+        ClientOrder _clientOrder = null;
+        int _counterOfDishes;
+        ProcessingProcedure longestProcedure;
+
+        readonly List<Product> _products = new List<Product>();
+        readonly List<Recipe> _recipes = new List<Recipe>();
+        Dictionary<string, double> pricesForProcessingProcedures = new Dictionary<string, double> 
+        {
+            { "Pan", 0.1 },
+            { "Saucepan", 0.1 },
+            { "Grill", 0.2 },
+            { "Oven", 0.1 },
+            { "Kettle", 0.05 },
+            { "CoffeeMachine", 0.3 }
+        };
         double freeSpaceInPan,
             freeSpaceInSaucepan,
             freeSpaceInGrill;
+
         public ChiefCooker()
         {
             if (_alreadyExist)
@@ -78,8 +109,8 @@ namespace ClassLibraryBistro
                 {
                     isNumberExist = true;
                     order.OrderInProgress = true;
-                    clientOrder = order;
-                    counterOfDishes = 0;
+                    _clientOrder = order;
+                    _counterOfDishes = 0;
                     break;
                 }
             }
@@ -88,22 +119,22 @@ namespace ClassLibraryBistro
                 throw new Exception("This order is not exist");
             }
         }
-        public void AddProducts(params Product[] products)
+        public void AddProducts(params Product[] _products)
         {
-            this.products.AddRange(products);
+            this._products.AddRange(_products);
         }
 
         public void CookTheDish(string name, Manager.Menu type, int countOfPortions)
         {
-            if (clientOrder == null)
+            if (_clientOrder == null)
             {
                 throw new Exception("No orders");
             }
 
-            Recipe currentDish = Helper.DefineCurrentDish(name, type, recipes);
+            Recipe currentDish = Helper.DefineCurrentDish(name, type, _recipes);
 
-            Helper.CheckDishInOrder(name, countOfPortions, clientOrder);
-            Helper.CheckExistenceOfAllProducts(currentDish, products);
+            Helper.CheckDishInOrder(name, countOfPortions, _clientOrder);
+            Helper.CheckExistenceOfAllProducts(currentDish, _products);
 
             freeSpaceInPan = PAN_CAPACITY;
             freeSpaceInSaucepan = SAUCEPAN_CAPACITY;
@@ -114,86 +145,54 @@ namespace ClassLibraryBistro
                 switch (action.CookOperation)
                 {
                     case CookOperations.Fry:
-                        double commonWeight = 0;
-                        foreach (string nameOfIngredient in action.NamesOfIngredients)
-                        {
-                            foreach (Recipe.Ingredient ingredient in currentDish.Ingredients)
-                            {
-                                if (nameOfIngredient.Equals(ingredient.Name))
-                                {
-                                    commonWeight += ingredient.Weight;
-                                }
-                            }
-                        }
+                        double commonWeight = Helper.SetCommonWeight(action, currentDish);
                         switch (action.Device)
                         {
                             case KitchenDevices.Pan:
-                                currentRecipe.PriceOfDish += 0.1 * action.Minutes;
-                                freeSpaceInPan -= commonWeight * countOfPortions;
-                                if (freeSpaceInPan < 0)
-                                {
-                                    throw new Exception($"Too many portions of {currentDish.Name}");
-                                }
+                                CurrentRecipe.PriceOfDish += pricesForProcessingProcedures["Pan"] * action.Minutes;
+                                freeSpaceInPan = Helper.TrySetFreeSpaceInDevice(freeSpaceInPan, commonWeight, countOfPortions, currentDish.Name);
                                 break;
                             case KitchenDevices.Grill:
-                                currentRecipe.PriceOfDish += 0.2 * action.Minutes;
-                                freeSpaceInGrill -= commonWeight * countOfPortions;
-                                if (freeSpaceInGrill < 0)
-                                {
-                                    throw new Exception($"Too many portions of {currentDish.Name}");
-                                }
+                                CurrentRecipe.PriceOfDish += pricesForProcessingProcedures["Grill"] * action.Minutes;
+                                freeSpaceInGrill = Helper.TrySetFreeSpaceInDevice(freeSpaceInGrill, commonWeight, countOfPortions, currentDish.Name);
                                 break;
                         }
                         break;
                     case CookOperations.Cut:
-                        if (action.NamesOfIngredients.Count > 5)
+                        if (action.NamesOfIngredients.Count > MAX_CUT_INGREDIENTS)
                         {
                             throw new Exception("You can't cut more than 5 ingredients at the same time");
                         }
                         break;
                     case CookOperations.Bake:
-                        currentRecipe.PriceOfDish += 0.1 * action.Minutes;
+                        CurrentRecipe.PriceOfDish += pricesForProcessingProcedures["Oven"] * action.Minutes;
                         if (countOfPortions > COUNT_OF_DISHES_IN_OVEN)
                         {
                             throw new Exception("You can't bake more than 2 dishes at the same time");
                         }
                         break;
                     case CookOperations.Boil:
-                        commonWeight = 0;
-                        foreach (string nameOfIngredient in action.NamesOfIngredients)
-                        {
-                            foreach (Recipe.Ingredient ingredient in currentDish.Ingredients)
-                            {
-                                if (nameOfIngredient.Equals(ingredient.Name))
-                                {
-                                    commonWeight += ingredient.Weight;
-                                }
-                            }
-                        }
-                        freeSpaceInSaucepan -= commonWeight * countOfPortions;
-
-                        if (freeSpaceInSaucepan < 0)
-                        {
-                            throw new Exception($"Too many portions of {currentDish.Name}");
-                        }
+                        commonWeight = Helper.SetCommonWeight(action, currentDish);
+                        freeSpaceInSaucepan = Helper.TrySetFreeSpaceInDevice(freeSpaceInSaucepan, commonWeight, countOfPortions, currentDish.Name);
 
                         switch (action.Device)
                         {
                             case KitchenDevices.Saucepan:
-                                currentRecipe.PriceOfDish += 0.1 * action.Minutes;
+                                CurrentRecipe.PriceOfDish += pricesForProcessingProcedures["Saucepan"] * action.Minutes;
                                 break;
                             case KitchenDevices.Kettle:
-                                currentRecipe.PriceOfDish += 0.05 * action.Minutes;
+                                CurrentRecipe.PriceOfDish += pricesForProcessingProcedures["Kettle"] * action.Minutes;
                                 break;
                             case KitchenDevices.CoffeeMachine:
-                                currentRecipe.PriceOfDish += 0.3 * action.Minutes;
+                                CurrentRecipe.PriceOfDish += pricesForProcessingProcedures["CoffeeMachine"] * action.Minutes;
                                 break;
                         }
                         break;
                 }
+                longestProcedure = Helper.FindLongestProcessingProcedure(longestProcedure, action);
             }
 
-            foreach (Dish dish in clientOrder.Dishes)
+            foreach (Dish dish in _clientOrder.Dishes)
             {
                 if (name.Equals(dish.Name))
                 {
@@ -201,187 +200,185 @@ namespace ClassLibraryBistro
                     if (dish.NeedPortions == 0)
                     {
                         dish.IsDishDone = true;
-                        counterOfDishes++;
+                        _counterOfDishes++;
                     }
                     break;
                 }
             }
 
-            clientOrder.FinalBill += currentDish.PriceOfDish * countOfPortions;
-            clientOrder.SpentMinutes += currentDish.SpentMinutes;
+            _clientOrder.FinalBill += currentDish.PriceOfDish * countOfPortions;
+            _clientOrder.SpentMinutes += currentDish.SpentMinutes;
 
-            if (counterOfDishes == clientOrder.Dishes.Count)
+            if (_counterOfDishes == _clientOrder.Dishes.Count)
             {
-                clientOrder.IsDone = true;
+                _clientOrder.IsDone = true;
             }
+
+            Helper.CountNumOfUsesForProducts(currentDish, countOfPortions, _products);
         }
 
         // Functions to recipe creation
         public void CreateRecipe(Recipe recipe)
         {
-            if (recipes.Count != 0)
+            if (_recipes.Count != 0)
             {
-                if (!currentRecipe.IsRecipeCompleted)
+                if (!CurrentRecipe.IsRecipeCompleted)
                 {
                     throw new Exception("The previous recipe is incomplete");
                 }
             }
-            recipes.Add(recipe);
-            currentRecipe = recipe;
+            _recipes.Add(recipe);
+            CurrentRecipe = recipe;
         }
         public void IdentifyIngredients(params Recipe.Ingredient[] ingredients)
         {
-            currentRecipe.Ingredients.AddRange(ingredients);
-            currentRecipe.PriceOfDish = Helper.CountPriceOfIngredients(currentRecipe.Ingredients, products);
+            CurrentRecipe.Ingredients.AddRange(ingredients);
+            CurrentRecipe.PriceOfDish = Helper.CountPriceOfIngredients(CurrentRecipe.Ingredients, _products);
 
-            currentRecipe.WrittenRecipe += "\nNecessary ingredients: ";
+            CurrentRecipe.WrittenRecipe += "\nNecessary ingredients: ";
             foreach (Recipe.Ingredient product in ingredients)
             {
-                currentRecipe.WrittenRecipe += $"\n\t{product.Name} - {product.Weight} kg; ";
+                CurrentRecipe.WrittenRecipe += $"\n\t{product.Name} - {product.Weight} kg; ";
             }
         }
-        private void TakeAnAction(Recipe.KitchenActions action, CookOperations operation, int spentMinutes, string[] ingredientNames)
+        private void TakeAnAction(Recipe.KitchenActions action, CookOperations operation, int spentMinutes, string[] ingredientNames, KitchenDevices device)
         {
-            currentRecipe.CountOfOperations++;
-            currentRecipe.SpentMinutes += spentMinutes;
+            CurrentRecipe.CountOfOperations++;
+            CurrentRecipe.SpentMinutes += spentMinutes;
 
             action.NamesOfIngredients = new List<string>();
             action.CookOperation = operation;
+            action.Device = device;
+            action.Minutes = spentMinutes;
             action.NamesOfIngredients.AddRange(ingredientNames);
-            currentRecipe.Actions.Add(action);
+            CurrentRecipe.Actions.Add(action);
         }
         public void Add(params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
 
-            TakeAnAction(action, CookOperations.Add, 1, ingredientNames);
+            TakeAnAction(action, CookOperations.Add, 1, ingredientNames, KitchenDevices.Spoon);
 
-            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+            CurrentRecipe.WrittenRecipe += $"\n{CurrentRecipe.CountOfOperations}) " +
                 $"Add";
             foreach (string ingredientName in ingredientNames)
             {
-                currentRecipe.WrittenRecipe += $" {ingredientName},";
+                CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
         public void Mix(params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
 
-            TakeAnAction(action, CookOperations.Mix, 2, ingredientNames);
+            TakeAnAction(action, CookOperations.Mix, 2, ingredientNames, KitchenDevices.Spoon);
 
-            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+            CurrentRecipe.WrittenRecipe += $"\n{CurrentRecipe.CountOfOperations}) " +
                 $"Mix";
             foreach (string ingredientName in ingredientNames)
             {
-                currentRecipe.WrittenRecipe += $" {ingredientName},";
+                CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
         public void Cut(int startSize, int endSize, params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
 
-            TakeAnAction(action, CookOperations.Cut, 2, ingredientNames);
+            TakeAnAction(action, CookOperations.Cut, 2, ingredientNames, KitchenDevices.Knife);
 
-            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+            CurrentRecipe.WrittenRecipe += $"\n{CurrentRecipe.CountOfOperations}) " +
                 $"Cut into {startSize}-{endSize} mm pieces:";
             foreach (string ingredientName in ingredientNames)
             {
-                currentRecipe.WrittenRecipe += $" {ingredientName},";
+                CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
         public void Grate(params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
 
-            TakeAnAction(action, CookOperations.Grate, 2, ingredientNames);
+            TakeAnAction(action, CookOperations.Grate, 2, ingredientNames, KitchenDevices.Grater);
 
-            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+            CurrentRecipe.WrittenRecipe += $"\n{CurrentRecipe.CountOfOperations}) " +
                 $"Grate";
             foreach (string ingredientName in ingredientNames)
             {
-                currentRecipe.WrittenRecipe += $" {ingredientName},";
+                CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
         public void Squeze(params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
 
-            TakeAnAction(action, CookOperations.Squeeze, 2, ingredientNames);
+            TakeAnAction(action, CookOperations.Squeeze, 2, ingredientNames, KitchenDevices.Juicer);
 
-            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+            CurrentRecipe.WrittenRecipe += $"\n{CurrentRecipe.CountOfOperations}) " +
                 $"Squeeze juice from";
             foreach (string ingredientName in ingredientNames)
             {
-                currentRecipe.WrittenRecipe += $" {ingredientName},";
+                CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
         public void MixAll()
         {
-            currentRecipe.CountOfOperations++;
-            currentRecipe.SpentMinutes += 1;
+            CurrentRecipe.CountOfOperations++;
+            CurrentRecipe.SpentMinutes += 1;
 
-            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) Mix all ingredients";
+            CurrentRecipe.WrittenRecipe += $"\n{CurrentRecipe.CountOfOperations}) Mix all ingredients";
         }
         public void Fry(int minutes, KitchenDevices device, params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
 
-            action.Device = device;
-            action.Minutes = minutes;
+            TakeAnAction(action, CookOperations.Fry, minutes, ingredientNames, device);
 
-            TakeAnAction(action, CookOperations.Fry, minutes, ingredientNames);
-
-            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+            CurrentRecipe.WrittenRecipe += $"\n{CurrentRecipe.CountOfOperations}) " +
                 $"Fry {minutes} min";
             foreach (string ingredientName in ingredientNames)
             {
-                currentRecipe.WrittenRecipe += $" {ingredientName},";
+                CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
         public void Boil(int minutes, KitchenDevices device, params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
 
-            action.Device = device;
-            action.Minutes = minutes;
+            TakeAnAction(action, CookOperations.Boil, minutes, ingredientNames, device);
 
-            TakeAnAction(action, CookOperations.Boil, minutes, ingredientNames);
-
-            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+            CurrentRecipe.WrittenRecipe += $"\n{CurrentRecipe.CountOfOperations}) " +
                 $"Boil {minutes} min";
             foreach (string ingredientName in ingredientNames)
             {
-                currentRecipe.WrittenRecipe += $" {ingredientName},";
+                CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
         public void Bake(int minutes, params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
 
-            TakeAnAction(action, CookOperations.Bake, minutes, ingredientNames);
+            TakeAnAction(action, CookOperations.Bake, minutes, ingredientNames, KitchenDevices.Oven);
 
-            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+            CurrentRecipe.WrittenRecipe += $"\n{CurrentRecipe.CountOfOperations}) " +
                 $"Bake {minutes} min";
             foreach (string ingredientName in ingredientNames)
             {
-                currentRecipe.WrittenRecipe += $" {ingredientName},";
+                CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
         public void Bake(int minutes)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
 
-            TakeAnAction(action, CookOperations.Bake, minutes, new string[] { "All"});
+            TakeAnAction(action, CookOperations.Bake, minutes, new string[] { "All"}, KitchenDevices.Oven);
 
-            currentRecipe.WrittenRecipe += $"\n{currentRecipe.CountOfOperations}) " +
+            CurrentRecipe.WrittenRecipe += $"\n{CurrentRecipe.CountOfOperations}) " +
                 $"Bake all {minutes} min";
         }
         public void CompleteRecipeCreation()
         {
-            currentRecipe.WrittenRecipe += $"\nTime: {currentRecipe.SpentMinutes} minutes";
-            currentRecipe.WrittenRecipe += $"\nPrice of ingredients: {Math.Round(currentRecipe.PriceOfDish, 2)}$";
+            CurrentRecipe.WrittenRecipe += $"\nTime: {CurrentRecipe.SpentMinutes} minutes";
+            CurrentRecipe.WrittenRecipe += $"\nPrice of ingredients: {Math.Round(CurrentRecipe.PriceOfDish, 2)}$";
 
-            currentRecipe.IsRecipeCompleted = true;
+            CurrentRecipe.IsRecipeCompleted = true;
         }
 
         // Functions to view necessary information
@@ -396,8 +393,8 @@ namespace ClassLibraryBistro
         }
         public string ViewAllIngredients()
         {
-            string result = $"\nAll products:";
-            foreach (Product product in products)
+            string result = "\nAll _products:";
+            foreach (Product product in _products)
             {
                 result += $"\n{product.Name} - {product.TotalPrice}$";
             }
@@ -405,28 +402,59 @@ namespace ClassLibraryBistro
         }
         public string FindIngredientsByStorageConditions(StorageConditions storageConditions)
         {
-            string result = "";
-            foreach (Product product in products)
+            string result = $"\nStorage conditions {storageConditions.StartTemperature}-{storageConditions.EndTemperature} deg:";
+            foreach (Product product in _products)
             {
                 if (product.Conditions.StartTemperature >= storageConditions.StartTemperature &&
                     product.Conditions.EndTemperature <= storageConditions.EndTemperature)
                 {
                     result += $"\n{product.Name} - {product.TotalPrice}$";
-                    result += $"({product.Conditions.StartTemperature}-{product.Conditions.EndTemperature} deg)";
+                    result += $" ({product.Conditions.StartTemperature}-{product.Conditions.EndTemperature} deg)";
                 }
             }
             return result;
         }
-        public string ViewRecipe(string name)
+        public string FindIngredientsByNumberOfUses(NumOfUses value)
         {
-            foreach (Recipe recipe in recipes)
+            string result = $"\n{value} number of uses:";
+            int minOrMax = _products[0].NumberOfUses;
+            foreach (Product product in _products)
             {
-                if (recipe.Name == name)
+                if (value == NumOfUses.Max)
                 {
-                    return recipe.ToString();
+                    if (minOrMax < product.NumberOfUses)
+                    {
+                        minOrMax = product.NumberOfUses;
+                    }
+                }
+                else
+                {
+                    if (minOrMax > product.NumberOfUses)
+                    {
+                        minOrMax = product.NumberOfUses;
+                    }
                 }
             }
-            return "Recipe not found";
+            foreach (Product product in _products)
+            {
+                if (product.NumberOfUses == minOrMax)
+                {
+                    result += $"\n{product.Name} - {product.TotalPrice}$ (used {product.NumberOfUses} times)";
+                }
+            }
+            return result;
+        }
+        public string ViewLongestProcessingProcedure()
+        {
+            string result = "\nLongest processing procedure:";
+            result += $"\n{longestProcedure.Operation} ({longestProcedure.Device}) - {longestProcedure.Minutes} min";
+            return result;
+        }
+        public string ViewTheMostExpensiveProcessingProcedure()
+        {
+            string result = "\nThe most expensive processing procedure:";
+            result += $"\nUsing coffee machine - {pricesForProcessingProcedures["CoffeeMachine"]}$/min";
+            return result;
         }
     }
 }

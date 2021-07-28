@@ -181,11 +181,13 @@ namespace ExecutionTask3
                 chiefCooker.CookTheDish("Cherry pie", Manager.Menu.Dessert, 1);
                 chiefCooker.CookTheDish("Tea", Manager.Menu.HotDrink, 2);
 
-                Console.WriteLine(manager.ViewOrdersInTime("10:00", "11:30"));
                 Console.WriteLine(chiefCooker.ViewAllProductionCapacity());
-                //Console.WriteLine(chiefCooker.ViewRecipe("Cappuccino"));
                 Console.WriteLine(chiefCooker.ViewAllIngredients());
+                Console.WriteLine(manager.ViewOrdersInTime("10:00", "11:30"));
+                Console.WriteLine(chiefCooker.FindIngredientsByNumberOfUses(ChiefCooker.NumOfUses.Max));
                 Console.WriteLine(chiefCooker.FindIngredientsByStorageConditions(new ChiefCooker.StorageConditions(-10, 10)));
+                Console.WriteLine(chiefCooker.ViewLongestProcessingProcedure());
+                Console.WriteLine(chiefCooker.ViewTheMostExpensiveProcessingProcedure());
             }
             catch(Exception error)
             {
