@@ -2,7 +2,7 @@
 using ClassLibraryBistro;
 using System;
 using System.Collections.Generic;
-using static ClassLibraryBistro.ChiefCooker;
+
 
 namespace UnitTestTask3
 {

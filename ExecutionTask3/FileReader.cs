@@ -13,6 +13,10 @@ namespace ExecutionTask3
         const string FILE_PRODUCTS = @"E:\Epam May 2021\TasksEpam\Products.xml",
             FILE_RECIPES = @"E:\Epam May 2021\TasksEpam\Recipes.xml";
 
+        /// <summary>
+        /// Reading list of products from file
+        /// </summary>
+        /// <returns> List of products </returns>
         public static List<Product> ReadProducts()
         {
             string name;
@@ -46,6 +50,12 @@ namespace ExecutionTask3
             }
             return products;
         }
+
+        /// <summary>
+        /// Reading recipe ingredients from file
+        /// </summary>
+        /// <param name="name"> Name of recipe </param>
+        /// <returns> List of ingredients </returns>
         public static List<Ingredient> ReadRecipeIngredients(string name)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
