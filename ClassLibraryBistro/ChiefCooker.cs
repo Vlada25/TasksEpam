@@ -458,5 +458,36 @@ namespace ClassLibraryBistro
             result += $"\nUsing coffee machine - {pricesForProcessingProcedures["CoffeeMachine"]}$/min";
             return result;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ChiefCooker cooker &&
+                   _freeSpaceInPan == cooker._freeSpaceInPan &&
+                   _freeSpaceInSaucepan == cooker._freeSpaceInSaucepan &&
+                   _freeSpaceInGrill == cooker._freeSpaceInGrill &&
+                   EqualityComparer<Recipe>.Default.Equals(CurrentRecipe, cooker.CurrentRecipe) &&
+                   EqualityComparer<ClientOrder>.Default.Equals(_clientOrder, cooker._clientOrder) &&
+                   _counterOfDishes == cooker._counterOfDishes &&
+                   EqualityComparer<ProcessingProcedure>.Default.Equals(_longestProcedure, cooker._longestProcedure) &&
+                   EqualityComparer<List<Product>>.Default.Equals(_products, cooker._products) &&
+                   EqualityComparer<List<Recipe>>.Default.Equals(_recipes, cooker._recipes) &&
+                   EqualityComparer<Dictionary<string, double>>.Default.Equals(pricesForProcessingProcedures, cooker.pricesForProcessingProcedures);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 1304779551;
+            hashCode = hashCode * -1521134295 + _freeSpaceInPan.GetHashCode();
+            hashCode = hashCode * -1521134295 + _freeSpaceInSaucepan.GetHashCode();
+            hashCode = hashCode * -1521134295 + _freeSpaceInGrill.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<Recipe>.Default.GetHashCode(CurrentRecipe);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ClientOrder>.Default.GetHashCode(_clientOrder);
+            hashCode = hashCode * -1521134295 + _counterOfDishes.GetHashCode();
+            hashCode = hashCode * -1521134295 + _longestProcedure.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<Product>>.Default.GetHashCode(_products);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<Recipe>>.Default.GetHashCode(_recipes);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Dictionary<string, double>>.Default.GetHashCode(pricesForProcessingProcedures);
+            return hashCode;
+        }
     }
 }

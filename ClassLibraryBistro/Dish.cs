@@ -22,5 +22,26 @@ namespace ClassLibraryBistro
         {
             return $"{Type}: {Name} - {CountOfPortions}";
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Dish dish &&
+                   Name == dish.Name &&
+                   Type == dish.Type &&
+                   CountOfPortions == dish.CountOfPortions &&
+                   NeedPortions == dish.NeedPortions &&
+                   IsDishDone == dish.IsDishDone;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 357897830;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + Type.GetHashCode();
+            hashCode = hashCode * -1521134295 + CountOfPortions.GetHashCode();
+            hashCode = hashCode * -1521134295 + NeedPortions.GetHashCode();
+            hashCode = hashCode * -1521134295 + IsDishDone.GetHashCode();
+            return hashCode;
+        }
     }
 }

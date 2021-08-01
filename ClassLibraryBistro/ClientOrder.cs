@@ -52,5 +52,30 @@ namespace ClassLibraryBistro
             }
             return result;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ClientOrder order &&
+                   ClientNumber == order.ClientNumber &&
+                   FinalBill == order.FinalBill &&
+                   OrderTime == order.OrderTime &&
+                   SpentMinutes == order.SpentMinutes &&
+                   IsDone == order.IsDone &&
+                   OrderInProgress == order.OrderInProgress &&
+                   EqualityComparer<List<Dish>>.Default.Equals(Dishes, order.Dishes);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 335850316;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ClientNumber);
+            hashCode = hashCode * -1521134295 + FinalBill.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(OrderTime);
+            hashCode = hashCode * -1521134295 + SpentMinutes.GetHashCode();
+            hashCode = hashCode * -1521134295 + IsDone.GetHashCode();
+            hashCode = hashCode * -1521134295 + OrderInProgress.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<Dish>>.Default.GetHashCode(Dishes);
+            return hashCode;
+        }
     }
 }

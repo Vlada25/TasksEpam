@@ -55,5 +55,34 @@ namespace ClassLibraryBistro
             }
             return WrittenRecipe;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Recipe recipe &&
+                   Name == recipe.Name &&
+                   Type == recipe.Type &&
+                   IsCompleted == recipe.IsCompleted &&
+                   CountOfOperations == recipe.CountOfOperations &&
+                   SpentMinutes == recipe.SpentMinutes &&
+                   PriceOfDish == recipe.PriceOfDish &&
+                   WrittenRecipe == recipe.WrittenRecipe &&
+                   EqualityComparer<List<Ingredient>>.Default.Equals(Ingredients, recipe.Ingredients) &&
+                   EqualityComparer<List<KitchenActions>>.Default.Equals(Actions, recipe.Actions);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 276778692;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + Type.GetHashCode();
+            hashCode = hashCode * -1521134295 + IsCompleted.GetHashCode();
+            hashCode = hashCode * -1521134295 + CountOfOperations.GetHashCode();
+            hashCode = hashCode * -1521134295 + SpentMinutes.GetHashCode();
+            hashCode = hashCode * -1521134295 + PriceOfDish.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(WrittenRecipe);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<Ingredient>>.Default.GetHashCode(Ingredients);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<KitchenActions>>.Default.GetHashCode(Actions);
+            return hashCode;
+        }
     }
 }
