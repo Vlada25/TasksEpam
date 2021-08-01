@@ -25,11 +25,28 @@ namespace ClassLibraryBistro
             }
             _alreadyExist = true;
         }
+
+        /// <summary>
+        /// Manager accepts the customer's order 
+        /// </summary>
+        /// <param name="clientNumber"> Number of client </param>
+        /// <param name="Type"> Type of dish </param>
+        /// <param name="dishName"> Name of dish </param>
+        /// <param name="countOfPortions"> Count of portions </param>
+        /// <param name="orderTime"> What time was the order </param>
         public void TakeOrder(string clientNumber, Menu Type, string dishName, int countOfPortions, string orderTime)
         {
             ClientOrder clientOrder = new ClientOrder(clientNumber, Type, dishName, countOfPortions, orderTime);
             ClientOrdersList.Add(clientOrder);
         }
+
+        /// <summary>
+        /// Adding one more dish to the order
+        /// </summary>
+        /// <param name="clientNumber"> Number of client </param>
+        /// <param name="Type"> Type of dish </param>
+        /// <param name="dishName"> Name of dish </param>
+        /// <param name="countOfPortions"> Count of portions </param>
         public void AddDishToOrder(string clientNumber, Menu Type, string dishName, int countOfPortions)
         {
             bool isOrderExist = false;
@@ -51,6 +68,13 @@ namespace ClassLibraryBistro
                 throw new Exception("This number is not in the order list");
             }
         }
+
+        /// <summary>
+        /// View of orders made in a selected period of time
+        /// </summary>
+        /// <param name="startTime"> Start of time span </param>
+        /// <param name="endTime"> End of time span </param>
+        /// <returns> Matching orders </returns>
         public string ViewOrdersInTime(string startTime, string endTime)
         {
             string result = "";

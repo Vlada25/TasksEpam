@@ -103,6 +103,11 @@ namespace ClassLibraryBistro
             }
             _alreadyExist = true;
         }
+
+        /// <summary>
+        /// Assigns an executable recipe
+        /// </summary>
+        /// <param name="clientNumber"> Number of client </param>
         public void CompleteTheOrder(string clientNumber)
         {
             bool isNumberExist = false;
@@ -122,11 +127,22 @@ namespace ClassLibraryBistro
                 throw new Exception("This order is not exist");
             }
         }
+
+        /// <summary>
+        /// Add products to list
+        /// </summary>
+        /// <param name="products"> List of products </param>
         public void AddProducts(List<Product> products)
         {
             _products.AddRange(products);
         }
 
+        /// <summary>
+        /// Cooking the dish
+        /// </summary>
+        /// <param name="name"> Name of the dish </param>
+        /// <param name="type"> Type of dish </param>
+        /// <param name="countOfPortions"> Count of portions </param>
         public void CookTheDish(string name, Manager.Menu type, int countOfPortions)
         {
             if (_clientOrder == null)
@@ -220,6 +236,10 @@ namespace ClassLibraryBistro
             Helper.CountNumOfUsesForProducts(currentDish, countOfPortions, _products);
         }
 
+        /// <summary>
+        /// Recipe creating
+        /// </summary>
+        /// <param name="recipe"> Selected recipe </param>
         public void CreateRecipe(Recipe recipe)
         {
             if (_recipes.Count != 0)
@@ -232,6 +252,11 @@ namespace ClassLibraryBistro
             _recipes.Add(recipe);
             CurrentRecipe = recipe;
         }
+
+        /// <summary>
+        /// Identification of ingredients for selected recipe
+        /// </summary>
+        /// <param name="ingredients"> List of ingredients </param>
         public void IdentifyIngredients(List<Recipe.Ingredient> ingredients)
         {
             CurrentRecipe.Ingredients.AddRange(ingredients);
@@ -243,6 +268,15 @@ namespace ClassLibraryBistro
                 CurrentRecipe.WrittenRecipe += $"\n\t{product.Name} - {product.Weight} kg; ";
             }
         }
+
+        /// <summary>
+        /// Taking selected cooking action
+        /// </summary>
+        /// <param name="action"> Action </param>
+        /// <param name="operation"> Operation </param>
+        /// <param name="spentMinutes"> Minutes spent on the operation </param>
+        /// <param name="ingredientNames"> List of names of necessary ingredients </param>
+        /// <param name="device"> Kitchen device </param>
         private void TakeAnAction(Recipe.KitchenActions action, CookOperations operation, int spentMinutes, string[] ingredientNames, KitchenDevices device)
         {
             CurrentRecipe.CountOfOperations++;
@@ -255,6 +289,11 @@ namespace ClassLibraryBistro
             action.NamesOfIngredients.AddRange(ingredientNames);
             CurrentRecipe.Actions.Add(action);
         }
+
+        /// <summary>
+        /// Adding some ingredients
+        /// </summary>
+        /// <param name="ingredientNames"> List of names of ingredients </param>
         public void Add(params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
@@ -268,6 +307,11 @@ namespace ClassLibraryBistro
                 CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
+
+        /// <summary>
+        /// Mixing some ingredients
+        /// </summary>
+        /// <param name="ingredientNames"> List of names of ingredients </param>
         public void Mix(params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
@@ -281,6 +325,13 @@ namespace ClassLibraryBistro
                 CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
+
+        /// <summary>
+        /// Cutting ingredients into pieces of chosen size
+        /// </summary>
+        /// <param name="startSize"> Minimum size of pieces </param>
+        /// <param name="endSize"> Maximum size of pieces </param>
+        /// <param name="ingredientNames"> List of names of ingredients </param>
         public void Cut(int startSize, int endSize, params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
@@ -294,6 +345,11 @@ namespace ClassLibraryBistro
                 CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
+
+        /// <summary>
+        /// Grating some ingredients
+        /// </summary>
+        /// <param name="ingredientNames"> List of names of ingredients </param>
         public void Grate(params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
@@ -307,6 +363,11 @@ namespace ClassLibraryBistro
                 CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
+
+        /// <summary>
+        /// Squezing some ingredients
+        /// </summary>
+        /// <param name="ingredientNames"> List of names of ingredients </param>
         public void Squeze(params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
@@ -320,6 +381,10 @@ namespace ClassLibraryBistro
                 CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
+
+        /// <summary>
+        /// Mixing all ingredients
+        /// </summary>
         public void MixAll()
         {
             CurrentRecipe.CountOfOperations++;
@@ -327,6 +392,13 @@ namespace ClassLibraryBistro
 
             CurrentRecipe.WrittenRecipe += $"\n{CurrentRecipe.CountOfOperations}) Mix all ingredients";
         }
+
+        /// <summary>
+        /// Frying some ingredients using selected device
+        /// </summary>
+        /// <param name="minutes"> Minutes spent on frying </param>
+        /// <param name="device"> Selected device </param>
+        /// <param name="ingredientNames"> List of names of ingredients </param>
         public void Fry(int minutes, KitchenDevices device, params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
@@ -340,6 +412,13 @@ namespace ClassLibraryBistro
                 CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
+
+        /// <summary>
+        /// Boiling some ingredients using selected device
+        /// </summary>
+        /// <param name="minutes"> Minutes spent on boiling </param>
+        /// <param name="device"> Selected device </param>
+        /// <param name="ingredientNames"> List of names of ingredients </param>
         public void Boil(int minutes, KitchenDevices device, params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
@@ -353,6 +432,12 @@ namespace ClassLibraryBistro
                 CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
+
+        /// <summary>
+        /// Baking some ingredients
+        /// </summary>
+        /// <param name="minutes"> Minutes spent on baking </param>
+        /// <param name="ingredientNames"> List of names of ingredients </param>
         public void Bake(int minutes, params string[] ingredientNames)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
@@ -366,6 +451,11 @@ namespace ClassLibraryBistro
                 CurrentRecipe.WrittenRecipe += $" {ingredientName},";
             }
         }
+
+        /// <summary>
+        /// Baking all ingredients
+        /// </summary>
+        /// <param name="minutes"> Minutes spent on baking </param>
         public void Bake(int minutes)
         {
             Recipe.KitchenActions action = new Recipe.KitchenActions();
@@ -375,6 +465,10 @@ namespace ClassLibraryBistro
             CurrentRecipe.WrittenRecipe += $"\n{CurrentRecipe.CountOfOperations}) " +
                 $"Bake all {minutes} min";
         }
+
+        /// <summary>
+        /// Completing creation of the recipe
+        /// </summary>
         public void CompleteRecipeCreation()
         {
             CurrentRecipe.WrittenRecipe += $"\nTime: {CurrentRecipe.SpentMinutes} minutes";
@@ -383,7 +477,10 @@ namespace ClassLibraryBistro
             CurrentRecipe.IsCompleted = true;
         }
 
-
+        /// <summary>
+        /// View all production capacity
+        /// </summary>
+        /// <returns> All production capacity </returns>
         public string ViewAllProductionCapacity()
         {
             string result = $"\nAll production capacity:";
@@ -393,6 +490,11 @@ namespace ClassLibraryBistro
             result += $"\nCount of dishes in oven - {COUNT_OF_DISHES_IN_OVEN}";
             return result;
         }
+
+        /// <summary>
+        /// View all added ingredients
+        /// </summary>
+        /// <returns> All ingredients </returns>
         public string ViewAllIngredients()
         {
             string result = "\nAll products:";
@@ -402,6 +504,12 @@ namespace ClassLibraryBistro
             }
             return result;
         }
+
+        /// <summary>
+        /// Searching for ingredients according to their storage condition
+        /// </summary>
+        /// <param name="storageConditions"> Storage conditions (start temperature - end temperature) </param>
+        /// <returns> List of products that meet storage conditions </returns>
         public string FindIngredientsByStorageConditions(StorageConditions storageConditions)
         {
             string result = $"\nStorage conditions {storageConditions.StartTemperature}-{storageConditions.EndTemperature} deg:";
@@ -416,6 +524,12 @@ namespace ClassLibraryBistro
             }
             return result;
         }
+
+        /// <summary>
+        /// Searching for ingredient which was used minimum or maximum times
+        /// </summary>
+        /// <param name="value"> Minimum or maximum </param>
+        /// <returns> Ingredient - how many times was used </returns>
         public string FindIngredientsByNumberOfUses(NumOfUses value)
         {
             string result = $"\n{value} number of uses:";
@@ -446,12 +560,22 @@ namespace ClassLibraryBistro
             }
             return result;
         }
+
+        /// <summary>
+        /// View the longest processing procedure
+        /// </summary>
+        /// <returns> The longest processing procedure </returns>
         public string ViewLongestProcessingProcedure()
         {
             string result = "\nLongest processing procedure:";
             result += $"\n{_longestProcedure.Operation} ({_longestProcedure.Device}) - {_longestProcedure.Minutes} min";
             return result;
         }
+
+        /// <summary>
+        /// View the most expensive processing procedure
+        /// </summary>
+        /// <returns> The most expensive processing procedure </returns>
         public string ViewTheMostExpensiveProcessingProcedure()
         {
             string result = "\nThe most expensive processing procedure:";

@@ -15,27 +15,22 @@ namespace ClassLibraryBistro
         public List<Dish> Dishes = new List<Dish>();
         public ClientOrder(string clientNumber, Manager.Menu Type, string dishName, int countOfPortions, string orderTime)
         {
-            ClientNumber = SetClientNumber(clientNumber);
+            ClientNumber = Helper.SetClientNumber(clientNumber);
             OrderTime = Helper.SetTime(orderTime);
             Dishes.Add(new Dish(dishName, Type, countOfPortions));
         }
+
+        /// <summary>
+        /// Adding dish to order
+        /// </summary>
+        /// <param name="Type"> Type of the dish </param>
+        /// <param name="dishName"> Name of the dish </param>
+        /// <param name="countOfPortions"> Count of portions </param>
         public void AddDish(Manager.Menu Type, string dishName, int countOfPortions)
         {
             Dishes.Add(new Dish(dishName, Type, countOfPortions));
         }
-        string SetClientNumber(string number)
-        {
-            Exception ex = new Exception("Invalid client number");
-            if (number.Length != 3)
-            {
-                throw ex;
-            }
-            else if (!Int32.TryParse(number, out int _))
-            {
-                throw ex;
-            }
-            return number;
-        }
+
         public override string ToString()
         {
             string result = "";

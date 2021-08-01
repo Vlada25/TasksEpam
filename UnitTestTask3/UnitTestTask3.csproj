@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTestHelper.cs" />
     <Compile Include="UnitTestChiefCooker.cs" />
     <Compile Include="UnitTestClientOrder.cs" />
     <Compile Include="UnitTestManager.cs" />

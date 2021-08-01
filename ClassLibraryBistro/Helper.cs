@@ -7,6 +7,11 @@ namespace ClassLibraryBistro
 {
     public static class Helper
     {
+        /// <summary>
+        /// Setting the time. If transmitted time value is incorrect, throws exeption
+        /// </summary>
+        /// <param name="time"> String with value of time </param>
+        /// <returns> Time </returns>
         public static string SetTime(string time)
         {
             // Bistro is open from 9:00 to 23:00
@@ -30,6 +35,14 @@ namespace ClassLibraryBistro
             }
             return time;
         }
+
+        /// <summary>
+        /// Checking time belongs to a certain period
+        /// </summary>
+        /// <param name="time"> Current time </param>
+        /// <param name="startTime"> Start of time span </param>
+        /// <param name="endTime"> End of time span </param>
+        /// <returns> Is selected time in range </returns>
         public static bool IsTimeInRange(string time, string startTime, string endTime)
         {
             const int HOURS_POS = 0,
@@ -62,6 +75,13 @@ namespace ClassLibraryBistro
             }
             return false;
         }
+
+        /// <summary>
+        /// Counting price of all necessary ingredients for a specific dish
+        /// </summary>
+        /// <param name="ingredients"> List of ingredients </param>
+        /// <param name="products"> List of products (to check price) </param>
+        /// <returns> Price of all ingredients for the dish </returns>
         public static double CountPriceOfIngredients(List<Recipe.Ingredient> ingredients, List<Product> products)
         {
             double price = 0;
@@ -78,6 +98,12 @@ namespace ClassLibraryBistro
             }
             return price;
         }
+
+        /// <summary>
+        /// Verification of the existence of all necessary products for a specific dish
+        /// </summary>
+        /// <param name="currentDish"> Current dish </param>
+        /// <param name="products"> List of products </param>
         public static void CheckExistenceOfAllProducts(Recipe currentDish, List<Product> products)
         {
             foreach (Recipe.Ingredient ingredient in currentDish.Ingredients)
@@ -97,6 +123,13 @@ namespace ClassLibraryBistro
                 }
             }
         }
+
+        /// <summary>
+        /// Verification of the existence of selected dish in order
+        /// </summary>
+        /// <param name="name"> Name of dish </param>
+        /// <param name="countOfPortions"> Count of portions </param>
+        /// <param name="clientOrder"> Current order </param>
         public static void CheckDishInOrder(string name, int countOfPortions, ClientOrder clientOrder)
         {
             bool isDishExist = false;
@@ -117,6 +150,14 @@ namespace ClassLibraryBistro
                 throw new Exception("There is no such dish in order");
             }
         }
+
+        /// <summary>
+        /// Definition of the current dish (currently running recipe)
+        /// </summary>
+        /// <param name="name"> Name of dish </param>
+        /// <param name="type"> Type of dish </param>
+        /// <param name="recipes"> List of recipes </param>
+        /// <returns> Current recipe </returns>
         public static Recipe DefineCurrentDish(string name, Manager.Menu type, List<Recipe> recipes)
         {
             Recipe selectedRecipe = new Recipe();
@@ -138,6 +179,13 @@ namespace ClassLibraryBistro
 
             return selectedRecipe;
         }
+
+        /// <summary>
+        /// Count how many times product was used
+        /// </summary>
+        /// <param name="recipe"> Recipe(dish) </param>
+        /// <param name="countOfPortions"> Cout of portions </param>
+        /// <param name="products"> List of products </param>
         public static void CountNumOfUsesForProducts(Recipe recipe, int countOfPortions, List<Product> products)
         {
             foreach (Recipe.Ingredient ingredient in recipe.Ingredients)
@@ -154,6 +202,13 @@ namespace ClassLibraryBistro
                 }
             }
         }
+
+        /// <summary>
+        /// Setting common weight of all ingredients in one action
+        /// </summary>
+        /// <param name="action"> Selected action </param>
+        /// <param name="currentDish"> Current dish </param>
+        /// <returns> Common weight of products </returns>
         public static double SetCommonWeight(Recipe.KitchenActions action, Recipe currentDish)
         {
             double commonWeight = 0;
@@ -169,6 +224,15 @@ namespace ClassLibraryBistro
             }
             return commonWeight;
         }
+
+        /// <summary>
+        /// Trying to set new value of free space in device
+        /// </summary>
+        /// <param name="freeSpaceInDevice"> Current value of free space in device </param>
+        /// <param name="weight"> Weight of new products </param>
+        /// <param name="countOfPortions"> Count of portions </param>
+        /// <param name="name"> Name of the dish</param>
+        /// <returns> Free space in device </returns>
         public static double TrySetFreeSpaceInDevice(double freeSpaceInDevice, double weight, int countOfPortions, string name)
         {
             freeSpaceInDevice -= weight * countOfPortions;
@@ -178,15 +242,41 @@ namespace ClassLibraryBistro
             }
             return freeSpaceInDevice;
         }
-        public static ProcessingProcedure FindLongestProcessingProcedure(ProcessingProcedure _longestProcedure, Recipe.KitchenActions action)
+
+        /// <summary>
+        /// Search for the longest processing procedure
+        /// </summary>
+        /// <param name="longestProcedure"> Current longest procedure </param>
+        /// <param name="action"> Action </param>
+        /// <returns> The longest processing procedure </returns>
+        public static ProcessingProcedure FindLongestProcessingProcedure(ProcessingProcedure longestProcedure, Recipe.KitchenActions action)
         {
-            if (_longestProcedure.Minutes < action.Minutes)
+            if (longestProcedure.Minutes < action.Minutes)
             {
-                _longestProcedure.Operation = action.CookOperation;
-                _longestProcedure.Device = action.Device;
-                _longestProcedure.Minutes = action.Minutes;
+                longestProcedure.Operation = action.CookOperation;
+                longestProcedure.Device = action.Device;
+                longestProcedure.Minutes = action.Minutes;
             }
-            return _longestProcedure;
+            return longestProcedure;
+        }
+
+        /// <summary>
+        /// Setting the number of client. If entered string cannot be converted to a number, throws exeption
+        /// </summary>
+        /// <param name="number"> Number of client </param>
+        /// <returns> Number of client </returns>
+        public static string SetClientNumber(string number)
+        {
+            Exception ex = new Exception("Invalid client number");
+            if (number.Length != 3)
+            {
+                throw ex;
+            }
+            else if (!Int32.TryParse(number, out int _))
+            {
+                throw ex;
+            }
+            return number;
         }
     }
 }
