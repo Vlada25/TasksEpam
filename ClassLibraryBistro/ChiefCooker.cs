@@ -67,25 +67,25 @@ namespace ClassLibraryBistro
             Min
         }
 
-        const int PAN_CAPACITY = 2,
-            SAUCEPAN_CAPACITY = 5,
-            GRILL_CAPACITY = 3,
-            COUNT_OF_DISHES_IN_OVEN = 2,
-            MAX_CUT_INGREDIENTS = 5;
+        private const int PanCapacity = 2,
+            SausepanCapacity = 5,
+            GrillCapacity = 3,
+            CountOfDishesInOven = 2,
+            MaxCutIngredients = 5;
 
-        double _freeSpaceInPan,
+        private double _freeSpaceInPan,
             _freeSpaceInSaucepan,
             _freeSpaceInGrill;
 
-        static bool _alreadyExist = false;
+        private static bool _alreadyExist = false;
         public Recipe CurrentRecipe;
-        ClientOrder _clientOrder = null;
-        int _counterOfDishes;
+        private ClientOrder _clientOrder = null;
+        private int _counterOfDishes;
         ProcessingProcedure _longestProcedure;
 
-        readonly List<Product> _products = new List<Product>();
-        readonly List<Recipe> _recipes = new List<Recipe>();
-        readonly Dictionary<string, double> pricesForProcessingProcedures = new Dictionary<string, double> 
+        private readonly List<Product> _products = new List<Product>();
+        private readonly List<Recipe> _recipes = new List<Recipe>();
+        private readonly Dictionary<string, double> pricesForProcessingProcedures = new Dictionary<string, double> 
         {
             { "Pan", 0.1 },
             { "Saucepan", 0.1 },
@@ -155,9 +155,9 @@ namespace ClassLibraryBistro
             Helper.CheckDishInOrder(name, countOfPortions, _clientOrder);
             Helper.CheckExistenceOfAllProducts(currentDish, _products);
 
-            _freeSpaceInPan = PAN_CAPACITY;
-            _freeSpaceInSaucepan = SAUCEPAN_CAPACITY;
-            _freeSpaceInGrill = GRILL_CAPACITY;
+            _freeSpaceInPan = PanCapacity;
+            _freeSpaceInSaucepan = SausepanCapacity;
+            _freeSpaceInGrill = GrillCapacity;
 
             foreach (Recipe.KitchenActions action in currentDish.Actions)
             {
@@ -178,14 +178,14 @@ namespace ClassLibraryBistro
                         }
                         break;
                     case CookOperations.Cut:
-                        if (action.NamesOfIngredients.Count > MAX_CUT_INGREDIENTS)
+                        if (action.NamesOfIngredients.Count > MaxCutIngredients)
                         {
                             throw new Exception("You can't cut more than 5 ingredients at the same time");
                         }
                         break;
                     case CookOperations.Bake:
                         CurrentRecipe.PriceOfDish += pricesForProcessingProcedures["Oven"] * action.Minutes;
-                        if (countOfPortions > COUNT_OF_DISHES_IN_OVEN)
+                        if (countOfPortions > CountOfDishesInOven)
                         {
                             throw new Exception("You can't bake more than 2 dishes at the same time");
                         }
@@ -484,10 +484,10 @@ namespace ClassLibraryBistro
         public string ViewAllProductionCapacity()
         {
             string result = $"\nAll production capacity:";
-            result += $"\nPan - {PAN_CAPACITY} kg";
-            result += $"\nSaucepan - {SAUCEPAN_CAPACITY} kg";
-            result += $"\nGrill - {GRILL_CAPACITY} kg";
-            result += $"\nCount of dishes in oven - {COUNT_OF_DISHES_IN_OVEN}";
+            result += $"\nPan - {PanCapacity} kg";
+            result += $"\nSaucepan - {SausepanCapacity} kg";
+            result += $"\nGrill - {GrillCapacity} kg";
+            result += $"\nCount of dishes in oven - {CountOfDishesInOven}";
             return result;
         }
 

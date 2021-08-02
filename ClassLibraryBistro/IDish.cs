@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ClassLibraryBistro
 {
-    interface IDish
+    internal interface IDish
     {
         string Name { get; }
         Manager.Menu Type { get; }

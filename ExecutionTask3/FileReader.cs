@@ -8,10 +8,10 @@ using ClassLibraryBistro;
 
 namespace ExecutionTask3
 {
-    class FileReader
+    internal class FileReader
     {
-        const string FILE_PRODUCTS = @"E:\Epam May 2021\TasksEpam\Products.xml",
-            FILE_RECIPES = @"E:\Epam May 2021\TasksEpam\Recipes.xml";
+        private const string FileWithProducts = @"E:\Epam May 2021\TasksEpam\Products.xml",
+            FileWithRecipes = @"E:\Epam May 2021\TasksEpam\Recipes.xml";
 
         /// <summary>
         /// Reading list of products from file
@@ -25,7 +25,7 @@ namespace ExecutionTask3
             List<Product> products = new List<Product>();
 
             XmlDocument document = new XmlDocument();
-            document.Load(FILE_PRODUCTS);
+            document.Load(FileWithProducts);
             XmlElement element = document.DocumentElement;
 
             foreach (XmlNode xnode in element)
@@ -61,7 +61,7 @@ namespace ExecutionTask3
             List<Ingredient> ingredients = new List<Ingredient>();
 
             XmlDocument document = new XmlDocument();
-            document.Load(FILE_RECIPES);
+            document.Load(FileWithRecipes);
             XmlElement element = document.DocumentElement;
 
             foreach (XmlNode xnode in element)

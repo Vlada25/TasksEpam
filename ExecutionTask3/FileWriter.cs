@@ -5,20 +5,20 @@ using System.Text;
 
 namespace ExecutionTask3
 {
-    class FileWriter
+    internal class FileWriter
     {
-        const string FILENAME = @"E:\Epam May 2021\TasksEpam\OutputFile.txt";
-        static FileStream loggingFile = null;
-        static StreamWriter streamWriter;
+        private const string FileName = @"E:\Epam May 2021\TasksEpam\OutputFile.txt";
+        private static FileStream _loggingFile = null;
+        private static StreamWriter _streamWriter;
 
         public static void Write(string info)
         {
             try
             {
-                loggingFile = new FileStream(FILENAME, FileMode.Append);
-                streamWriter = new StreamWriter(loggingFile);
-                streamWriter.WriteLine(info);
-                streamWriter.Close();
+                _loggingFile = new FileStream(FileName, FileMode.Append);
+                _streamWriter = new StreamWriter(_loggingFile);
+                _streamWriter.WriteLine(info);
+                _streamWriter.Close();
             }
             catch(Exception e)
             {
@@ -26,9 +26,9 @@ namespace ExecutionTask3
             }
             finally
             {
-                if (loggingFile != null)
+                if (_loggingFile != null)
                 {
-                    loggingFile.Close();
+                    _loggingFile.Close();
                 }
             }
         }
@@ -36,9 +36,9 @@ namespace ExecutionTask3
         {
             try
             {
-                loggingFile = new FileStream(FILENAME, FileMode.Create);
-                streamWriter = new StreamWriter(loggingFile);
-                streamWriter.Close();
+                _loggingFile = new FileStream(FileName, FileMode.Create);
+                _streamWriter = new StreamWriter(_loggingFile);
+                _streamWriter.Close();
             }
             catch (Exception e)
             {
@@ -46,9 +46,9 @@ namespace ExecutionTask3
             }
             finally
             {
-                if (loggingFile != null)
+                if (_loggingFile != null)
                 {
-                    loggingFile.Close();
+                    _loggingFile.Close();
                 }
             }
         }
