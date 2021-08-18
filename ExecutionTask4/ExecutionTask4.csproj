@@ -38,5 +38,14 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ClassLibraryGauss\ClassLibraryGauss.csproj">
+      <Project>{0DEEBCF3-F7FD-439A-BE0A-AF3B74714460}</Project>
+      <Name>ClassLibraryGauss</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
