@@ -47,5 +47,10 @@
       <Name>ClassLibraryGauss</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="bin\test1A.txt" />
+    <Content Include="bin\test1B.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

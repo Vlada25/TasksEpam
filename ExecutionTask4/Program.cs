@@ -29,32 +29,7 @@ namespace ExecutionTask4
 
                 using (StreamReader streamReader = new StreamReader(InA_filepath))
                 {
-                    string line;
-
-                    while ((line = streamReader.ReadLine()) != null)
-                    {
-                        string s = "";
-                        for (int i = 0; i < line.Length; i++)
-                        {
-                            char c = line[i];
-                            if (c != ' ' && i != line.Length - 1)
-                            {
-                                s += c;
-                            }
-                            else if (i == line.Length - 1)
-                            {
-                                fileDataA.Add(Convert.ToDouble(s));
-                            }
-                            else
-                            {
-                                if (s != "")
-                                {
-                                    fileDataA.Add(Convert.ToDouble(s));
-                                }
-                                s = "";
-                            }
-                        }
-                    }
+                    ReadData(streamReader, fileDataA);
 
                     matrixLen = (int)Math.Sqrt(fileDataA.Count);
                     matrix = new double[matrixLen, matrixLen + 1];
@@ -62,32 +37,7 @@ namespace ExecutionTask4
 
                 using (StreamReader streamReader = new StreamReader(InB_filepath))
                 {
-                    string line;
-
-                    while ((line = streamReader.ReadLine()) != null)
-                    {
-                        string s = "";
-                        for (int i = 0; i < line.Length; i++)
-                        {
-                            char c = line[i];
-                            if (c != ' ' && i != line.Length - 1)
-                            {
-                                s += c;
-                            }
-                            else if (i == line.Length - 1)
-                            {
-                                fileDataB.Add(Convert.ToDouble(s));
-                            }
-                            else
-                            {
-                                if (s != "")
-                                {
-                                    fileDataB.Add(Convert.ToDouble(s));
-                                }
-                                s = "";
-                            }
-                        }
-                    }
+                    ReadData(streamReader, fileDataB);
                 }
 
                 int currentIndex = 0;
@@ -124,6 +74,28 @@ namespace ExecutionTask4
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+            }
+        }
+
+        static void ReadData(StreamReader streamReader, List<double> fileData)
+        {
+            string line = streamReader.ReadToEnd();
+            string s = "";
+
+            foreach (char c in line)
+            {
+                if (c != ' ')
+                {
+                    s += c;
+                }
+                else
+                {
+                    if (s != "")
+                    {
+                        fileData.Add(Convert.ToDouble(s));
+                    }
+                    s = "";
+                }
             }
         }
     }
