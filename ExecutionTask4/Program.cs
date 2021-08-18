@@ -11,7 +11,8 @@ namespace ExecutionTask4
 {
     class Program
     {
-        private const string OutFileName = @"..\outputFile.txt",
+        private const string InA_filepath = @"..\inA.txt",
+            OutFileName = @"..\outputFile.txt",
             InFileName = @"..\inputFile.txt";
         private static IPHostEntry host = Dns.GetHostEntry("google.com");
 
@@ -22,8 +23,59 @@ namespace ExecutionTask4
 
             try
             {
-                using (StreamReader streamReader = new StreamReader(InFileName))
+                using (StreamReader streamReader = new StreamReader(InA_filepath))
                 {
+                    List<double> fileDataA = new List<double>();
+                    string line;
+
+                    while ((line = streamReader.ReadLine()) != null)
+                    {
+                        string s = "";
+                        for (int i = 0; i < line.Length; i++)
+                        {
+                            char c = line[i];
+                            if (c != ' ' && i != line.Length - 1)
+                            {
+                                s += c;
+                            }
+                            else if (i == line.Length - 1)
+                            {
+                                fileDataA.Add(Convert.ToDouble(s));
+                            }
+                            else
+                            {
+                                if (s != "")
+                                {
+                                    fileDataA.Add(Convert.ToDouble(s));
+                                }
+                                s = "";
+                            }
+                        }
+                    }
+
+                    int matrixLen = (int)Math.Sqrt(fileDataA.Count);
+
+                    double[,] matrix = new double[matrixLen, matrixLen + 1];
+
+                    int currentIndex = 0;
+                    for (int i = 0; i < matrixLen; i++)
+                    {
+                        for (int j = 0; j < matrixLen; j++)
+                        {
+                            matrix[i, j] = fileDataA[currentIndex];
+                            currentIndex++;
+                        }
+                    }
+
+                    for (int i = 0; i < matrixLen; i++)
+                    {
+                        for (int j = 0; j < matrixLen + 1; j++)
+                        {
+                            res += matrix[i, j] + " ";
+                        }
+                        res += "\n";
+                    }
+                    /*
                     string line;
                     int lineIndex = 0;
                     double[,] matrix = new double[0, 0];
@@ -79,13 +131,14 @@ namespace ExecutionTask4
                                 matricesList.Add(new MatrixKind2(matrixLen, matrix));
                             }
                         }
-                    }
+                    }*/
                 }
 
+                /*
                 foreach (ExtendedMatrix matrix in matricesList)
                 {
                     res += matrix.ToString();
-                }
+                }*/
 
                 using (StreamWriter streamWriter = new StreamWriter(OutFileName, false, Encoding.Default))
                 {
