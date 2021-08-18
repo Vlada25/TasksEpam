@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassLibraryGauss
+namespace ExecutionTask4
 {
-    public class Class1
+    class Program
     {
     }
 }
