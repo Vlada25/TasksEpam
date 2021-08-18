@@ -8,10 +8,9 @@ namespace ClassLibraryGauss
 {
     public class MatrixKind2 : ExtendedMatrix
     {
-        public override int TypeOfSolution { get; }
         public MatrixKind2(int lenght, double[,] matrix) : base(lenght, matrix)
         {
-            TypeOfSolution = 2;
+            typeOfSolution = 2;
         }
 
         public override double[] Solve(double[,] matrix)

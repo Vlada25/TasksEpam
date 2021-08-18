@@ -6,24 +6,24 @@ using System.Threading.Tasks;
 
 namespace ClassLibraryGauss
 {
-    public abstract class ExtendedMatrix
+    public abstract class ExtendedMatrix : IExtendedMatrix
     {
         protected int size;
         private static int _countOfMatrices;
+        private readonly int _countOfLines;
+        private readonly int _countOfColumns;
         public double[,] Matrix { get; }
         public double[] Solutions { get; }
-        public int CountOfLines { get; }
-        public int CountOfColumns { get; }
         public int Number { get; }
-        public abstract int TypeOfSolution { get; }
+        protected int typeOfSolution;
 
         public ExtendedMatrix(int size, double[,] matrix)
         {
             this.size = size;
             Matrix = matrix;
-            Solutions = Solve(matrix);
-            CountOfLines = size;
-            CountOfColumns = size + 1;
+            Solutions = Solve((double[,])matrix.Clone());
+            _countOfLines = size;
+            _countOfColumns = size + 1;
             _countOfMatrices++;
             Number = _countOfMatrices;
         }
@@ -35,14 +35,14 @@ namespace ClassLibraryGauss
             string result = "";
 
             result += $"\nMatrix #{Number}\n";
-            result += $"Type of solution: {TypeOfSolution}\n";
+            result += $"Type of solution: {typeOfSolution}\n";
 
-            for (int i = 0; i < CountOfLines; i++)
+            for (int i = 0; i < _countOfLines; i++)
             {
-                for (int j = 0; j < CountOfColumns; j++)
+                for (int j = 0; j < _countOfColumns; j++)
                 {
                     result += Matrix[i, j] + " ";
-                    if (j == CountOfLines - 1)
+                    if (j == _countOfLines - 1)
                     {
                         result += "| ";
                     }

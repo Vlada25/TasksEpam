@@ -12,20 +12,23 @@ namespace ExecutionTask4
     class Program
     {
         private const string InA_filepath = @"..\inA.txt",
-            OutFileName = @"..\outputFile.txt",
-            InFileName = @"..\inputFile.txt";
+            InB_filepath = @"..\inB.txt",
+            OutFileName = @"..\outputFile.txt";
         private static IPHostEntry host = Dns.GetHostEntry("google.com");
 
         static void Main()
         {
-            List<ExtendedMatrix> matricesList = new List<ExtendedMatrix>();
             string res = "";
 
             try
             {
+                int matrixLen;
+                double[,] matrix;
+                List<double> fileDataA = new List<double>();
+                List<double> fileDataB = new List<double>();
+
                 using (StreamReader streamReader = new StreamReader(InA_filepath))
                 {
-                    List<double> fileDataA = new List<double>();
                     string line;
 
                     while ((line = streamReader.ReadLine()) != null)
@@ -53,92 +56,62 @@ namespace ExecutionTask4
                         }
                     }
 
-                    int matrixLen = (int)Math.Sqrt(fileDataA.Count);
+                    matrixLen = (int)Math.Sqrt(fileDataA.Count);
+                    matrix = new double[matrixLen, matrixLen + 1];
+                }
 
-                    double[,] matrix = new double[matrixLen, matrixLen + 1];
-
-                    int currentIndex = 0;
-                    for (int i = 0; i < matrixLen; i++)
-                    {
-                        for (int j = 0; j < matrixLen; j++)
-                        {
-                            matrix[i, j] = fileDataA[currentIndex];
-                            currentIndex++;
-                        }
-                    }
-
-                    for (int i = 0; i < matrixLen; i++)
-                    {
-                        for (int j = 0; j < matrixLen + 1; j++)
-                        {
-                            res += matrix[i, j] + " ";
-                        }
-                        res += "\n";
-                    }
-                    /*
+                using (StreamReader streamReader = new StreamReader(InB_filepath))
+                {
                     string line;
-                    int lineIndex = 0;
-                    double[,] matrix = new double[0, 0];
-                    int matrixLen = 0;
 
                     while ((line = streamReader.ReadLine()) != null)
                     {
-                        if (int.TryParse(line, out int len))
+                        string s = "";
+                        for (int i = 0; i < line.Length; i++)
                         {
-                            matrixLen = len;
-                            matrix = new double[matrixLen, matrixLen + 1];
-                            lineIndex = 0;
-                            continue;
-                        }
-                        else
-                        {
-                            string[] equationElements = line.Split(' ');
-                            int lastElementIndex = equationElements.Length - 1;
-                            int j = 0;
-
-                            foreach (string str in equationElements)
+                            char c = line[i];
+                            if (c != ' ' && i != line.Length - 1)
                             {
-                                if (str.Equals("="))
-                                {
-                                    break;
-                                }
-                                if (str.Equals("+"))
-                                {
-                                    continue;
-                                }
-
-                                int.TryParse(string.Join("", str.Where(c => char.IsDigit(c))), out int num);
-
-                                if (num == 0)
-                                {
-                                    num = 1;
-                                }
-                                if (str[0] == '-')
-                                {
-                                    num *= -1;
-                                }
-
-                                matrix[lineIndex, j] = num;
-                                j++;
+                                s += c;
                             }
-
-                            int freeTerm = Convert.ToInt32(equationElements[lastElementIndex]);
-                            matrix[lineIndex, j] = freeTerm;
-                            lineIndex++;
-
-                            if (lineIndex == matrixLen)
+                            else if (i == line.Length - 1)
                             {
-                                matricesList.Add(new MatrixKind2(matrixLen, matrix));
+                                fileDataB.Add(Convert.ToDouble(s));
+                            }
+                            else
+                            {
+                                if (s != "")
+                                {
+                                    fileDataB.Add(Convert.ToDouble(s));
+                                }
+                                s = "";
                             }
                         }
-                    }*/
+                    }
                 }
 
-                /*
-                foreach (ExtendedMatrix matrix in matricesList)
+                int currentIndex = 0;
+                for (int i = 0; i < matrixLen; i++)
                 {
-                    res += matrix.ToString();
-                }*/
+                    for (int j = 0; j < matrixLen; j++)
+                    {
+                        matrix[i, j] = fileDataA[currentIndex];
+                        currentIndex++;
+                    }
+                }
+
+                currentIndex = 0;
+                for (int i = 0; i < matrixLen; i++)
+                {
+                    matrix[i, matrixLen] = fileDataB[currentIndex];
+                    currentIndex++;
+                }
+
+                MatrixKind1 matrixKind1 = new MatrixKind1(matrixLen, matrix);
+                MatrixKind2 matrixKind2 = new MatrixKind2(matrixLen, matrix);
+
+                res += matrixKind1.ToString();
+                res += matrixKind2.ToString();
 
                 using (StreamWriter streamWriter = new StreamWriter(OutFileName, false, Encoding.Default))
                 {

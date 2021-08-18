@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtendedMatrix.cs" />
+    <Compile Include="IExtendedMatrix.cs" />
     <Compile Include="MatrixKind1.cs" />
     <Compile Include="MatrixKind2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
