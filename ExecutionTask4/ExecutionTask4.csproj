@@ -36,7 +36,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileError.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ReaderWriter\MyReader.cs" />
+    <Compile Include="ReaderWriter\MyWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

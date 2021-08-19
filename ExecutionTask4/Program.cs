@@ -1,4 +1,5 @@
 ﻿using ClassLibraryGauss;
+using ExecutionTask4.ReaderWriter;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +17,9 @@ namespace ExecutionTask4
             OutFileName = @"..\outputFile.txt";
         private static IPHostEntry host = Dns.GetHostEntry("google.com");
 
+        delegate void FileReader(string filename, StreamReader streamReader, List<double> fileData);
+        
+
         static void Main()
         {
             string res = "";
@@ -29,7 +33,9 @@ namespace ExecutionTask4
 
                 using (StreamReader streamReader = new StreamReader(InA_filepath))
                 {
-                    ReadData(streamReader, fileDataA);
+                    FileReader readSystemMatrix = MyReader.ReadData;
+                    MyReader.OnFileReader += FileError.SetMessage;
+                    readSystemMatrix(InA_filepath, streamReader, fileDataA);
 
                     matrixLen = (int)Math.Sqrt(fileDataA.Count);
                     matrix = new double[matrixLen, matrixLen + 1];
@@ -37,7 +43,8 @@ namespace ExecutionTask4
 
                 using (StreamReader streamReader = new StreamReader(InB_filepath))
                 {
-                    ReadData(streamReader, fileDataB);
+                    FileReader readFreeTerms = MyReader.ReadData;
+                    readFreeTerms(InB_filepath, streamReader, fileDataB);
                 }
 
                 int currentIndex = 0;
@@ -60,6 +67,10 @@ namespace ExecutionTask4
                 MatrixKind1 matrixKind1 = new MatrixKind1(matrixLen, matrix);
                 MatrixKind2 matrixKind2 = new MatrixKind2(matrixLen, matrix);
 
+                if (FileError.Message != null)
+                {
+                    res += FileError.Message;
+                }
                 res += matrixKind1.ToString();
                 res += matrixKind2.ToString();
 
@@ -74,28 +85,6 @@ namespace ExecutionTask4
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }
-        }
-
-        static void ReadData(StreamReader streamReader, List<double> fileData)
-        {
-            string line = streamReader.ReadToEnd();
-            string s = "";
-
-            foreach (char c in line)
-            {
-                if (c != ' ')
-                {
-                    s += c;
-                }
-                else
-                {
-                    if (s != "")
-                    {
-                        fileData.Add(Convert.ToDouble(s));
-                    }
-                    s = "";
-                }
             }
         }
     }
