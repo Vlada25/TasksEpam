@@ -15,11 +15,9 @@ namespace ExecutionTask4
         private const string InA_filepath = @"..\inA.txt",
             InB_filepath = @"..\inB.txt",
             OutFileName = @"..\outputFile.txt";
-        private static IPHostEntry host = Dns.GetHostEntry("google.com");
 
         delegate void FileReader(string filename, StreamReader streamReader, List<double> fileData);
         
-
         static void Main()
         {
             string res = "";
@@ -34,7 +32,7 @@ namespace ExecutionTask4
                 using (StreamReader streamReader = new StreamReader(InA_filepath))
                 {
                     FileReader readSystemMatrix = MyReader.ReadData;
-                    MyReader.OnFileReader += FileError.SetMessage;
+                    MyReader.OnReadData += FileError.SetMessage;
                     readSystemMatrix(InA_filepath, streamReader, fileDataA);
 
                     matrixLen = (int)Math.Sqrt(fileDataA.Count);
@@ -44,6 +42,7 @@ namespace ExecutionTask4
                 using (StreamReader streamReader = new StreamReader(InB_filepath))
                 {
                     FileReader readFreeTerms = MyReader.ReadData;
+                    MyReader.OnReadData += FileError.SetMessage;
                     readFreeTerms(InB_filepath, streamReader, fileDataB);
                 }
 
@@ -77,9 +76,6 @@ namespace ExecutionTask4
                 using (StreamWriter streamWriter = new StreamWriter(OutFileName, false, Encoding.Default))
                 {
                     streamWriter.WriteLine(res);
-                    streamWriter.WriteLine(host.HostName);
-                    foreach (IPAddress ip in host.AddressList)
-                        streamWriter.WriteLine(ip.ToString());
                 }
             }
             catch (Exception e)

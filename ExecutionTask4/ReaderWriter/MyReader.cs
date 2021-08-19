@@ -10,7 +10,7 @@ namespace ExecutionTask4.ReaderWriter
     class MyReader
     {
         public delegate void MethodContainer(string filename, int num);
-        public static event MethodContainer OnFileReader;
+        public static event MethodContainer OnReadData;
         public static void ReadData(string filename, StreamReader streamReader, List<double> fileData)
         {
             int digitNumber = 0;
@@ -32,7 +32,7 @@ namespace ExecutionTask4.ReaderWriter
                         if (!isNum)
                         {
                             Console.WriteLine();
-                            OnFileReader(filename, digitNumber);
+                            OnReadData(filename, digitNumber);
                         }
                         else
                         {
