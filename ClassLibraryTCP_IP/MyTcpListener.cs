@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibraryTCP_IP
 {
-    public class Class1
+    class MyTcpListener
     {
     }
 }
