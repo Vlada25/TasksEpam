@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTestGaussMethod.cs" />
     <Compile Include="UnitTestTcpIp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -56,6 +57,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClassLibraryGauss\ClassLibraryGauss.csproj">
+      <Project>{0deebcf3-f7fd-439a-be0a-af3b74714460}</Project>
+      <Name>ClassLibraryGauss</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ClassLibraryTCP_IP\ClassLibraryTCP_IP.csproj">
       <Project>{7e30d5f1-eda2-45f8-8fd1-dda70b381e26}</Project>
       <Name>ClassLibraryTCP_IP</Name>
