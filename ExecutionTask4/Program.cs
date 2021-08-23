@@ -20,8 +20,6 @@ namespace ExecutionTask4
         
         static void Main()
         {
-            string res = "";
-
             try
             {
                 int matrixLen;
@@ -29,22 +27,12 @@ namespace ExecutionTask4
                 List<double> fileDataA = new List<double>();
                 List<double> fileDataB = new List<double>();
 
-                using (StreamReader streamReader = new StreamReader(InA_filepath))
-                {
-                    FileReader readSystemMatrix = MyReader.ReadData;
-                    MyReader.OnReadData += FileError.SetMessage;
-                    readSystemMatrix(InA_filepath, streamReader, fileDataA);
+                Read(InA_filepath, fileDataA);
 
-                    matrixLen = (int)Math.Sqrt(fileDataA.Count);
-                    matrix = new double[matrixLen, matrixLen + 1];
-                }
+                matrixLen = (int)Math.Sqrt(fileDataA.Count);
+                matrix = new double[matrixLen, matrixLen + 1];
 
-                using (StreamReader streamReader = new StreamReader(InB_filepath))
-                {
-                    FileReader readFreeTerms = MyReader.ReadData;
-                    MyReader.OnReadData += FileError.SetMessage;
-                    readFreeTerms(InB_filepath, streamReader, fileDataB);
-                }
+                Read(InB_filepath, fileDataB);
 
                 int currentIndex = 0;
                 for (int i = 0; i < matrixLen; i++)
@@ -66,21 +54,21 @@ namespace ExecutionTask4
                 MatrixKind1 matrixKind1 = new MatrixKind1(matrixLen, matrix);
                 MatrixKind2 matrixKind2 = new MatrixKind2(matrixLen, matrix);
 
-                if (FileError.Message != null)
-                {
-                    res += FileError.Message;
-                }
-                res += matrixKind1.ToString();
-                res += matrixKind2.ToString();
-
-                using (StreamWriter streamWriter = new StreamWriter(OutFileName, false, Encoding.Default))
-                {
-                    streamWriter.WriteLine(res);
-                }
+                MyWriter.WriteData(OutFileName, matrixKind1, matrixKind2);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+            }
+        }
+
+        static void Read(string filepath, List<double> fileData)
+        {
+            using (StreamReader streamReader = new StreamReader(filepath))
+            {
+                FileReader readSystemMatrix = MyReader.ReadData;
+                MyReader.OnReadData += FileError.SetMessage;
+                readSystemMatrix(InA_filepath, streamReader, fileData);
             }
         }
     }
