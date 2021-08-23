@@ -11,6 +11,12 @@ namespace ExecutionTask4.ReaderWriter
     class MyWriter
     {
         static string res;
+
+        /// <summary>
+        /// Writing data to file
+        /// </summary>
+        /// <param name="filepath"> Filepath </param>
+        /// <param name="matrices"> List of matrices </param>
         public static void WriteData(string filepath, params ExtendedMatrix[] matrices)
         {
             res = "";

@@ -9,6 +9,11 @@ namespace ClassLibraryTCP_IP
 {
     class ClientMessage
     {
+        /// <summary>
+        /// Transcoding message
+        /// </summary>
+        /// <param name="initialMessage"> Message </param>
+        /// <returns> Transcoded message </returns>
         public static string TranscodingMessage(string initialMessage)
         {
 

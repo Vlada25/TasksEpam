@@ -16,6 +16,12 @@ namespace ClassLibraryTCP_IP
         public delegate string MethodContainer(string message);
         public event MethodContainer OnTranscodingMessage;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="port"> Given port </param>
+        /// <param name="ip"> Given IP </param>
+        /// <param name="name"> Name of sender </param>
         public MyTcpClient(int port, string ip, string name)
         {
             Port = port;
@@ -23,6 +29,12 @@ namespace ClassLibraryTCP_IP
             SenderName = name;
             OnTranscodingMessage += message => ClientMessage.TranscodingMessage(message);
         }
+
+        /// <summary>
+        /// Sending a message to the server and back
+        /// </summary>
+        /// <param name="outMessage"> Given message </param>
+        /// <returns> Message </returns>
         public string ExchangeMessage(string outMessage)
         {
             TcpClient tcpClient = new TcpClient(Ip, Port);

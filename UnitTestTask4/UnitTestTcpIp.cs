@@ -50,7 +50,7 @@ namespace UnitTestTask4
 
         [TestMethod]
         [DataRow("ВЛАДА", "СОНЯ", "ВОТ ПОМИДОР", "Я НЕ ХОЧУ", "ПРИВЕТ")]
-        public void GetAllMessagesByClientName_ClientName_ReturnCountOfMessages(string name1, string name2, string message1, string message2, string message3)
+        public void GetAllMessagesBySenderName_Name_ReturnCountOfMessages(string name1, string name2, string message1, string message2, string message3)
         {
             MyTcpClient client1 = new MyTcpClient(8888, "127.0.0.1", name1);
             MyTcpClient client2 = new MyTcpClient(8888, "127.0.0.1", name2);
@@ -62,8 +62,8 @@ namespace UnitTestTask4
             client2.ExchangeMessage(message2);
             client2.ExchangeMessage(message3);
 
-            int result1 = MessageBase.GetAllMessagesByClientName("ВЛАДА").Count;
-            int result2 = MessageBase.GetAllMessagesByClientName("СОНЯ").Count;
+            int result1 = MessageBase.GetAllMessagesBySenderName("ВЛАДА").Count;
+            int result2 = MessageBase.GetAllMessagesBySenderName("СОНЯ").Count;
 
             int expected1 = 1;
             int expected2 = 2;

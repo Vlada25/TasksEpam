@@ -11,6 +11,13 @@ namespace ExecutionTask4.ReaderWriter
     {
         public delegate void MethodContainer(string filename, int num);
         public static event MethodContainer OnReadData;
+
+        /// <summary>
+        /// Reading data from file
+        /// </summary>
+        /// <param name="filename"> Filepath </param>
+        /// <param name="streamReader"> Streamreader object </param>
+        /// <param name="fileData"> Storage list </param>
         public static void ReadData(string filename, StreamReader streamReader, List<double> fileData)
         {
             int digitNumber = 0;

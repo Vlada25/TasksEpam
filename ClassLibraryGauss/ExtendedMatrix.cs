@@ -17,6 +17,11 @@ namespace ClassLibraryGauss
         public int Number { get; }
         protected int typeOfSolution;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="size"> Length of matrix </param>
+        /// <param name="matrix"> Given matrix </param>
         public ExtendedMatrix(int size, double[,] matrix)
         {
             this.size = size;
@@ -28,6 +33,11 @@ namespace ClassLibraryGauss
             Number = _countOfMatrices;
         }
 
+        /// <summary>
+        /// Solving system of equations
+        /// </summary>
+        /// <param name="matrix"> Given matrix </param>
+        /// <returns> Array of solutions </returns>
         public abstract double[] Solve(double[,] matrix);
 
         public override string ToString()

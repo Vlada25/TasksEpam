@@ -16,6 +16,9 @@ namespace ClassLibraryTCP_IP
         public delegate void MethodContainer(string ip, string message);
         public event MethodContainer OnMessageList;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public MyTcpListener()
         {
             Port = 8888;
@@ -23,6 +26,9 @@ namespace ClassLibraryTCP_IP
             OnMessageList += (ip, message) => MessageBase.AddMessage(ip, message);
         }
 
+        /// <summary>
+        /// Getting a message to the server and saving it to the client message list and sending it back
+        /// </summary>
         public void DataExchange()
         {
             IPAddress localAddr = IPAddress.Parse(Ip);
