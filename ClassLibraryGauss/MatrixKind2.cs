@@ -13,6 +13,16 @@ namespace ClassLibraryGauss
             typeOfSolution = 2;
         }
 
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         public override double[] Solve(double[,] matrix)
         {
             double[] solution = new double[size];
@@ -77,5 +87,6 @@ namespace ClassLibraryGauss
 
             return solution;
         }
+
     }
 }

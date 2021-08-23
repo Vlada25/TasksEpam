@@ -61,5 +61,30 @@ namespace ClassLibraryGauss
 
             return result;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ExtendedMatrix matrix &&
+                   size == matrix.size &&
+                   _countOfLines == matrix._countOfLines &&
+                   _countOfColumns == matrix._countOfColumns &&
+                   EqualityComparer<double[,]>.Default.Equals(Matrix, matrix.Matrix) &&
+                   EqualityComparer<double[]>.Default.Equals(Solutions, matrix.Solutions) &&
+                   Number == matrix.Number &&
+                   typeOfSolution == matrix.typeOfSolution;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 634073516;
+            hashCode = hashCode * -1521134295 + size.GetHashCode();
+            hashCode = hashCode * -1521134295 + _countOfLines.GetHashCode();
+            hashCode = hashCode * -1521134295 + _countOfColumns.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<double[,]>.Default.GetHashCode(Matrix);
+            hashCode = hashCode * -1521134295 + EqualityComparer<double[]>.Default.GetHashCode(Solutions);
+            hashCode = hashCode * -1521134295 + Number.GetHashCode();
+            hashCode = hashCode * -1521134295 + typeOfSolution.GetHashCode();
+            return hashCode;
+        }
     }
 }
