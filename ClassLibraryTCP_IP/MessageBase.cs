@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibraryTCP_IP
 {
-    class MessageBase
+    public class MessageBase
     {
         private static Dictionary<string, List<string>> _messageList = new Dictionary<string, List<string>>();
 
