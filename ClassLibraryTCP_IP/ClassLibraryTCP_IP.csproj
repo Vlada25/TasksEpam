@@ -47,5 +47,11 @@
     <Compile Include="MyTcpListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ClassLibraryGauss\ClassLibraryGauss.csproj">
+      <Project>{0deebcf3-f7fd-439a-be0a-af3b74714460}</Project>
+      <Name>ClassLibraryGauss</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

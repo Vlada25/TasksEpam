@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassLibraryGauss;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -13,8 +14,8 @@ namespace ClassLibraryTCP_IP
         public string Ip { get; }
         public string SenderName { get; }
 
-        public delegate string MethodContainer(string message);
-        public event MethodContainer OnTranscodingMessage;
+        public delegate string MethodContainer(ExtendedMatrix matrix);
+        public event MethodContainer OnFormSolutionMessage;
 
         /// <summary>
         /// Constructor
@@ -27,26 +28,26 @@ namespace ClassLibraryTCP_IP
             Port = port;
             Ip = ip;
             SenderName = name;
-            OnTranscodingMessage += message => ClientMessage.TranscodingMessage(message);
+            OnFormSolutionMessage += matrix => ClientMessage.FormSolutionMessage(matrix);
         }
 
         /// <summary>
         /// Sending a message to the server and back
         /// </summary>
-        /// <param name="outMessage"> Given message </param>
+        /// <param name="matrix"> Given matrix </param>
         /// <returns> Message </returns>
-        public string ExchangeMessage(string outMessage)
+        public string ExchangeMessage(ExtendedMatrix matrix)
         {
             TcpClient tcpClient = new TcpClient(Ip, Port);
             Byte[] data = null;
 
-            if (OnTranscodingMessage != null)
+            if (OnFormSolutionMessage != null)
             {
-                data = Encoding.UTF8.GetBytes(SenderName + ":" + OnTranscodingMessage(outMessage));
+                data = Encoding.UTF8.GetBytes(SenderName + ":" + OnFormSolutionMessage(matrix));
             }
             else
             {
-                data = Encoding.UTF8.GetBytes(outMessage);
+                data = Encoding.UTF8.GetBytes(Convert.ToString(matrix.Matrix));
             }
 
             NetworkStream networkStream = tcpClient.GetStream();

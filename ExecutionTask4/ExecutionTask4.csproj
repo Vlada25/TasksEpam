@@ -49,6 +49,10 @@
       <Project>{0DEEBCF3-F7FD-439A-BE0A-AF3B74714460}</Project>
       <Name>ClassLibraryGauss</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ClassLibraryTCP_IP\ClassLibraryTCP_IP.csproj">
+      <Project>{7E30D5F1-EDA2-45F8-8FD1-DDA70B381E26}</Project>
+      <Name>ClassLibraryTCP_IP</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
