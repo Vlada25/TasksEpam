@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[BorrowedBooks]
+(
+	[Id] INT PRIMARY KEY IDENTITY (1, 1) NOT NULL,
+    [UserId] INT NOT NULL, 
+    [BookId] INT NOT NULL, 
+    [WasReturned] BIT DEFAULT 0,
+    FOREIGN KEY ([UserId]) REFERENCES Users ([Id]) ON DELETE CASCADE,
+    FOREIGN KEY ([BookId]) REFERENCES Books ([Id]) ON DELETE CASCADE
+)

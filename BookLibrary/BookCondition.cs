@@ -8,10 +8,10 @@ namespace BookLibrary
 {
     public enum BookCondition
     {
-        Exellent,
-        Good,
-        Normal,
-        Bad,
-        Horrible
+        Exellent = 5,
+        Good = 4,
+        Normal = 3,
+        Bad = 2,
+        Horrible = 1
     }
 }

@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace BookLibrary
 {
-    public enum BookGenres
+    public class Genre
     {
+        public int Id { get; }
+        public string Name { get; }
+        /*
         Crime, // криминальная проза
         DetectiveFiction, // детектив
         ScienceFiction, // научная фантастика
@@ -28,5 +31,6 @@ namespace BookLibrary
         PictureBook, // детские книжки с картинками
         Triller, // триллер
         EroticFiction // эротика
+        */
     }
 }
