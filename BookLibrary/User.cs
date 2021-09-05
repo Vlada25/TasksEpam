@@ -14,13 +14,14 @@ namespace BookLibrary
         public bool Sex { get; }
         public DateTime Birthday { get; }
 
-        public User(int id, string name, string surname, string patronymic, bool sex)
+        public User(int id, string surname, string name, string patronymic, bool sex, DateTime birthday)
         {
             Id = id;
             Name = name;
             Surname = surname;
             Patronymic = patronymic;
             Sex = sex;
+            Birthday = birthday;
         }
     }
 }
