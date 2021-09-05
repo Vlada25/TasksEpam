@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseDBObject.cs" />
     <Compile Include="Book.cs" />
     <Compile Include="BookCondition.cs" />
     <Compile Include="Genre.cs" />

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace BookLibrary
 {
-    public class Genre
+    public class Genre : BaseDBObject
     {
-        public int Id { get; }
         public string Name { get; }
         /*
         Crime, // криминальная проза

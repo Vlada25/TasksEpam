@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace BookLibrary
 {
-    public class Book
+    public class Book : BaseDBObject
     {
-        public int Id { get; }
         public string Name { get; }
         public string Author { get; }
         public int GenreId { get; }

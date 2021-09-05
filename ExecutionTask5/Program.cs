@@ -12,9 +12,7 @@ namespace ExecutionTask5
     {
         static void Main(string[] args)
         {
-            LibraryDb db = new LibraryDb();
-            Crud<DbSet> crud = new Crud<DbSet>(db.Connection);
-            crud.Create(db.Users);
+
         }
     }
 }
